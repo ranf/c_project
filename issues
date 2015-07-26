@@ -1,0 +1,27 @@
+
+1. new empty project compiles
+2. console implementation
+2.1. settings implementation - without save/load
+2.2. user implementation - stubs for get moves and actual game logic
+2.3. get moves
+2.4. win logic
+3. computer turn
+3.1. convert existing minimax to chess
+3.2. pruning
+3.3. best difficulty
+4. save/load game
+5. gui
+5.1. main window - 3 buttons with only quit functionality
+5.2. new game options dialog - game mode + next player + cancel
+5.3. new game options dialog - set board
+5.3.1 display the board
+5.3.2 allow changing the board
+5.3.3 verify legal board before moving on
+5.4. AI settings window
+5.5. game window
+5.5.1. display window with the board, buttons
+5.5.2. move - allow valid moves by selecting the source tile and then the target
+5.5.3. suggest best move button - possible showing AI settings dialog
+5.5.4. game over logic
+5.6. keyboard travel - for all windows
+5.7. save/load window
