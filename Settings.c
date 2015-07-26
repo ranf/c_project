@@ -1,7 +1,7 @@
 #include "Settings.h"
 
 Settings applySettingsCommand(Settings settings, char* cmd) {
-	return Settings;
+	return settings;
 }
 
 // Settings getSettings() {
