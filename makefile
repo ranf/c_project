@@ -1,5 +1,5 @@
 CFLAGS=-std=c99 -pedantic-errors -c -Wall -g -lm
-OBJ=Console/Console.o Gui/Gui.o Settings.o
+OBJ=Main.o Console/Console.o Gui/Gui.o Settings.o
 
 all: chessprog 
 

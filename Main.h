@@ -4,7 +4,7 @@
 #define GUI_FLAG "gui"
 
 #include <string.h>
-#include Gui/Gui.h
-#include Console/Console.h
+#include "Gui/Gui.h"
+#include "Console/Console.h"
 
 #endif

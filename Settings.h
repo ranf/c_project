@@ -35,6 +35,8 @@ typedef struct {
 	char** board;
 } Settings;
 
+Settings applySettingsCommand(Settings settings, char* cmd);
+
 // Settings getSettings();
 // Settings setMinimaxDepth(Settings settings, char* cmd);
 // Settings setUserColor (Settings settings, char* cmd);
