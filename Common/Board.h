@@ -1,6 +1,9 @@
 #ifndef COMMON_BOARD_H
 #define COMMON_BOARD_H
 
+#include "Position.h"
+
+
 #define WHITE_P 'm'
 #define WHITE_B 'b'
 #define WHITE_N 'n'
