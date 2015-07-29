@@ -2,6 +2,7 @@
 #define CONSOLE_SETTINGS_H
 
 #include "../Common/Settings.h"
+#include "Board.h"
 
 
 #define GAME_MODE_CMD 3
@@ -23,12 +24,14 @@
 #define WRONG_GAME_MODE "Wrong game mode\n"
 #define RUNNING_MULTIPLAYER_MODE "Running game in 2 players mode\n"
 #define RUNNING_SIMGLEPLAYER_MODE "Running game in player vs. AI mode\n"
+#define NO_PIECE "Setting this piece creates an invalid board\n"  
 
 
 Settings applySettingsCommand(Settings settings, char* cmd);
 Settings startBoard(Settings settings);
 Settings setMinimaxDepth(Settings settings, char* cmd);
 Settings setUserColor(Settings settings, char* cmd);
+Settings setGameMode(Settings settings, char* cmd);
 void removePiece(char** board, char* cmd);
 void setPiece(char** board, char* cmd);
 int getCmdType(char* cmdString);

@@ -47,3 +47,13 @@ void freeBoard(char** board) {
 	}
 	free(board);
 }
+
+int countPiecesOfType(char** board, char pieceType) {
+	int count = 0;
+	for (i = 0; i < BOARD_SIZE; i++)
+	for (j = 0; j < BOARD_SIZE; j++) {
+		if (board[i][j] == pieceType)
+			count++;
+	}
+	return count;
+}

@@ -8,4 +8,8 @@
 
 #define printErrorMessage(func_name) (fprintf(stderr, "Error: standard function %s has failed\n", func_name))
 
+void* safeMalloc(size_t size);
+void* safeRealloc(void* ptr, size_t size);
+bool startsWith(const char *str, const char *pre);
+
 #endif

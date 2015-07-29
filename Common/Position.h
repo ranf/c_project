@@ -8,4 +8,7 @@ typedef struct {
 	int y;
 } Position;
 
+Position parsePosition(char* positionString);
+bool validPosition(Position p);
+
 #endif

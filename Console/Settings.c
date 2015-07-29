@@ -5,28 +5,28 @@ Settings applySettingsCommand(Settings settings, char* cmd) {
 		case GAME_MODE_CMD:
 			settings = setGameMode(settings, cmd);
 			break;
-		case DIFFICULTY_DEPTH:
+		case DIFFICULTY_DEPTH_CMD:
 			settings = setMinimaxDepth(settings, cmd);
 			break;
-		case USER_COLOR:
+		case USER_COLOR_CMD:
 			settings = setUserColor(settings, cmd);
 			break;
-		case CLEAR:
+		case CLEAR_CMD:
 			clearBoard(settings.board);
 			break;
-		case RM:
+		case RM_CMD:
 			removePiece(settings.board, cmd);
 			break;
-		case SET:
+		case SET_CMD:
 			setPiece(settings.board, cmd);
 			break;
-		case PRINT:
+		case PRINT_CMD:
 			printBoard(settings.board);
 			break;
-		case QUIT:
+		case QUIT_CMD:
 			settings.state = TERMINATE_STATE;
 			break;
-		case START:
+		case START_CMD:
 			settings = startBoard(settings);
 			break;
 		default:
