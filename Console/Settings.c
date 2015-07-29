@@ -2,6 +2,9 @@
 
 Settings applySettingsCommand(Settings settings, char* cmd) {
 	switch (getCmdType(cmd)) {
+		case GAME_MODE_CMD:
+			settings = setGameMode(settings, cmd);
+			break;
 		case DIFFICULTY_DEPTH:
 			settings = setMinimaxDepth(settings, cmd);
 			break;
@@ -15,7 +18,7 @@ Settings applySettingsCommand(Settings settings, char* cmd) {
 			removePiece(settings.board, cmd);
 			break;
 		case SET:
-			setDisc(settings.board, cmd);
+			setPiece(settings.board, cmd);
 			break;
 		case PRINT:
 			printBoard(settings.board);
@@ -36,10 +39,11 @@ Settings applySettingsCommand(Settings settings, char* cmd) {
 
 Settings startBoard(Settings settings) {
 	if (countPiecesOfType(settings.board, WHITE_K) != 1 ||
-		countPiecesOfType(settings.board, BLACK_K) != 1)
+		countPiecesOfType(settings.board, BLACK_K) != 1) {
 		printMessage(WROND_BOARD_INITIALIZATION);
-	else
+	} else {
 		settings.state = GAME_STATE;
+	}
 	return settings;
 }
 
@@ -53,6 +57,20 @@ Settings setMinimaxDepth(Settings settings, char* cmd) {
 		settings.minimaxDepth = minimaxDepth;
 	} else {
 		printMessage(WRONG_MINIMAX_DEPTH);
+	}
+	return settings;
+}
+
+Settings setGameMode(Settings settings, char* cmd) {
+	char* mode = cmd + 10;// |game_mode | = 10
+	if (*mode == '1' && *(mode + 1) == '\0') {
+		settings.gameMode = MULTIPLAYER_MODE;
+		printMessage(RUNNING_MULTIPLAYER_MODE);
+	} else if (*mode == '2' && *(mode + 1) == '\0') {
+		settings.gameMode = SINGLEPLAYER_MODE;
+		printMessage(RUNNING_SIMGLEPLAYER_MODE);
+	} else {
+		printMessage(WRONG_GAME_MODE);
 	}
 	return settings;
 }
@@ -76,7 +94,7 @@ void removePiece(char** board, char* cmd) {
 		printMessage(INVALID_POSITION);
 }
 
-void setDisc(char** board, char* cmd) {
+void setPiece(char** board, char* cmd) {
 	char* cmdValue = strchr(cmd, ' ') + 1;
 	Position p = parsePosition(cmdValue);
 	if (!validPosition(p)) {
@@ -100,23 +118,23 @@ int getCmdType(char* cmdString) {
 	if(startsWith(cmdString, "game_mode "))
 		return GAME_MODE_CMD;
 	if(startsWith(cmdString, "difficulty depth "))
-		return DIFFICULTY_DEPTH;
+		return DIFFICULTY_DEPTH_CMD;
 	if(startsWith(cmdString, "user_color "))
-		return USER_COLOR;
+		return USER_COLOR_CMD;
 	if(startsWith(cmdString, "next_player "))
 		return NEXT_PLAYER_CMD;
 	if(strcmp(cmdString, "clear") == 0)
-		return CLEAR;
+		return CLEAR_CMD;
 	if(startsWith(cmdString, "rm "))
-		return RM;
+		return RM_CMD;
 	if(startsWith(cmdString, "set "))
-		return SET;
+		return SET_CMD;
 	if(strcmp(cmdString, "print") == 0)
-		return PRINT;
+		return PRINT_CMD;
 	if(strcmp(cmdString, "quit") == 0)
-		return QUIT;
+		return QUIT_CMD;
 	if(strcmp(cmdString, "start") == 0)
-		return START;
+		return START_CMD;
 	return UNKNOWN_CMD;
 }
 
