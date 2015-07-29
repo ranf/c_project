@@ -22,7 +22,7 @@ typedef struct {
 	char** board;
 } Settings;
 
-#define DEFUALT_SETTINGS {\
+#define DEFAULT_SETTINGS {\
 	.state = SETTINGS_STATE,\
 	.gameMode = MULTIPLAYER_MODE,\
 	.minimaxDepth = 1,\

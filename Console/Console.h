@@ -2,6 +2,7 @@
 #define CONSOLE_H
 
 #include "Settings.h"
+#include "Board.h"
 
 #define printMessage(message) (printf("%s", message))
 

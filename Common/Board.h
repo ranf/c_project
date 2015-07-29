@@ -22,7 +22,7 @@
 
 #define BOARD_SIZE 8
 
-char* initBoard();
+char** initBoard();
 void clearBoard();
 char** mallocBoard();
 void freeBoard();
