@@ -1,0 +1,4 @@
+#ifndef COMMON_POSITION_H
+#define COMMON_POSITION_H
+
+#endif

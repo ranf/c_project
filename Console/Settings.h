@@ -1,7 +1,7 @@
 #ifndef CONSOLE_SETTINGS_H
 #define CONSOLE_SETTINGS_H
 
-#include "../Settings.h"
+#include "../Common/Settings.h"
 
 
 #define GAME_MODE_CMD 3

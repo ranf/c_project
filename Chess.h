@@ -1,26 +1,9 @@
 #ifndef CHESS_
 #define CHESS_
 
-#include<stdio.h>
-
-#define WHITE_P 'm'
-#define WHITE_B 'b'
-#define WHITE_N 'n'
-#define WHITE_R 'r'
-#define WHITE_Q 'q'
-#define WHITE_K 'k'
-
-#define BLACK_P 'M'
-#define BLACK_B 'B'
-#define BLACK_N 'N'
-#define BLACK_R 'R'
-#define BLACK_Q 'Q'
-#define BLACK_K 'K'
+#include <stdio.h>
 
 
-#define EMPTY ' '
-
-#define BOARD_SIZE 8
 
 // board initialization
 #define ENTER_SETTINGS "Enter game settings:\n" 
