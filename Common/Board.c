@@ -26,9 +26,9 @@ char** initBoard() {
 	return board;
 }
 
-void clearBoard(char* board) {
-	for (i = 0; i < BOARD_SIZE; i++)
-	for (j = 0; j < BOARD_SIZE; j++){
+void clearBoard(char** board) {
+	for (int i = 0; i < BOARD_SIZE; i++)
+	for (int j = 0; j < BOARD_SIZE; j++){
 		board[i][j] = EMPTY;
 	}
 }
@@ -50,8 +50,8 @@ void freeBoard(char** board) {
 
 int countPiecesOfType(char** board, char pieceType) {
 	int count = 0;
-	for (i = 0; i < BOARD_SIZE; i++)
-	for (j = 0; j < BOARD_SIZE; j++) {
+	for (int i = 0; i < BOARD_SIZE; i++)
+	for (int j = 0; j < BOARD_SIZE; j++) {
 		if (board[i][j] == pieceType)
 			count++;
 	}

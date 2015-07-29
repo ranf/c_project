@@ -13,7 +13,7 @@ Position parsePosition(char* positionString) {
 	return p;
 }
 
-bool validPosition(Position p) {
+bool validPosition(Position position) {
 	return position.x > -1 && position.x < BOARD_SIZE &&
 		position.y > -1 && position.y < BOARD_SIZE;
 }

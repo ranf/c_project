@@ -3,7 +3,6 @@
 
 #include "Position.h"
 
-
 #define WHITE_P 'm'
 #define WHITE_B 'b'
 #define WHITE_N 'n'
@@ -19,8 +18,6 @@
 #define BLACK_K 'K'
 
 #define EMPTY ' '
-
-#define BOARD_SIZE 8
 
 char** initBoard();
 void clearBoard();
