@@ -24,7 +24,8 @@
 #define WRONG_GAME_MODE "Wrong game mode\n"
 #define RUNNING_MULTIPLAYER_MODE "Running game in 2 players mode\n"
 #define RUNNING_SIMGLEPLAYER_MODE "Running game in player vs. AI mode\n"
-#define NO_PIECE "Setting this piece creates an invalid board\n"  
+#define NO_PIECE "Setting this piece creates an invalid board\n"
+#define WRONG_POSITION "Invalid position on the board\n"
 
 
 Settings applySettingsCommand(Settings settings, char* cmd);

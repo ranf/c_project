@@ -91,14 +91,14 @@ void removePiece(char** board, char* cmd) {
 	if (validPosition(p))
 		board[p.x][p.y] = EMPTY;
 	else
-		printMessage(INVALID_POSITION);
+		printMessage(WRONG_POSITION);
 }
 
 void setPiece(char** board, char* cmd) {
 	char* cmdValue = strchr(cmd, ' ') + 1;
 	Position p = parsePosition(cmdValue);
 	if (!validPosition(p)) {
-		printMessage(INVALID_POSITION);
+		printMessage(WRONG_POSITION);
 	 } else {
 	 	char v = EMPTY;
 		cmdValue  = strchr(cmdValue, ' ') + 1;
