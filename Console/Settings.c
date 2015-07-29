@@ -140,7 +140,8 @@ int getCmdType(char* cmdString) {
 
 bool validAddition(char** board, Position position, char piece) {
 	//does not verify resulting board is valid, only that it can add
-	return true;//TODO
+	return (board[position.x][position.y] == piece) || 
+		(countPiecesOfType(board, piece) + 1 <= maxAllowedPiecesOfType(piece));
 }
 
 char parsePieceName(char* name, int color) {

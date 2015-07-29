@@ -57,3 +57,25 @@ int countPiecesOfType(char** board, char pieceType) {
 	}
 	return count;
 }
+
+int maxAllowedPiecesOfType(char pieceType) {
+	switch (pieceType) {
+		case WHITE_P:
+		case BLACK_P:
+			return 10;
+		case WHITE_B:
+		case WHITE_N:
+		case WHITE_R:
+		case BLACK_B:
+		case BLACK_N:
+		case BLACK_R:
+			return 2;
+		case WHITE_Q:
+		case WHITE_K:
+		case BLACK_Q:
+		case BLACK_K:
+			return 1;
+		default:
+			return BOARD_SIZE * BOARD_SIZE;
+	}
+}

@@ -24,5 +24,6 @@ void clearBoard();
 char** mallocBoard();
 void freeBoard();
 int countPiecesOfType(char** board, char pieceType);
+int maxAllowedPiecesOfType(char pieceType);
 
 #endif
