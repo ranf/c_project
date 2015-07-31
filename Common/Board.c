@@ -3,25 +3,25 @@
 char** initBoard() {
 	char** board = mallocBoard();
 	int i,j;
-	for (i = 2; i < BOARD_SIZE - 2; i++)
-	for (j = 0; j < BOARD_SIZE; j++){
+	for (i = 0; i < BOARD_SIZE; i++)
+	for (j = 2; j < BOARD_SIZE - 2; j++){
 		board[i][j] = EMPTY;
 	}
-	board[0][0] = board[0][7] = WHITE_R;
-	board[0][1] = board[0][6] = WHITE_N;
-	board[0][2] = board[0][5] = WHITE_B;
-	board[0][3] = WHITE_Q;
-	board[0][4] = WHITE_K;
+	board[0][0] = board[7][0] = WHITE_R;
+	board[1][0] = board[6][0] = WHITE_N;
+	board[2][0] = board[5][0] = WHITE_B;
+	board[3][0] = WHITE_Q;
+	board[4][0] = WHITE_K;
 	for (int i = 0; i < BOARD_SIZE; i++) {
-		board[1][i] = WHITE_P;
+		board[i][1] = WHITE_P;
 	}
-	board[7][0] = board[7][7] = BLACK_R;
-	board[7][1] = board[7][6] = BLACK_N;
-	board[7][2] = board[7][5] = BLACK_B;
-	board[7][3] = BLACK_Q;
-	board[7][4] = BLACK_K;
+	board[0][7] = board[7][7] = BLACK_R;
+	board[1][7] = board[6][7] = BLACK_N;
+	board[2][7] = board[5][7] = BLACK_B;
+	board[3][7] = BLACK_Q;
+	board[4][7] = BLACK_K;
 	for (int i = 0; i < BOARD_SIZE; i++) {
-		board[6][i] = BLACK_P;
+		board[i][6] = BLACK_P;
 	}
 	return board;
 }
@@ -62,7 +62,7 @@ int maxAllowedPiecesOfType(char pieceType) {
 	switch (pieceType) {
 		case WHITE_P:
 		case BLACK_P:
-			return 10;
+			return 8;
 		case WHITE_B:
 		case WHITE_N:
 		case WHITE_R:
