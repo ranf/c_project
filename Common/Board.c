@@ -79,3 +79,29 @@ int maxAllowedPiecesOfType(char pieceType) {
 			return BOARD_SIZE * BOARD_SIZE;
 	}
 }
+
+int pieceOwner(char pieceType) {
+	switch (pieceType) {
+		case WHITE_P:
+		case WHITE_B:
+		case WHITE_N:
+		case WHITE_R:
+		case WHITE_Q:
+		case WHITE_K:
+			return WHITE_COLOR;
+		case BLACK_P:
+		case BLACK_B:
+		case BLACK_N:
+		case BLACK_R:
+		case BLACK_Q:
+		case BLACK_K:
+			return BLACK_COLOR;
+		default:
+			return 0;
+	}
+}
+
+bool endOfBoard(Position position, int player) {
+	return (player == BLACK_COLOR && position.y == 0) ||
+		(player == WHITE_COLOR && position.y == BOARD_SIZE - 1);
+}

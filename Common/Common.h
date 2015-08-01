@@ -12,5 +12,8 @@
 void* safeMalloc(size_t size);
 void* safeRealloc(void* ptr, size_t size);
 bool startsWith(const char *str, const char *pre);
+char* skipSpaces(char* str);
+
+#define BOARD_SIZE 8
 
 #endif

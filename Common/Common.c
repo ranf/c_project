@@ -23,3 +23,10 @@ bool startsWith(const char *str, const char *pre) {
 	size_t lenstr = strlen(str);
 	return lenstr < lenpre ? false : strncmp(pre, str, lenpre) == 0;
 }
+
+char* skipSpaces(char* str) {
+	while (*str == ' ') {
+		str = str + 1;
+	}
+	return str;
+}

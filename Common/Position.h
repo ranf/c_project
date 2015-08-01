@@ -3,8 +3,6 @@
 
 #include "Common.h"
 
-#define BOARD_SIZE 8
-
 typedef struct {
 	int x;
 	int y;

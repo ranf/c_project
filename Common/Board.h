@@ -25,5 +25,7 @@ char** mallocBoard();
 void freeBoard();
 int countPiecesOfType(char** board, char pieceType);
 int maxAllowedPiecesOfType(char pieceType);
+int pieceOwner(char pieceType);
+bool endOfBoard(Position position, int player);
 
 #endif

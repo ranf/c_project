@@ -11,24 +11,24 @@ void startConsoleMode() {
 		free(cmd);
 	}
 	
-	// while (settings.state == GAME_STATE) {
-	// 	if(settings.gameMode == MULTIPLAYER_MODE || settings.userColor == settings.playingColor) {
-	// 		settings = userTurn(settings);
-	// 	} else {
-	// 		settings = computerTurn(settings);
-	// 	}
-	// }
+	while (settings.state == GAME_STATE) {
+		if(settings.gameMode == MULTIPLAYER_MODE || settings.userColor == settings.playingColor) {
+			settings = userTurn(settings);
+		} else {
+			settings = computerTurn(settings);
+		}
+	}
 
 	freeBoard(settings.board);
 }
 
 Settings userTurn(Settings settings) {
-	/*printMessage(settings.playingColor == WHITE_COLOR
+	printMessage(settings.playingColor == WHITE_COLOR
 		? WHITE_ENTER_YOUR_MOVE
 		: BLACK_ENTER_YOUR_MOVE);
 	char* cmd = readString();
 	settings = applyGameCommand(settings, cmd);
-	free(cmd);*/
+	free(cmd);
 	return settings;
 }
 

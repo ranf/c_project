@@ -31,4 +31,6 @@ typedef struct {
 	.board = initBoard()\
 }
 
+#define otherPlayer(x) (3-x)
+
 #endif
