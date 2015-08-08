@@ -4,10 +4,8 @@ Settings applyGameCommand(Settings settings, char* cmd) {
 	if (startsWith(cmd, "move ")) {
 		settings = moveCommand(settings, cmd);
 		settings.playingColor = otherPlayer(settings.playingColor);
-	} else if (strcmp(cmd, "get_moves") == 0) {
-		MoveList* moves = getMoves(settings.board, settings.playingColor);
-		printAllMoves(moves);
-		freeMoves(moves);
+	} else if (startsWith(cmd, "get_moves ")) {
+		getMovesForPositionCommand(settings.board, settings.playingColor, cmd);
 	} else if (strcmp(cmd, "quit") == 0) {
 		settings.state = TERMINATE_STATE;
 	} else {
@@ -39,4 +37,44 @@ Settings moveCommand(Settings settings, char* cmd) {
 			freeMoves(pieceMoves);
 	}
 	return settings;
+}
+
+void getMovesForPositionCommand(char** board, int player, char* cmd) {
+	char* positionStr = skipSpaces(cmd + 9); // |get_moves| = 9
+	Position piecePosition = parsePosition(positionStr);
+	if (!validPosition(piecePosition)) {
+		printMessage(WRONG_POSITION);
+	} else if (pieceOwner(board[piecePosition.x][piecePosition.y] != player)) {
+		printMessage(NOT_YOUR_PIECE);
+	} else {
+		MoveList* moves = getPieceMoves(board, piecePosition);
+		printAllMoves(moves);
+		freeMoves(moves);
+	}
+}
+
+void printAllMoves(MoveList* moves) {
+	MoveList* head = moves;
+	while(head) {
+		printMove(head->data);
+		head = head->next;
+	}
+}
+
+void printMove(Move* move) {
+	char result[MAX_MOVE_LENGTH];
+	result[0] = '\0';
+	char tempPositionString[7];
+	positionToString(move->from, tempPositionString);
+	strcat(result, tempPositionString);
+	strcat(result, " to ");
+	positionToString(move->to, tempPositionString);
+	strcat(result, tempPositionString);
+	PositionList* dest = move->to;
+	while(dest){
+		positionToString(dest->data, tempPositionString);
+		strcat(result, tempPositionString);
+		dest = dest->next;
+	}
+	printf("%s\n", result);
 }
