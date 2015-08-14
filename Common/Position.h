@@ -11,4 +11,13 @@ typedef struct {
 Position parsePosition(char* positionString);
 bool validPosition(Position position);
 
+Position upperLeftDiagonalPosition(Position source);
+Position upperDirectionPosition(Position source);
+Position upperRightDiagonalPosition(Position source);
+Position leftDirectionPosition(Position source);
+Position rightDirectionPosition(Position source);
+Position lowerLeftDiagonalPosition(Position source);
+Position lowerDirectionPosition(Position source);
+Position lowerRightDiagonalPosition(Position source);
+
 #endif

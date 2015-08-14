@@ -1,6 +1,6 @@
 CFLAGS=-std=c99 -pedantic-errors -c -Wall -g -lm
 CONSOLE_OBJ=Console/Console.o Console/Settings.o Console/Board.o Console/Game.o
-COMMON_OBJ=Common/Common.o Common/Board.o Common/Position.o Common/Move.o
+COMMON_OBJ=Common/Common.o Common/Board.o Common/Position.o Common/Move.o Common/MoveLogic.o
 OBJ=Main.o $(CONSOLE_OBJ) $(COMMON_OBJ) Gui/Gui.o
 
 all: chessprog
@@ -37,6 +37,9 @@ Common/Position.o: Common/Position.c Common/Position.h
 
 Common/Move.o: Common/Move.c Common/Move.h
 	gcc $(CFLAGS) Common/Move.c -o Common/Move.o
+
+Common/MoveLogic.o: Common/MoveLogic.c Common/MoveLogic.h
+	gcc $(CFLAGS) Common/MoveLogic.c -o Common/MoveLogic.o
 
 Gui/Gui.o: Gui/Gui.c Gui/Gui.h
 	gcc $(CFLAGS) Gui/Gui.c `sdl-config --cflags` -o Gui/Gui.o

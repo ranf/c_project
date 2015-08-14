@@ -3,6 +3,8 @@
 
 #include "Board.h"
 
+#define NO_PROMOTION '\0'
+
 typedef struct {
 	Position from;
 	Position to;
@@ -16,10 +18,14 @@ typedef struct move_list_struct {
 
 MoveList* getMoves(char** board, int player);
 Move* createMove(Position source, Position target, char promotion);
+MoveList* createMoveList(Move* move);
+MoveList* addToMoveList(MoveList* original, Move* addition);
 MoveList* getPieceMoves(char** board, Position source);
 bool moveIsInList(MoveList* list, Move* move);
 char** applyMove(char** board, Move* move);
 void freeMove(Move* move);
 void freeMoves(MoveList* moves);
+
+#include "MoveLogic.h"
 
 #endif

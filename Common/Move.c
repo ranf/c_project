@@ -12,8 +12,48 @@ Move* createMove(Position source, Position target, char promotion, bool isCastli
 	return move;
 }
 
+MoveList* createMoveList(Move* move) {
+	MoveList* list = safeMalloc(sizeof(MoveList));
+	list->data = move;
+	list->next = NULL;
+	return list;
+}
+
+MoveList* addToMoveList(MoveList* original, Move* addition) {
+	if (original == NULL) {
+		return createMoveList(addition);
+	}
+	MoveList* head = original;
+	while (head->next != NULL) {
+		head = head->next;
+	}
+	head->next = createMoveList(addition);
+	return original;
+}
+
 MoveList* getPieceMoves(char** board, Position source) {
-	return NULL; //TODO
+	char piece = board[source.x][source.y];
+	switch (piece) {
+		case WHITE_P:
+		case BLACK_P:
+			return pawnMoves(board, source);
+		case WHITE_B:
+		case BLACK_B:
+			return bishopMoves(board, source);
+		case WHITE_N:
+		case BLACK_N:
+			return knightMoves(board, source);
+		case WHITE_R:
+		case BLACK_R:
+			return rookMoves(board, source);
+		case WHITE_Q:
+		case BLACK_Q:
+			return queenMoves(board, source);
+		case WHITE_K:
+		case BLACK_K:
+			return kingMoves(board, source);
+	}
+	return NULL;
 }
 
 bool moveIsInList(MoveList* list, Move* move) {
