@@ -4,6 +4,7 @@ Settings applyGameCommand(Settings settings, char* cmd) {
 	if (startsWith(cmd, "move ")) {
 		settings = moveCommand(settings, cmd);
 		settings.playingColor = otherPlayer(settings.playingColor);
+		printBoard(settings.board);
 	} else if (startsWith(cmd, "get_moves ")) {
 		getMovesForPositionCommand(settings.board, settings.playingColor, cmd);
 	} else if (strcmp(cmd, "quit") == 0) {
@@ -44,7 +45,7 @@ void getMovesForPositionCommand(char** board, int player, char* cmd) {
 	Position piecePosition = parsePosition(positionStr);
 	if (!validPosition(piecePosition)) {
 		printMessage(WRONG_POSITION);
-	} else if (pieceOwner(board[piecePosition.x][piecePosition.y] != player)) {
+	} else if (pieceOwner(board[piecePosition.x][piecePosition.y]) != player) {
 		printMessage(NOT_YOUR_PIECE);
 	} else {
 		MoveList* moves = getPieceMoves(board, piecePosition);
