@@ -3,6 +3,6 @@
 
 #include "../Common/Position.h"
 
-void positionToString(Position position, char* str)
+void positionToString(Position position, char* str);
 
 #endif

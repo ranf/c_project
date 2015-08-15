@@ -19,6 +19,10 @@
 
 #define EMPTY ' '
 
+#define WHITE_COLOR 1
+#define BLACK_COLOR 2
+#define otherPlayer(x) (3-x)
+
 char** initBoard();
 void clearBoard();
 char** mallocBoard();

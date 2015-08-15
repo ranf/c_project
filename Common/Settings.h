@@ -10,9 +10,6 @@
 #define MULTIPLAYER_MODE 1
 #define SINGLEPLAYER_MODE 2
 
-#define WHITE_COLOR 1
-#define BLACK_COLOR 2
-
 typedef struct {
 	int state;
 	int gameMode;
@@ -30,7 +27,5 @@ typedef struct {
 	.playingColor = WHITE_COLOR,\
 	.board = initBoard()\
 }
-
-#define otherPlayer(x) (3-x)
 
 #endif
