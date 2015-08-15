@@ -1,5 +1,5 @@
 CFLAGS=-std=c99 -pedantic-errors -c -Wall -g -lm
-CONSOLE_OBJ=Console/Console.o Console/Settings.o Console/Board.o Console/Game.o
+CONSOLE_OBJ=Console/Console.o Console/Settings.o Console/Board.o Console/Game.o Console/Position.o
 COMMON_OBJ=Common/Common.o Common/Board.o Common/Position.o Common/Move.o Common/MoveLogic.o
 OBJ=Main.o $(CONSOLE_OBJ) $(COMMON_OBJ) Gui/Gui.o
 
@@ -25,6 +25,9 @@ Console/Board.o: Console/Board.c Console/Board.h
 
 Console/Game.o: Console/Game.c Console/Game.h
 	gcc $(CFLAGS) Console/Game.c -o Console/Game.o
+
+Console/Position.o: Console/Position.c Console/Position.h
+	gcc $(CFLAGS) Console/Position.c -o Console/Position.o
 
 Common/Common.o: Common/Common.c Common/Common.h
 	gcc $(CFLAGS) Common/Common.c -o Common/Common.o
