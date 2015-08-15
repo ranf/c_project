@@ -37,6 +37,7 @@ Settings computerTurn(Settings settings) {
 	printMessage(COMPUTER_MOVE);
 	printMove(computerMove);
 	settings.board = applyMove(settings.board, computerMove);
+	freeMove(computerMove);
 	settings = endOfTurn(settings);
 	return settings;
 }
