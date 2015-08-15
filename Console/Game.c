@@ -19,7 +19,7 @@ Settings moveCommand(Settings settings, char* cmd) {
 	Position source = parsePosition(sourceStr);
 	char* targetStr = skipSpaces(skipSpaces(sourceStr + 5) + 2); // |<a,8>| = 5, |to| = 2
 	Position target = parsePosition(targetStr);
-	char promotion = parsePromotion(skipSpaces(targetStr + 5)); // |<a,8>| = 5
+	char promotion = parsePromotion(skipSpaces(targetStr + 5), settings.playingColor); // |<a,8>| = 5
 	if (!validPosition(source) || !validPosition(target)) {
 		printMessage(WRONG_POSITION);
 	} else if (pieceOwner(settings.board[source.x][source.y]) != settings.playingColor) {
@@ -64,17 +64,49 @@ void printAllMoves(MoveList* moves) {
 void printMove(Move* move) {
 	char result[MAX_MOVE_LENGTH];
 	result[0] = '\0';
-	char tempPositionString[7];
+	char tempPositionString[25]; // |<a,7> to <a,8> bishop| = 21
 	positionToString(move->from, tempPositionString);
 	strcat(result, tempPositionString);
 	strcat(result, " to ");
 	positionToString(move->to, tempPositionString);
 	strcat(result, tempPositionString);
-	PositionList* dest = move->to;
-	while(dest){
-		positionToString(dest->data, tempPositionString);
-		strcat(result, tempPositionString);
-		dest = dest->next;
+	if(move->promotion != NO_PROMOTION) {
+		strcat(result, " ");
+		strcat(result, getPieceName(move->promotion));
 	}
 	printf("%s\n", result);
+}
+
+char parsePromotion(char* str, int player) {
+	if (strcmp(str, "bishop") == 0)
+		return player == WHITE_COLOR ? WHITE_B : BLACK_B;
+	if (strcmp(str, "rook") == 0)
+		return player == WHITE_COLOR ? WHITE_R : BLACK_R;
+	if (strcmp(str, "knight") == 0)
+		return player == WHITE_COLOR ? WHITE_N : BLACK_N;
+	return player == WHITE_COLOR ? WHITE_Q : BLACK_Q;
+}
+
+char* getPieceName(char piece) {
+	switch(piece) {
+		case WHITE_P:
+		case BLACK_P:
+			return "pawn";
+		case WHITE_B:
+		case BLACK_B:
+			return "bishop";
+		case WHITE_N:
+		case BLACK_N:
+			return "knight";
+		case WHITE_R:
+		case BLACK_R:
+			return "rook";
+		case WHITE_Q:
+		case BLACK_Q:
+			return "queen";
+		case WHITE_K:
+		case BLACK_K:
+			return "king";
+	}
+	return EMPTY;
 }
