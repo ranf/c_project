@@ -4,14 +4,14 @@ MoveList* pawnMoves(char** board, Position source) {
 	MoveList* result = NULL;
 	int player = pieceOwner(board[source.x][source.y]);
 	Position forwardPosition = player == WHITE_COLOR
-		? {.x = source.x, .y = source.y + 1}
-		: {.x = source.x, .y = source.y - 1};
+		? (Position) {.x = source.x, .y = source.y + 1}
+		: (Position) {.x = source.x, .y = source.y - 1};
 	Position leftDiagonal = player == WHITE_COLOR
-		? {.x = source.x - 1, .y = source.y + 1}
-		: {.x = source.x - 1, .y = source.y - 1};
+		? (Position) {.x = source.x - 1, .y = source.y + 1}
+		: (Position) {.x = source.x - 1, .y = source.y - 1};
 	Position rightDiagonal = player == WHITE_COLOR
-		? {.x = source.x + 1, .y = source.y + 1}
-		: {.x = source.x + 1, .y = source.y - 1};
+		? (Position) {.x = source.x + 1, .y = source.y + 1}
+		: (Position) {.x = source.x + 1, .y = source.y - 1};
 
 	if (validPosition(forwardPosition) && board[forwardPosition.x][forwardPosition.y] == EMPTY) {
 		result = endOfBoard(forwardPosition, player)
@@ -126,12 +126,12 @@ MoveList* kingMoves(char** board, Position source) {
 
 MoveList* addPromotionMoves(MoveList* list, Position source, Position target, int player) {
 	return player == WHITE_COLOR
-		? addToMoveList(addToMoveList(addToMoveList(addToMoveList(result,
+		? addToMoveList(addToMoveList(addToMoveList(addToMoveList(list,
 			createMove(source, target, WHITE_Q, false)),
 			createMove(source, target, WHITE_R, false)),
 			createMove(source, target, WHITE_N, false)),
 			createMove(source, target, WHITE_B, false))
-		: addToMoveList(addToMoveList(addToMoveList(addToMoveList(result,
+		: addToMoveList(addToMoveList(addToMoveList(addToMoveList(list,
 			createMove(source, target, BLACK_Q, false)),
 			createMove(source, target, BLACK_R, false)),
 			createMove(source, target, BLACK_N, false)),

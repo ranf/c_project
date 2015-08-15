@@ -72,6 +72,7 @@ char** applyMove(char** board, Move* move) {
 	board[move->to.x][move->to.y] = (endOfBoard(move->to, pieceOwner(originalPiece)) && move->promotion != NO_PROMOTION)
 		? move->promotion
 		: originalPiece;
+	return board;
 }
 
 void freeMove(Move* move) {

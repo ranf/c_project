@@ -8,6 +8,8 @@ all: chessprog
 clean:
 	-rm chessprog $(OBJ)
 
+new: clean all
+
 chessprog: $(OBJ)
 	gcc -o chessprog $(OBJ) -lm -std=c99 -pedantic-errors -g `sdl-config --libs`
 
