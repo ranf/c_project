@@ -43,7 +43,7 @@ ScoredMove alphaBetaMinimax(int depth, int alpha, int beta, char** board, int pl
 			}
 		}
 		if (otherPlayerMove.move != NULL) {
-			freeMove(otherPlayerMove);
+			freeMove(otherPlayerMove.move);
 		}
 		head = head->next;
 		if (beta <= alpha) {
