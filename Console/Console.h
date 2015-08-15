@@ -4,6 +4,7 @@
 #include "Settings.h"
 #include "Board.h"
 #include "Game.h"
+#include "../Common/Minimax.h"
 
 #define WHITE_ENTER_YOUR_MOVE "White player - enter your move:\n"
 #define BLACK_ENTER_YOUR_MOVE "Black player - enter your move:\n"

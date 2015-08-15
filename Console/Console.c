@@ -36,7 +36,7 @@ Settings computerTurn(Settings settings) {
 	Move* computerMove = getMinimaxMove(settings.board, settings.playingColor, settings.minimaxDepth);
 	printMessage(COMPUTER_MOVE);
 	printMove(computerMove);
-	settings.board = applyMove(settings.board);
+	settings.board = applyMove(settings.board, computerMove);
 	settings = endOfTurn(settings);
 	return settings;
 }
