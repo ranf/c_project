@@ -33,6 +33,15 @@ void clearBoard(char** board) {
 	}
 }
 
+char** copyBoard(char** original) {
+	char** copy = mallocBoard();
+	for (int i = 0; i < BOARD_SIZE; i++)
+	for (int j = 0; j < BOARD_SIZE; j++){
+		copy[i][j] = original[i][j];
+	}
+	return copy;
+}
+
 char** mallocBoard() {
 	char** board = safeMalloc(BOARD_SIZE*sizeof(char*));
 	for (int i = 0; i < BOARD_SIZE; ++i) {

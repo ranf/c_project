@@ -25,6 +25,7 @@
 
 char** initBoard();
 void clearBoard();
+char** copyBoard(char** original);
 char** mallocBoard();
 void freeBoard();
 int countPiecesOfType(char** board, char pieceType);
