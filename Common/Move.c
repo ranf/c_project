@@ -69,6 +69,7 @@ bool moveIsInList(MoveList* list, Move* move) {
 
 char** applyMove(char** board, Move* move) {
 	char originalPiece = board[move->from.x][move->from.y];
+	board[move->from.x][move->from.y] = EMPTY;
 	board[move->to.x][move->to.y] = (endOfBoard(move->to, pieceOwner(originalPiece)) && move->promotion != NO_PROMOTION)
 		? move->promotion
 		: originalPiece;
