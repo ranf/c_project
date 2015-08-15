@@ -16,19 +16,19 @@ MoveList* pawnMoves(char** board, Position source) {
 	if (validPosition(forwardPosition) && board[forwardPosition.x][forwardPosition.y] == EMPTY) {
 		result = endOfBoard(forwardPosition, player)
 			? addPromotionMoves(result, source, forwardPosition, player)
-			: addToMoveList(result, createMove(source, forwardPosition, NO_PROMOTION, false));
+			: addToMoveList(result, createMove(source, forwardPosition, NO_PROMOTION));
 	}
 
 	if (validPosition(leftDiagonal) && pieceOwner(board[leftDiagonal.x][leftDiagonal.y]) == otherPlayer(player)) {
 		result = endOfBoard(leftDiagonal, player)
 			? addPromotionMoves(result, source, leftDiagonal, player)
-			: addToMoveList(result, createMove(source, leftDiagonal, NO_PROMOTION, false));
+			: addToMoveList(result, createMove(source, leftDiagonal, NO_PROMOTION));
 	}
 
 	if (validPosition(rightDiagonal) && pieceOwner(board[rightDiagonal.x][rightDiagonal.y]) == otherPlayer(player)) {
 		result = endOfBoard(rightDiagonal, player)
 			? addPromotionMoves(result, source, rightDiagonal, player)
-			: addToMoveList(result, createMove(source, rightDiagonal, NO_PROMOTION, false));
+			: addToMoveList(result, createMove(source, rightDiagonal, NO_PROMOTION));
 	}
 
 	return result;
@@ -127,27 +127,27 @@ MoveList* kingMoves(char** board, Position source) {
 MoveList* addPromotionMoves(MoveList* list, Position source, Position target, int player) {
 	return player == WHITE_COLOR
 		? addToMoveList(addToMoveList(addToMoveList(addToMoveList(list,
-			createMove(source, target, WHITE_Q, false)),
-			createMove(source, target, WHITE_R, false)),
-			createMove(source, target, WHITE_N, false)),
-			createMove(source, target, WHITE_B, false))
+			createMove(source, target, WHITE_Q)),
+			createMove(source, target, WHITE_R)),
+			createMove(source, target, WHITE_N)),
+			createMove(source, target, WHITE_B))
 		: addToMoveList(addToMoveList(addToMoveList(addToMoveList(list,
-			createMove(source, target, BLACK_Q, false)),
-			createMove(source, target, BLACK_R, false)),
-			createMove(source, target, BLACK_N, false)),
-			createMove(source, target, BLACK_B, false));
+			createMove(source, target, BLACK_Q)),
+			createMove(source, target, BLACK_R)),
+			createMove(source, target, BLACK_N)),
+			createMove(source, target, BLACK_B));
 }
 
 MoveList* addMovesUntilBlocked(MoveList* list, char** board, Position source, int player, Position (*direction)(Position)) {
 	Position target = direction(source);
 	
 	while (validPosition(target) && board[target.x][target.y] == EMPTY) {
-		list = addToMoveList(list, createMove(source, target, NO_PROMOTION, false));
+		list = addToMoveList(list, createMove(source, target, NO_PROMOTION));
 		target = direction(target);
 	}
 	
 	if (validPosition(target) && pieceOwner(board[target.x][target.y]) == otherPlayer(player)) {
-		list = addToMoveList(list, createMove(source, target, NO_PROMOTION, false));
+		list = addToMoveList(list, createMove(source, target, NO_PROMOTION));
 	}
 	
 	return list;
@@ -155,7 +155,7 @@ MoveList* addMovesUntilBlocked(MoveList* list, char** board, Position source, in
 
 MoveList* addIfNotOccupiedByPlayer(MoveList* list, char** board, Position source, int player, Position target) {
 	if (validPosition(target) && pieceOwner(board[target.x][target.y]) != player) {
-		return addToMoveList(list, createMove(source, target, NO_PROMOTION, false));
+		return addToMoveList(list, createMove(source, target, NO_PROMOTION));
 	}
 	return list;
 }

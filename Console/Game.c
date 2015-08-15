@@ -3,8 +3,7 @@
 Settings applyGameCommand(Settings settings, char* cmd) {
 	if (startsWith(cmd, "move ")) {
 		settings = moveCommand(settings, cmd);
-		settings.playingColor = otherPlayer(settings.playingColor);
-		printBoard(settings.board);
+		settings = endOfTurn(settings);
 	} else if (startsWith(cmd, "get_moves ")) {
 		getMovesForPositionCommand(settings.board, settings.playingColor, cmd);
 	} else if (strcmp(cmd, "quit") == 0) {
@@ -26,8 +25,8 @@ Settings moveCommand(Settings settings, char* cmd) {
 	} else if (pieceOwner(settings.board[source.x][source.y]) != settings.playingColor) {
 		printMessage(NOT_YOUR_PIECE);
 	} else {
-		Move* wantedMove = createMove(source, target, promotion, false);
-		MoveList* pieceMoves = getPieceMoves(settings.board, source);
+		Move* wantedMove = createMove(source, target, promotion);
+		MoveList* pieceMoves = getPieceMoves(settings.board, source, true);
 		if (moveIsInList(pieceMoves, wantedMove)) {
 			settings.board = applyMove(settings.board, wantedMove);
 		} else {
@@ -40,6 +39,23 @@ Settings moveCommand(Settings settings, char* cmd) {
 	return settings;
 }
 
+Settings endOfTurn(Settings settings) {
+	settings.playingColor = otherPlayer(settings.playingColor);
+	printBoard(settings.board);
+	bool check = isInCheck(settings.board, settings.playingColor);
+	bool stuck = canMove(settings.board, settings.playingColor);
+	if (check && stuck) {
+		printMessage(settings.playingColor == WHITE_COLOR ? BLACK_WON : WHITE_WON);
+		settings.state = TERMINATE_STATE;
+	} else if (stuck) {
+		printMessage(TIE);
+		settings.state = TERMINATE_STATE;
+	} else if (check) {
+		printMessage(check);
+	}
+	return settings;
+}
+
 void getMovesForPositionCommand(char** board, int player, char* cmd) {
 	char* positionStr = skipSpaces(cmd + 9); // |get_moves| = 9
 	Position piecePosition = parsePosition(positionStr);
@@ -48,7 +64,7 @@ void getMovesForPositionCommand(char** board, int player, char* cmd) {
 	} else if (pieceOwner(board[piecePosition.x][piecePosition.y]) != player) {
 		printMessage(NOT_YOUR_PIECE);
 	} else {
-		MoveList* moves = getPieceMoves(board, piecePosition);
+		MoveList* moves = getPieceMoves(board, piecePosition, true);
 		printAllMoves(moves);
 		freeMoves(moves);
 	}

@@ -105,3 +105,14 @@ bool endOfBoard(Position position, int player) {
 	return (player == BLACK_COLOR && position.y == 0) ||
 		(player == WHITE_COLOR && position.y == BOARD_SIZE - 1);
 }
+
+Position getKingPosition(char** board, int player) {
+	char king = player == WHITE_COLOR ? WHITE_K : BLACK_K;
+	for (i = 0; i < BOARD_SIZE; i++)
+	for (j = 0; j < BOARD_SIZE; j++) {
+		if (board[i][j] == king) {
+			return (Position) {.x = i, .y = j};
+		}
+	}
+	return (Position) {.x = -1, .y = -1};
+}

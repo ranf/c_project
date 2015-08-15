@@ -1,10 +1,31 @@
 #include "Move.h"
 
-MoveList* getMoves(char** board, int player) {
-	return NULL; //TODO
+MoveList* getMoves(char** board, int player, bool verifyKingNotExposed) {
+	MoveList* result = NULL;
+	for (int i = 0; i < BOARD_SIZE; ++i)
+	for (int j = 0; j < BOARD_SIZE; ++j) {
+		Position position = {.x = i, .y = j};
+		result = concatMoveLists(result, getPieceMoves(board, position, verifyKingNotExposed));
+	}
+	return result;
 }
 
-Move* createMove(Position source, Position target, char promotion, bool isCastling) {
+bool canMove(char** board, int player) {
+	MoveList* moves = getMoves(board, player);
+	bool result = moves != NULL;
+	freeMoves(moves);
+	return result;
+}
+
+bool isInCheck(char** board, int player) {
+	Position kingPosition = getKingPosition(board, player);
+	MoveList* otherplayerMoves = getMoves(board, otherplayer(player), false);
+	bool result = hasMoveAttackingPosition(otherplayerMoves, kingPosition);
+	freeMoves(otherplayerMoves);
+	return result;
+}
+
+Move* createMove(Position source, Position target, char promotion) {
 	Move* move = safeMalloc(sizeof(Move));
 	move->from = source;
 	move->to = target;
@@ -31,29 +52,83 @@ MoveList* addToMoveList(MoveList* original, Move* addition) {
 	return original;
 }
 
-MoveList* getPieceMoves(char** board, Position source) {
+MoveList* concatMoveLists(MoveList* list1, MoveList* list2) {
+	if (list1 == NULL) {
+		return list2;
+	}
+	MoveList* head = list1;
+	while (head->next != NULL){
+		head = head->next;
+	}
+	head->next = list2;
+	return list1;
+}
+
+MoveList* getPieceMoves(char** board, Position source, bool verifyKingNotExposed) {
 	char piece = board[source.x][source.y];
+	MoveList* result = NULL;
 	switch (piece) {
 		case WHITE_P:
 		case BLACK_P:
-			return pawnMoves(board, source);
+			result = pawnMoves(board, source);
+			break;
 		case WHITE_B:
 		case BLACK_B:
-			return bishopMoves(board, source);
+			result = bishopMoves(board, source);
+			break;
 		case WHITE_N:
 		case BLACK_N:
-			return knightMoves(board, source);
+			result = knightMoves(board, source);
+			break;
 		case WHITE_R:
 		case BLACK_R:
-			return rookMoves(board, source);
+			result = rookMoves(board, source);
+			break;
 		case WHITE_Q:
 		case BLACK_Q:
-			return queenMoves(board, source);
+			result = queenMoves(board, source);
+			break;
 		case WHITE_K:
 		case BLACK_K:
-			return kingMoves(board, source);
+			result = kingMoves(board, source);
+			break;
 	}
-	return NULL;
+	if (verifyKingNotExposed) {
+		Position kingPosition = getKingPosition(board, pieceOwner(piece));
+		result = removeMovesAttackingPosition(result, kingPosition);
+	}
+	return result;
+}
+
+MoveList* removeMovesAttackingPosition(MoveList* list, Position target) {
+	while (list != NULL && positionEquals(list->data->to, target)) {
+		MoveList* temp = list;
+		list = list->next;
+		temp->next = NULL;
+		freeMoves(temp);
+	}
+	MoveList* head = list;
+	while (head != NULL && head->next != NULL) {
+		if (positionEquals(head->next->data->to, target)) {
+			MoveList* temp = head->next;
+			head->next = temp->next;
+			temp->next = NULL;
+			freeMoves(temp);
+		} else {
+			head = head->next;
+		}
+	}
+	return list;
+}
+
+bool hasMoveAttackingPosition(MoveList* list, Position target) {
+	while (list != NULL) {
+		if (positionEquals(list->data->to, target)) {
+			return true;
+		}
+		list = list->next;
+	}
+	return false;
 }
 
 bool moveIsInList(MoveList* list, Move* move) {
@@ -63,6 +138,7 @@ bool moveIsInList(MoveList* list, Move* move) {
 			positionEquals(head->data->to, move->to)) {
 			return true;
 		}
+		head = head->next;
 	}
 	return false;
 }

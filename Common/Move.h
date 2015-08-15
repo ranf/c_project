@@ -16,12 +16,17 @@ typedef struct move_list_struct {
 	struct move_list_struct* next;
 } MoveList;
 
-MoveList* getMoves(char** board, int player);
-Move* createMove(Position source, Position target, char promotion, bool isCastling);
+MoveList* getMoves(char** board, int player, bool verifyKingNotExposed);
+bool canMove(char** board, int player);
+bool isInCheck(char** board, int player);
+Move* createMove(Position source, Position target, char promotion);
 MoveList* createMoveList(Move* move);
+MoveList* concatMoveLists(MoveList* list1, MoveList* list2);
 MoveList* addToMoveList(MoveList* original, Move* addition);
-MoveList* getPieceMoves(char** board, Position source);
+MoveList* getPieceMoves(char** board, Position source, bool verifyKingNotExposed);
 bool moveIsInList(MoveList* list, Move* move);
+MoveList* removeMovesAttackingPosition(MoveList* list, Position target);
+bool hasMoveAttackingPosition(MoveList* list, Position target);
 char** applyMove(char** board, Move* move);
 void freeMove(Move* move);
 void freeMoves(MoveList* moves);
