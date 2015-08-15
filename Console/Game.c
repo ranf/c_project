@@ -62,9 +62,9 @@ void printAllMoves(MoveList* moves) {
 }
 
 void printMove(Move* move) {
-	char result[MAX_MOVE_LENGTH];
+	char result[25];  // |<a,7> to <a,8> bishop| = 21
 	result[0] = '\0';
-	char tempPositionString[25]; // |<a,7> to <a,8> bishop| = 21
+	char tempPositionString[7];
 	positionToString(move->from, tempPositionString);
 	strcat(result, tempPositionString);
 	strcat(result, " to ");
@@ -108,5 +108,5 @@ char* getPieceName(char piece) {
 		case BLACK_K:
 			return "king";
 	}
-	return EMPTY;
+	return "";
 }
