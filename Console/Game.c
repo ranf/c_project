@@ -51,7 +51,7 @@ Settings endOfTurn(Settings settings) {
 		printMessage(TIE);
 		settings.state = TERMINATE_STATE;
 	} else if (check) {
-		printMessage(check);
+		printMessage(CHECK);
 	}
 	return settings;
 }

@@ -11,7 +11,7 @@ MoveList* getMoves(char** board, int player, bool verifyKingNotExposed) {
 }
 
 bool canMove(char** board, int player) {
-	MoveList* moves = getMoves(board, player);
+	MoveList* moves = getMoves(board, player, true);
 	bool result = moves != NULL;
 	freeMoves(moves);
 	return result;
@@ -19,9 +19,9 @@ bool canMove(char** board, int player) {
 
 bool isInCheck(char** board, int player) {
 	Position kingPosition = getKingPosition(board, player);
-	MoveList* otherplayerMoves = getMoves(board, otherplayer(player), false);
-	bool result = hasMoveAttackingPosition(otherplayerMoves, kingPosition);
-	freeMoves(otherplayerMoves);
+	MoveList* otherPlayerMoves = getMoves(board, otherPlayer(player), false);
+	bool result = hasMoveAttackingPosition(otherPlayerMoves, kingPosition);
+	freeMoves(otherPlayerMoves);
 	return result;
 }
 
