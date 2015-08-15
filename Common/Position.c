@@ -18,34 +18,38 @@ bool validPosition(Position position) {
 		position.y > -1 && position.y < BOARD_SIZE;
 }
 
+bool positionEquals(Position p1, Position p2) {
+	return p1.x == p2.x && p1.y == p2.y;
+}
+
 Position upperLeftDiagonalPosition(Position source) {
-	return {.x = source.x - 1, .y = source.y + 1};
+	return (Position) {.x = source.x - 1, .y = source.y + 1};
 }
 
 Position upperDirectionPosition(Position source) {
-	return {.x = source.x, .y = source.y + 1};
+	return (Position) {.x = source.x, .y = source.y + 1};
 }
 
 Position upperRightDiagonalPosition(Position source) {
-	return {.x = source.x + 1, .y = source.y + 1};
+	return (Position) {.x = source.x + 1, .y = source.y + 1};
 }
 
 Position leftDirectionPosition(Position source) {
-	return {.x = source.x - 1, .y = source.y};
+	return (Position) {.x = source.x - 1, .y = source.y};
 }
 
 Position rightDirectionPosition(Position source) {
-	return {.x = source.x + 1, .y = source.y};
+	return (Position) {.x = source.x + 1, .y = source.y};
 }
 
 Position lowerLeftDiagonalPosition(Position source) {
-	return {.x = source.x - 1, .y = source.y - 1};
+	return (Position) {.x = source.x - 1, .y = source.y - 1};
 }
 
 Position lowerDirectionPosition(Position source) {
-	return {.x = source.x, .y = source.y - 1};
+	return (Position) {.x = source.x, .y = source.y - 1};
 }
 
 Position lowerRightDiagonalPosition(Position source) {
-	return {.x = source.x + 1, .y = source.y - 1};
+	return (Position) {.x = source.x + 1, .y = source.y - 1};
 }

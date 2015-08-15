@@ -17,7 +17,7 @@ typedef struct move_list_struct {
 } MoveList;
 
 MoveList* getMoves(char** board, int player);
-Move* createMove(Position source, Position target, char promotion);
+Move* createMove(Position source, Position target, char promotion, bool isCastling);
 MoveList* createMoveList(Move* move);
 MoveList* addToMoveList(MoveList* original, Move* addition);
 MoveList* getPieceMoves(char** board, Position source);

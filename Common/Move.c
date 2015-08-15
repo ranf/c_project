@@ -67,15 +67,15 @@ bool moveIsInList(MoveList* list, Move* move) {
 	return false;
 }
 
-void applyMove(char** board, Move* move) {
+char** applyMove(char** board, Move* move) {
 	char originalPiece = board[move->from.x][move->from.y];
-	board[move->to.x][move->to.y] = endOfBoard(move->to, pieceOwner(originalPiece))
+	board[move->to.x][move->to.y] = (endOfBoard(move->to, pieceOwner(originalPiece)) && move->promotion != NO_PROMOTION)
 		? move->promotion
 		: originalPiece;
 }
 
 void freeMove(Move* move) {
-	free(move)
+	free(move);
 }
 
 void freeMoves(MoveList* moves) {

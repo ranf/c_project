@@ -10,6 +10,7 @@ typedef struct {
 
 Position parsePosition(char* positionString);
 bool validPosition(Position position);
+bool positionEquals(Position p1, Position p2);
 
 Position upperLeftDiagonalPosition(Position source);
 Position upperDirectionPosition(Position source);
