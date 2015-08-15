@@ -59,14 +59,14 @@ MoveList* knightMoves(char** board, Position source) {
 	Position target7 = {.x = source.x - 1, .y = source.y + 2};
 	Position target8 = {.x = source.x - 1, .y = source.y - 2};
 
-	result = addIfNotOccupiedByPlayer(result, source, player, target1);
-	result = addIfNotOccupiedByPlayer(result, source, player, target2);
-	result = addIfNotOccupiedByPlayer(result, source, player, target3);
-	result = addIfNotOccupiedByPlayer(result, source, player, target4);
-	result = addIfNotOccupiedByPlayer(result, source, player, target5);
-	result = addIfNotOccupiedByPlayer(result, source, player, target6);
-	result = addIfNotOccupiedByPlayer(result, source, player, target7);
-	result = addIfNotOccupiedByPlayer(result, source, player, target8);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target1);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target2);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target3);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target4);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target5);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target6);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target7);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target8);
 	
 	return result;
 }
@@ -112,26 +112,26 @@ MoveList* kingMoves(char** board, Position source) {
 	Position target7 = {.x = source.x - 1, .y = source.y - 1};
 	Position target8 = {.x = source.x - 1, .y = source.y};
 
-	result = addIfNotOccupiedByPlayer(result, source, player, target1);
-	result = addIfNotOccupiedByPlayer(result, source, player, target2);
-	result = addIfNotOccupiedByPlayer(result, source, player, target3);
-	result = addIfNotOccupiedByPlayer(result, source, player, target4);
-	result = addIfNotOccupiedByPlayer(result, source, player, target5);
-	result = addIfNotOccupiedByPlayer(result, source, player, target6);
-	result = addIfNotOccupiedByPlayer(result, source, player, target7);
-	result = addIfNotOccupiedByPlayer(result, source, player, target8);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target1);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target2);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target3);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target4);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target5);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target6);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target7);
+	result = addIfNotOccupiedByPlayer(result, board, source, player, target8);
 	
 	return result;
 }
 
 MoveList* addPromotionMoves(MoveList* list, Position source, Position target, int player) {
 	return player == WHITE_COLOR
-		? applyFunction4(addToMoveList)(result,
+		? addToMoveList(addToMoveList(addToMoveList(addToMoveList(result,
 			createMove(source, target, WHITE_Q, false)),
 			createMove(source, target, WHITE_R, false)),
 			createMove(source, target, WHITE_N, false)),
 			createMove(source, target, WHITE_B, false))
-		: applyFunction4(addToMoveList)(result,
+		: addToMoveList(addToMoveList(addToMoveList(addToMoveList(result,
 			createMove(source, target, BLACK_Q, false)),
 			createMove(source, target, BLACK_R, false)),
 			createMove(source, target, BLACK_N, false)),
@@ -153,7 +153,7 @@ MoveList* addMovesUntilBlocked(MoveList* list, char** board, Position source, in
 	return list;
 }
 
-MoveList* addIfNotOccupiedByPlayer(MoveList* list, Position source, int player, Position target) {
+MoveList* addIfNotOccupiedByPlayer(MoveList* list, char** board, Position source, int player, Position target) {
 	if (validPosition(target) && pieceOwner(board[target.x][target.y]) != player) {
 		return addToMoveList(list, createMove(source, target, NO_PROMOTION, false));
 	}

@@ -12,6 +12,6 @@ MoveList* kingMoves(char** board, Position source);
 
 MoveList* addPromotionMoves(MoveList* list, Position source, Position target, int player);
 MoveList* addMovesUntilBlocked(MoveList* list, char** board, Position source, int player, Position (*direction)(Position));
-MoveList* addIfNotOccupiedByPlayer(MoveList* list, Position source, int player, Position target);
+MoveList* addIfNotOccupiedByPlayer(MoveList* list, char** board, Position source, int player, Position target);
 
 #endif
