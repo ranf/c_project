@@ -4,8 +4,10 @@ MoveList* getMoves(char** board, int player, bool verifyKingNotExposed) {
 	MoveList* result = NULL;
 	for (int i = 0; i < BOARD_SIZE; ++i)
 	for (int j = 0; j < BOARD_SIZE; ++j) {
-		Position position = {.x = i, .y = j};
-		result = concatMoveLists(result, getPieceMoves(board, position, verifyKingNotExposed));
+		if (pieceOwner(board[i][j]) == player) {
+			Position position = {.x = i, .y = j};
+			result = concatMoveLists(result, getPieceMoves(board, position, verifyKingNotExposed));
+		}
 	}
 	return result;
 }
