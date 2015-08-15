@@ -20,6 +20,7 @@ MoveList* getMoves(char** board, int player, bool verifyKingNotExposed);
 bool canMove(char** board, int player);
 bool isInCheck(char** board, int player);
 Move* createMove(Position source, Position target, char promotion);
+Move* copyMove(Move* original);
 MoveList* createMoveList(Move* move);
 MoveList* concatMoveLists(MoveList* list1, MoveList* list2);
 MoveList* addToMoveList(MoveList* original, Move* addition);

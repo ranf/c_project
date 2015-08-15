@@ -35,6 +35,16 @@ Move* createMove(Position source, Position target, char promotion) {
 	return move;
 }
 
+Move* copyMove(Move* original) {
+	if (original == NULL)
+		return NULL;
+	Move* copy = safeMalloc(sizeof(Move));
+	copy->from = original->from;
+	copy->to = original->to;
+	copy->promotion = original->promotion;
+	return copy;
+}
+
 MoveList* createMoveList(Move* move) {
 	MoveList* list = safeMalloc(sizeof(MoveList));
 	list->data = move;

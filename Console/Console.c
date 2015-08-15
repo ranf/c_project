@@ -33,11 +33,11 @@ Settings userTurn(Settings settings) {
 }
 
 Settings computerTurn(Settings settings) {
-	/*Move* computerMove = getComputerMove(settings);
+	Move* computerMove = getMinimaxMove(settings.board, settings.playingColor, settings.minimaxDepth);
+	printMessage(COMPUTER_MOVE);
 	printMove(computerMove);
 	settings.board = applyMove(settings.board);
-	printBoard(settings.board);
-	settings = endOfTurnLogic(settings);*/
+	settings = endOfTurn(settings);
 	return settings;
 }
 
