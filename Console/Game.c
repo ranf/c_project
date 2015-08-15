@@ -43,7 +43,7 @@ Settings endOfTurn(Settings settings) {
 	settings.playingColor = otherPlayer(settings.playingColor);
 	printBoard(settings.board);
 	bool check = isInCheck(settings.board, settings.playingColor);
-	bool stuck = canMove(settings.board, settings.playingColor);
+	bool stuck = !canMove(settings.board, settings.playingColor);
 	if (check && stuck) {
 		printMessage(settings.playingColor == WHITE_COLOR ? BLACK_WON : WHITE_WON);
 		settings.state = TERMINATE_STATE;

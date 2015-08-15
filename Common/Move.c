@@ -94,14 +94,13 @@ MoveList* getPieceMoves(char** board, Position source, bool verifyKingNotExposed
 			break;
 	}
 	if (verifyKingNotExposed) {
-		Position kingPosition = getKingPosition(board, pieceOwner(piece));
-		result = removeMovesAttackingPosition(result, kingPosition);
+		result = removeMovesExposingKing(result, board, pieceOwner(piece));
 	}
 	return result;
 }
 
-MoveList* removeMovesAttackingPosition(MoveList* list, Position target) {
-	while (list != NULL && positionEquals(list->data->to, target)) {
+MoveList* removeMovesExposingKing(MoveList* list, char** board, int player) {
+	while (list != NULL && moveIsExposingKing(board, list->data, player)) {
 		MoveList* temp = list;
 		list = list->next;
 		temp->next = NULL;
@@ -109,7 +108,7 @@ MoveList* removeMovesAttackingPosition(MoveList* list, Position target) {
 	}
 	MoveList* head = list;
 	while (head != NULL && head->next != NULL) {
-		if (positionEquals(head->next->data->to, target)) {
+		if (moveIsExposingKing(board, head->next->data, player)) {
 			MoveList* temp = head->next;
 			head->next = temp->next;
 			temp->next = NULL;
@@ -119,6 +118,14 @@ MoveList* removeMovesAttackingPosition(MoveList* list, Position target) {
 		}
 	}
 	return list;
+}
+
+bool moveIsExposingKing(char** board, Move* move, int player) {
+	char** boardCopy = copyBoard(board);
+	boardCopy = applyMove(boardCopy, move);
+	bool isExposed = isInCheck(boardCopy, player);
+	freeBoard(boardCopy);
+	return isExposed;
 }
 
 bool hasMoveAttackingPosition(MoveList* list, Position target) {
