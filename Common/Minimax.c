@@ -127,14 +127,14 @@ int getMaxMoves(char** board, int player, int possibleMovesAlready) {
 	//since in chess you cannot obtain additional pieces, the upper bound (using simple counting)
 	//	on the number of moves the player can make cannot increase (except promotion, see below).
 	int max = 0;
-	for(int i = 0; i< BOARD_SIZE; i++)
-	for(int j = 0; j< BOARD_SIZE;j++) {
+	for(int i = 0; i < BOARD_SIZE; i++)
+	for(int j = 0; j < BOARD_SIZE; j++) {
 		char piece = board[i][j];
 		if(player == WHITE_COLOR){
 			switch(piece) {
 				case WHITE_P:
 							//==cannot be promoted
-					max += (i+possibleMovesAlready+1 < BOARD_SIZE) ? P_MAX_MOVES : Q_MAX_MOVES;
+					max += (j + possibleMovesAlready < BOARD_SIZE - 1) ? P_MAX_MOVES : Q_MAX_MOVES;
 					break;
 				case WHITE_B:
 					max += B_MAX_MOVES;
@@ -155,7 +155,7 @@ int getMaxMoves(char** board, int player, int possibleMovesAlready) {
 		} else {
 			switch(piece) {
 				case BLACK_P:
-					max += (i-possibleMovesAlready > 0) ? P_MAX_MOVES : Q_MAX_MOVES;
+					max += (j - possibleMovesAlready > 0) ? P_MAX_MOVES : Q_MAX_MOVES;
 					break;
 				case BLACK_B:
 					max += B_MAX_MOVES;
