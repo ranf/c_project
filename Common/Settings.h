@@ -10,6 +10,8 @@
 #define MULTIPLAYER_MODE 1
 #define SINGLEPLAYER_MODE 2
 
+#define BEST_DEPTH -1
+
 typedef struct {
 	int state;
 	int gameMode;

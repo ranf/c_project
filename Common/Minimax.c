@@ -1,6 +1,9 @@
 #include "Minimax.h"
 
 Move* getMinimaxMove(char** board, int player, int minimaxDepth) {
+	if (minimaxDepth == BEST_DEPTH){
+		return bestMinimax(board, player);
+	}
 	return alphaBetaMinimax(minimaxDepth, -MAX_SCORE, MAX_SCORE, board, player, player == WHITE_COLOR).move;
 }
 
@@ -99,4 +102,78 @@ int scoreChar(char piece) {
 		default:
 			return 0;
 	}
+}
+
+Move* bestMinimax(char** board, int player) {
+	// get max number of moves for round i -> n_i
+	// one board per move
+	// therefore for depth x, evaluating at most (n_1*...*n_x) -> y boards
+	// maximize(x) s.t.{ y <= BEST_MINIMAX_UPPER_BOUND }
+	int upperBound = BEST_MINIMAX_UPPER_BOUND;
+	int depth = 0;
+	int currentPlayer = player;
+	int maxMoves = getMaxMoves(board, currentPlayer, 0);
+	while (upperBound >= maxMoves) {
+		depth++;
+		upperBound /= maxMoves;
+		currentPlayer = otherPlayer(currentPlayer);
+		// |_depth/2_| is number previous moves by this player
+		maxMoves = getMaxMoves(board, currentPlayer, depth / 2);
+	}
+	return alphaBetaMinimax(depth, -MAX_SCORE, MAX_SCORE, board, player, player == WHITE_COLOR).move;
+}
+
+int getMaxMoves(char** board, int player, int possibleMovesAlready) {
+	//since in chess you cannot obtain additional pieces, the upper bound (using simple counting)
+	//	on the number of moves the player can make cannot increase (except promotion, see below).
+	int max = 0;
+	for(int i = 0; i< BOARD_SIZE; i++)
+	for(int j = 0; j< BOARD_SIZE;j++) {
+		char piece = board[i][j];
+		if(player == WHITE_COLOR){
+			switch(piece) {
+				case WHITE_P:
+							//==cannot be promoted
+					max += (i+possibleMovesAlready+1 < BOARD_SIZE) ? P_MAX_MOVES : Q_MAX_MOVES;
+					break;
+				case WHITE_B:
+					max += B_MAX_MOVES;
+					break;
+				case WHITE_N:
+					max += N_MAX_MOVES;
+					break;
+				case WHITE_R:
+					max+= R_MAX_MOVES;
+					break;
+				case WHITE_Q:
+					max += Q_MAX_MOVES;
+					break;
+				case WHITE_K:
+					max += K_MAX_MOVES;
+					break;
+			}
+		} else {
+			switch(piece) {
+				case BLACK_P:
+					max += (i-possibleMovesAlready > 0) ? P_MAX_MOVES : Q_MAX_MOVES;
+					break;
+				case BLACK_B:
+					max += B_MAX_MOVES;
+					break;
+				case BLACK_N:
+					max += N_MAX_MOVES;
+					break;
+				case BLACK_R:
+					max+= R_MAX_MOVES;
+					break;
+				case BLACK_Q:
+					max += Q_MAX_MOVES;
+					break;
+				case BLACK_K:
+					max += K_MAX_MOVES;
+					break;
+			}
+		}
+	}
+	return max;
 }

@@ -8,6 +8,9 @@ Settings applySettingsCommand(Settings settings, char* cmd) {
 		case DIFFICULTY_DEPTH_CMD:
 			settings = setMinimaxDepth(settings, cmd);
 			break;
+		case DIFFICULTY_BEST_CMD:
+			settings = setMinimaxDepth(settings, "best");
+			break;
 		case USER_COLOR_CMD:
 			settings = setUserColor(settings, cmd);
 			break;
@@ -50,6 +53,10 @@ Settings startBoard(Settings settings) {
 Settings setMinimaxDepth(Settings settings, char* cmd) {
 	if(settings.gameMode == MULTIPLAYER_MODE){
 		printMessage(ILLEGAL_COMMAND);
+		return settings;
+	}
+	if (strcmp(cmd, "best") == 0){
+		settings.minimaxDepth = BEST_DEPTH;
 		return settings;
 	}
 	int minimaxDepth = atoi(cmd + 17); // |difficulty depth | = 17
@@ -119,6 +126,8 @@ int getCmdType(char* cmdString) {
 		return GAME_MODE_CMD;
 	if(startsWith(cmdString, "difficulty depth "))
 		return DIFFICULTY_DEPTH_CMD;
+	if(strcmp(cmdString, "difficulty best") == 0)
+		return DIFFICULTY_BEST_CMD;
 	if(startsWith(cmdString, "user_color "))
 		return USER_COLOR_CMD;
 	if(startsWith(cmdString, "next_player "))
