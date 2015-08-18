@@ -2,6 +2,7 @@
 #define COMMON_MINIMAX_H
 
 #include "Move.h"
+#include "Settings.h"
 
 #define MAX_SCORE 99999
 #define WHITE_WIN_SCORE 1000
@@ -13,6 +14,7 @@
 #define B_MAX_MOVES 13
 #define N_MAX_MOVES 8
 #define R_MAX_MOVES 14
+#define Q_MAX_MOVES 27
 #define K_MAX_MOVES 8
 
 typedef struct {
