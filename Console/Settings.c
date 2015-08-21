@@ -24,7 +24,7 @@ Settings applySettingsCommand(Settings settings, char* cmd) {
 			setPiece(settings.board, cmd);
 			break;
 		case LOAD_CMD:
-			settings = loadSettings(skipSpaces(cmd+4)); //|load| = 4
+			settings = loadSettings(settings, skipSpaces(cmd+4)); //|load| = 4
 			printBoard(settings.board);
 			break;
 		case PRINT_CMD:

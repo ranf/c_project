@@ -9,5 +9,7 @@ Settings loadSettings(Settings previousSettings, char* filePath);
 
 char** parseXmlBoard(char** board, xmlNode* row);
 void readXmlBoardRow(char* boardRow, xmlChar* xmlRow);
+int parseColor(char* colorString);
+int parseDifficulty(char* difficultyString);
 
 #endif

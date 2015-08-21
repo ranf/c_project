@@ -2,6 +2,7 @@
 #define CONSOLE_SETTINGS_H
 
 #include "../Common/Settings.h"
+#include "../Common/XmlParser.h"
 #include "Board.h"
 
 
