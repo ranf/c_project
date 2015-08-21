@@ -14,7 +14,7 @@ Settings loadSettings(Settings previousSettings, char* filePath) {
 	while (gameChild) {
 		if (gameChild->type == XML_ELEMENT_NODE) {
 			if (!strcmp((char*)gameChild->name, "next_turn"))
-				settings.playingColor = parseColor((char*)xmlNodeGetContent(gameChild);
+				settings.playingColor = parseColor((char*)xmlNodeGetContent(gameChild));
 			else if (!strcmp((char*)gameChild->name, "game_mode"))
 				settings.gameMode = *xmlNodeGetContent(gameChild) - '0'; //should be '1' or '2'
 			else if (!strcmp((char*)gameChild->name, "difficulty"))
@@ -37,32 +37,32 @@ char** parseXmlBoard(char** board, xmlNode* row) {
 	while (row) {
 		if (row->type == XML_ELEMENT_NODE) {
 			if (!strcmp((char*)row->name, "row_1"))
-				readXmlBoardRow(board[0], xmlNodeGetContent(row));
+				readXmlBoardRow(board, xmlNodeGetContent(row), 0);
 			else if (!strcmp((char*)row->name, "row_2"))
-				readXmlBoardRow(board[1], xmlNodeGetContent(row));
+				readXmlBoardRow(board, xmlNodeGetContent(row), 1);
 			else if (!strcmp((char*)row->name, "row_3"))
-				readXmlBoardRow(board[2], xmlNodeGetContent(row));
+				readXmlBoardRow(board, xmlNodeGetContent(row), 2);
 			else if (!strcmp((char*)row->name, "row_4"))
-				readXmlBoardRow(board[3], xmlNodeGetContent(row));
+				readXmlBoardRow(board, xmlNodeGetContent(row), 3);
 			else if (!strcmp((char*)row->name, "row_5"))
-				readXmlBoardRow(board[4], xmlNodeGetContent(row));
+				readXmlBoardRow(board, xmlNodeGetContent(row), 4);
 			else if (!strcmp((char*)row->name, "row_6"))
-				readXmlBoardRow(board[5], xmlNodeGetContent(row));
+				readXmlBoardRow(board, xmlNodeGetContent(row), 5);
 			else if (!strcmp((char*)row->name, "row_7"))
-				readXmlBoardRow(board[6], xmlNodeGetContent(row));
+				readXmlBoardRow(board, xmlNodeGetContent(row), 6);
 			else if (!strcmp((char*)row->name, "row_8"))
-				readXmlBoardRow(board[7], xmlNodeGetContent(row));
+				readXmlBoardRow(board, xmlNodeGetContent(row), 7);
 		}
 		row = row->next;
 	}
 	return board;
 }
 
-void readXmlBoardRow(char* boardRow, xmlChar* xmlRow) {
+void readXmlBoardRow(char** board, xmlChar* xmlRow, int rowIndex) {
 	if (xmlRow == NULL || xmlStrlen(xmlRow) < BOARD_SIZE)
 		return;
 	for (int i = 0; i < BOARD_SIZE; i++) {
-		boardRow[i] = (char)xmlRow[i] == EMPTY ? EMPTY : (char)xmlRow[i];
+		board[i][rowIndex] = (char)xmlRow[i] == '_' ? EMPTY : (char)xmlRow[i];
 	}
 }
 
