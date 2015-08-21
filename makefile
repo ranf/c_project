@@ -51,7 +51,7 @@ Common/Minimax.o: Common/Minimax.c Common/Minimax.h
 	gcc $(CFLAGS) Common/Minimax.c -o Common/Minimax.o
 
 Common/XmlParser.o: Common/XmlParser.c Common/XmlParser.h
-	gcc $(CFLAGS) Common/XmlParser.c -I/usr/include/libxml2 -o Common/XmlParser.o
+	gcc $(CFLAGS) Common/XmlParser.c -o Common/XmlParser.o
 
 Gui/Gui.o: Gui/Gui.c Gui/Gui.h
 	gcc $(CFLAGS) Gui/Gui.c -o Gui/Gui.o

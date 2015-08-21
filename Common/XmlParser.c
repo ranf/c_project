@@ -67,11 +67,15 @@ void readXmlBoardRow(char* boardRow, xmlChar* xmlRow) {
 }
 
 int parseColor(char* colorString) {
-	return !strcasecmp(colorString, "black") ? BLACK_COLOR : WHITE_COLOR;
+	return (!colorString || !strcasecmp(colorString, "white"))
+		? WHITE_COLOR
+		: BLACK_COLOR;;
 }
 
 int parseDifficulty(char* difficultyString) {
-	if(!strcasecmp(difficultyString, "best"))
+	if (difficultyString == NULL)
+		return 1;
+	if (!strcasecmp(difficultyString, "best"))
 		return BEST_DEPTH;
 	int depth = *difficultyString - '0';
 	if (depth < 1 || depth > 4)
