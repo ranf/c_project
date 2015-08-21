@@ -13,14 +13,26 @@ Settings loadSettings(Settings previousSettings, char* filePath) {
 	xmlNode* gameChild = rootElement->children;
 	while (gameChild) {
 		if (gameChild->type == XML_ELEMENT_NODE) {
-			if (!strcmp((char*)gameChild->name, "next_turn"))
-				settings.playingColor = parseColor((char*)xmlNodeGetContent(gameChild));
-			else if (!strcmp((char*)gameChild->name, "game_mode"))
-				settings.gameMode = *xmlNodeGetContent(gameChild) - '0'; //should be '1' or '2'
-			else if (!strcmp((char*)gameChild->name, "difficulty"))
-				settings.minimaxDepth = parseDifficulty((char*)xmlNodeGetContent(gameChild));
-			else if (!strcmp((char*)gameChild->name, "user_color"))
-				settings.userColor = parseColor((char*)xmlNodeGetContent(gameChild));
+			if (!strcmp((char*)gameChild->name, "next_turn")){
+				xmlNode* content = xmlNodeGetContent(gameChild);
+				settings.playingColor = parseColor((char*)content);
+				if (content) freeXml(content);
+			}
+			else if (!strcmp((char*)gameChild->name, "game_mode")) {
+				xmlNode* content = xmlNodeGetContent(gameChild);
+				settings.gameMode = *content - '0'; //should be '1' or '2'
+				freeXml(content);
+			}
+			else if (!strcmp((char*)gameChild->name, "difficulty")) {
+				xmlNode* content = xmlNodeGetContent(gameChild);
+				settings.minimaxDepth = parseDifficulty((char*)content);
+				if (content) freeXml(content);
+			}
+			else if (!strcmp((char*)gameChild->name, "user_color")) {
+				xmlNode* content = xmlNodeGetContent(gameChild);
+				settings.userColor = parseColor((char*)content);
+				if (content) freeXml(content);
+			}
 			else if (!strcmp((char*)gameChild->name, "board"))
 				settings.board = parseXmlBoard(settings.board, gameChild->children);
 		}
@@ -36,22 +48,25 @@ Settings loadSettings(Settings previousSettings, char* filePath) {
 char** parseXmlBoard(char** board, xmlNode* row) {
 	while (row) {
 		if (row->type == XML_ELEMENT_NODE) {
+			xmlNode* content = xmlNodeGetContent(row);
 			if (!strcmp((char*)row->name, "row_1"))
-				readXmlBoardRow(board, xmlNodeGetContent(row), 0);
+				readXmlBoardRow(board, content, 0);
 			else if (!strcmp((char*)row->name, "row_2"))
-				readXmlBoardRow(board, xmlNodeGetContent(row), 1);
+				readXmlBoardRow(board, content, 1);
 			else if (!strcmp((char*)row->name, "row_3"))
-				readXmlBoardRow(board, xmlNodeGetContent(row), 2);
+				readXmlBoardRow(board, content, 2);
 			else if (!strcmp((char*)row->name, "row_4"))
-				readXmlBoardRow(board, xmlNodeGetContent(row), 3);
+				readXmlBoardRow(board, content, 3);
 			else if (!strcmp((char*)row->name, "row_5"))
-				readXmlBoardRow(board, xmlNodeGetContent(row), 4);
+				readXmlBoardRow(board, content, 4);
 			else if (!strcmp((char*)row->name, "row_6"))
-				readXmlBoardRow(board, xmlNodeGetContent(row), 5);
+				readXmlBoardRow(board, content, 5);
 			else if (!strcmp((char*)row->name, "row_7"))
-				readXmlBoardRow(board, xmlNodeGetContent(row), 6);
+				readXmlBoardRow(board, content, 6);
 			else if (!strcmp((char*)row->name, "row_8"))
-				readXmlBoardRow(board, xmlNodeGetContent(row), 7);
+				readXmlBoardRow(board, content, 7);
+			if (content != NULL)
+				freeXml(content);
 		}
 		row = row->next;
 	}
@@ -59,11 +74,16 @@ char** parseXmlBoard(char** board, xmlNode* row) {
 }
 
 void readXmlBoardRow(char** board, xmlChar* xmlRow, int rowIndex) {
-	if (xmlRow == NULL || xmlStrlen(xmlRow) < BOARD_SIZE)
+	if (xmlRow == NULL)
 		return;
+	if (xmlStrlen(xmlRow) < BOARD_SIZE){
+		freeXml(xmlRow);
+		return;
+	}
 	for (int i = 0; i < BOARD_SIZE; i++) {
 		board[i][rowIndex] = (char)xmlRow[i] == '_' ? EMPTY : (char)xmlRow[i];
 	}
+	freeXml(xmlRow);
 }
 
 int parseColor(char* colorString) {
@@ -75,10 +95,13 @@ int parseColor(char* colorString) {
 int parseDifficulty(char* difficultyString) {
 	if (difficultyString == NULL)
 		return 1;
-	if (!strcasecmp(difficultyString, "best"))
-		return BEST_DEPTH;
-	int depth = *difficultyString - '0';
-	if (depth < 1 || depth > 4)
-		return 1;
+	int depth;
+	if (!strcasecmp(difficultyString, "best")) {
+		depth =  BEST_DEPTH;
+	} else {
+		depth = *difficultyString - '0';
+		if (depth < 1 || depth > 4)
+			depth = 1;
+	}
 	return depth;
 }
