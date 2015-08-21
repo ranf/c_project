@@ -14,24 +14,24 @@ Settings loadSettings(Settings previousSettings, char* filePath) {
 	while (gameChild) {
 		if (gameChild->type == XML_ELEMENT_NODE) {
 			if (!strcmp((char*)gameChild->name, "next_turn")){
-				xmlNode* content = xmlNodeGetContent(gameChild);
+				xmlChar* content = xmlNodeGetContent(gameChild);
 				settings.playingColor = parseColor((char*)content);
-				if (content) freeXml(content);
+				if (content) xmlFree(content);
 			}
 			else if (!strcmp((char*)gameChild->name, "game_mode")) {
-				xmlNode* content = xmlNodeGetContent(gameChild);
+				xmlChar* content = xmlNodeGetContent(gameChild);
 				settings.gameMode = *content - '0'; //should be '1' or '2'
-				freeXml(content);
+				xmlFree(content);
 			}
 			else if (!strcmp((char*)gameChild->name, "difficulty")) {
-				xmlNode* content = xmlNodeGetContent(gameChild);
+				xmlChar* content = xmlNodeGetContent(gameChild);
 				settings.minimaxDepth = parseDifficulty((char*)content);
-				if (content) freeXml(content);
+				if (content) xmlFree(content);
 			}
 			else if (!strcmp((char*)gameChild->name, "user_color")) {
-				xmlNode* content = xmlNodeGetContent(gameChild);
+				xmlChar* content = xmlNodeGetContent(gameChild);
 				settings.userColor = parseColor((char*)content);
-				if (content) freeXml(content);
+				if (content) xmlFree(content);
 			}
 			else if (!strcmp((char*)gameChild->name, "board"))
 				settings.board = parseXmlBoard(settings.board, gameChild->children);
@@ -48,7 +48,7 @@ Settings loadSettings(Settings previousSettings, char* filePath) {
 char** parseXmlBoard(char** board, xmlNode* row) {
 	while (row) {
 		if (row->type == XML_ELEMENT_NODE) {
-			xmlNode* content = xmlNodeGetContent(row);
+			xmlChar* content = xmlNodeGetContent(row);
 			if (!strcmp((char*)row->name, "row_1"))
 				readXmlBoardRow(board, content, 0);
 			else if (!strcmp((char*)row->name, "row_2"))
@@ -66,7 +66,7 @@ char** parseXmlBoard(char** board, xmlNode* row) {
 			else if (!strcmp((char*)row->name, "row_8"))
 				readXmlBoardRow(board, content, 7);
 			if (content != NULL)
-				freeXml(content);
+				xmlFree(content);
 		}
 		row = row->next;
 	}
@@ -74,16 +74,11 @@ char** parseXmlBoard(char** board, xmlNode* row) {
 }
 
 void readXmlBoardRow(char** board, xmlChar* xmlRow, int rowIndex) {
-	if (xmlRow == NULL)
+	if (xmlRow == NULL || xmlStrlen(xmlRow) < BOARD_SIZE)
 		return;
-	if (xmlStrlen(xmlRow) < BOARD_SIZE){
-		freeXml(xmlRow);
-		return;
-	}
 	for (int i = 0; i < BOARD_SIZE; i++) {
 		board[i][rowIndex] = (char)xmlRow[i] == '_' ? EMPTY : (char)xmlRow[i];
 	}
-	freeXml(xmlRow);
 }
 
 int parseColor(char* colorString) {
