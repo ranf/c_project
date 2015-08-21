@@ -23,6 +23,10 @@ Settings applySettingsCommand(Settings settings, char* cmd) {
 		case SET_CMD:
 			setPiece(settings.board, cmd);
 			break;
+		case LOAD_CMD:
+			settings = loadSettings(skipSpaces(cmd+4)); //|load| = 4
+			printBoard(settings.board);
+			break;
 		case PRINT_CMD:
 			printBoard(settings.board);
 			break;
@@ -138,6 +142,8 @@ int getCmdType(char* cmdString) {
 		return RM_CMD;
 	if(startsWith(cmdString, "set "))
 		return SET_CMD;
+	if(startsWith(cmdString, "load "))
+		return LOAD_CMD;
 	if(strcmp(cmdString, "print") == 0)
 		return PRINT_CMD;
 	if(strcmp(cmdString, "quit") == 0)

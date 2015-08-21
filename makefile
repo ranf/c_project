@@ -1,7 +1,8 @@
 CFLAGS=-std=c99 -pedantic-errors -c -Wall -g -lm
 CONSOLE_OBJ=Console/Console.o Console/Settings.o Console/Board.o Console/Game.o Console/Position.o
-COMMON_OBJ=Common/Common.o Common/Board.o Common/Position.o Common/Move.o Common/MoveLogic.o Common/Minimax.o
+COMMON_OBJ=Common/Common.o Common/Board.o Common/Position.o Common/Move.o Common/MoveLogic.o Common/Minimax.o Common/XmlParser.o
 OBJ=Main.o $(CONSOLE_OBJ) $(COMMON_OBJ) Gui/Gui.o
+LIBS=`sdl-config --libs` -lxml2
 
 all: chessprog
 
@@ -11,7 +12,7 @@ clean:
 new: clean all
 
 chessprog: $(OBJ)
-	gcc -o chessprog $(OBJ) -lm -std=c99 -pedantic-errors -g `sdl-config --libs`
+	gcc -o chessprog $(OBJ) -lm -std=c99 -pedantic-errors -g $(LIBS)
 
 Main.o: Main.c Main.h
 	gcc $(CFLAGS) Main.c
@@ -48,6 +49,9 @@ Common/MoveLogic.o: Common/MoveLogic.c Common/MoveLogic.h
 
 Common/Minimax.o: Common/Minimax.c Common/Minimax.h
 	gcc $(CFLAGS) Common/Minimax.c -o Common/Minimax.o
+
+Common/XmlParser.o: Common/XmlParser.c Common/XmlParser.h
+	gcc $(CFLAGS) Common/XmlParser.c -I/usr/include/libxml2 -o Common/XmlParser.o
 
 Gui/Gui.o: Gui/Gui.c Gui/Gui.h
 	gcc $(CFLAGS) Gui/Gui.c `sdl-config --cflags` -o Gui/Gui.o

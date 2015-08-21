@@ -17,6 +17,7 @@
 #define START_CMD 12
 #define UNKNOWN_CMD 13
 #define DIFFICULTY_BEST_CMD 14
+#define LOAD_CMD 15
 
 #define ENTER_SETTINGS_MESSAGE "Enter game settings:\n"
 #define WRONG_MINIMAX_DEPTH "Wrong value for minimax depth. The value should be between 1 to 6\n"
