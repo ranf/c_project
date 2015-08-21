@@ -3,13 +3,16 @@
 Settings loadSettings(Settings previousSettings, char* filePath) {
 	xmlDoc* doc = NULL;
 	xmlNode* rootElement = NULL;
-	Settings settings = DEFAULT_SETTINGS;
-	if ((doc = xmlReadFile(filePath, NULL, 0)) == NULL ||
+	if ((doc = xmlReadFile(filePath, NULL, XML_PARSE_RECOVER | XML_PARSE_NOERROR | XML_PARSE_NOWARNING )) == NULL ||
 		(rootElement = xmlDocGetRootElement(doc)) == NULL) { //root element is <game>
 		fprintf(stderr, "error: could not parse file %s\n", filePath);
+		if(doc) xmlFreeDoc(doc);
+		xmlCleanupParser();
 		return previousSettings;
 	}
 
+	freeBoard(previousSettings.board);
+	Settings settings = DEFAULT_SETTINGS;
 	xmlNode* gameChild = rootElement->children;
 	while (gameChild) {
 		if (gameChild->type == XML_ELEMENT_NODE) {
