@@ -49,10 +49,7 @@ Settings loadSettings(Settings previousSettings, char* filePath) {
 }
 
 void saveSettings(Settings settings, char* filename) {
-	int bytesWritten;
-	xmlTextWriterPtr writer;
-
-	writer = xmlNewTextWriterFilename(filename, 0);
+	xmlTextWriterPtr writer = xmlNewTextWriterFilename(filename, 0);
 	if (writer == NULL) {
 		printMessage(WRONG_FILE_NAME);
 		return;
@@ -64,6 +61,7 @@ void saveSettings(Settings settings, char* filename) {
 }
 
 void writeSettingsToXml(Settings settings, xmlTextWriterPtr writer) {
+	int bytesWritten;
 	bytesWritten = xmlTextWriterStartDocument(writer, NULL, "UTF-8", NULL);
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterStartDocument");
