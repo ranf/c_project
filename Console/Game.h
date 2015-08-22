@@ -4,6 +4,7 @@
 #include "Settings.h"
 #include "Position.h"
 #include "../Common/Move.h"
+#include "../Common/XmlParser.h"
 
 #define NOT_YOUR_PIECE "The specified position does not contain your piece\n"
 #define ILLEGAL_MOVE "Illegal move\n"
