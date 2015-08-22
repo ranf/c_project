@@ -23,7 +23,7 @@ int scoreMove(char** board, Move* move, int player, int minimaxDepth) {
 	boardCopy = applyMove(boardCopy, move);
 	ScoredMoves minimaxResult = (minimaxDepth == BEST_DEPTH)
 		? bestMinimax(boardCopy, otherPlayer(player))
-		: alphaBetaMinimax(minimaxDepth - 1, -MAX_SCORE, MAX_SCORE, boardCopy, otherPalyer(player), player == BLACK_COLOR);
+		: alphaBetaMinimax(minimaxDepth - 1, -MAX_SCORE, MAX_SCORE, boardCopy, otherPlayer(player), player == BLACK_COLOR);
 	int score = minimaxResult.score;
 	freeBoard(boardCopy);
 	if(minimaxResult.moves != NULL)

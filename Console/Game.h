@@ -19,6 +19,7 @@ Settings moveCommand(Settings settings, char* cmd);
 Settings endOfTurn(Settings settings);
 void getMovesForPositionCommand(char** board, int player, char* cmd);
 void getBestMovesCommand(char** board, int player, char* depth);
+void getScoreCommand(char** board, int player, char* cmd);
 void printAllMoves(MoveList* moves);
 void printMove(Move* move);
 char parsePromotion(char* str, int player);
