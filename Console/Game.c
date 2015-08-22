@@ -95,6 +95,7 @@ void getScoreCommand(char** board, int player, char* cmd) {
 		depth = *depthPtr - '0';
 		movePtr = skipSpaces(depthPtr + 1);
 	}
+	movePtr = skipSpaces(movePtr + 4);//move
 	Position source = parsePosition(movePtr);
 	char* targetPtr = skipSpaces(skipSpaces(movePtr + 5) + 2);
 	Position target = parsePosition(targetPtr);
