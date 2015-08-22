@@ -11,6 +11,7 @@
 Settings loadSettings(Settings previousSettings, char* filePath);
 void saveSettings(Settings settings, char* filename);
 
+void writeSettingsToXml(Settings settings, xmlTextWriterPtr writer);
 char** parseXmlBoard(char** board, xmlNode* row);
 void readXmlBoardRow(char** board, xmlChar* xmlRow, int rowIndex);
 int parseColor(char* colorString);

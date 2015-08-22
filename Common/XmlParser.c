@@ -57,17 +57,23 @@ void saveSettings(Settings settings, char* filename) {
 		printMessage(WRONG_FILE_NAME);
 		return;
 	}
+	writeSettingsToXml(settings, writer);
 
-	bytesWritten = xmlTextWriterStartDocument(writer, NULL, NULL, NULL);
+	xmlFreeTextWriter(writer);
+	xmlCleanupCharEncodingHandlers();
+}
+
+void writeSettingsToXml(Settings settings, xmlTextWriterPtr writer) {
+	bytesWritten = xmlTextWriterStartDocument(writer, NULL, "UTF-8", NULL);
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterStartDocument");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 
 	bytesWritten = xmlTextWriterStartElement(writer, BAD_CAST "game");
-	if (rc < 0) {
+	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterStartElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 	//<game> is root element. now writing inside it.
 
@@ -75,31 +81,31 @@ void saveSettings(Settings settings, char* filename) {
 		"%s", colorToString(settings.playingColor));
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterWriteFormatElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "game_mode",
 		"%d", settings.gameMode);
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterWriteFormatElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "difficulty", "%s",
-		setting.gameMode != SINGLEPLAYER_MODE ? "" : difficultyToString(settings.minimaxDepth));
+		settings.gameMode != SINGLEPLAYER_MODE ? "" : difficultyToString(settings.minimaxDepth));
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterWriteFormatElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "user_color", "%s",
-		setting.gameMode != SINGLEPLAYER_MODE ? "" : colorToString(settings.userColor));
+		settings.gameMode != SINGLEPLAYER_MODE ? "" : colorToString(settings.userColor));
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterWriteFormatElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 
 	bytesWritten = xmlTextWriterStartElement(writer, BAD_CAST "board");
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterStartElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 	char rowString[9];
 	boardRowToString(settings.board, 7, rowString);
@@ -107,70 +113,68 @@ void saveSettings(Settings settings, char* filename) {
 		"%s", rowString);
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterWriteFormatElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 	boardRowToString(settings.board, 6, rowString);
 	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "row_7",
 		"%s", rowString);
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterWriteFormatElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 	boardRowToString(settings.board, 5, rowString);
 	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "row_6",
 		"%s", rowString);
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterWriteFormatElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 	boardRowToString(settings.board, 4, rowString);
 	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "row_5",
 		"%s", rowString);
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterWriteFormatElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 	boardRowToString(settings.board, 3, rowString);
 	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "row_4",
 		"%s", rowString);
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterWriteFormatElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 	boardRowToString(settings.board, 2, rowString);
 	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "row_3",
 		"%s", rowString);
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterWriteFormatElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 	boardRowToString(settings.board, 1, rowString);
 	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "row_2",
 		"%s", rowString);
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterWriteFormatElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 	boardRowToString(settings.board, 0, rowString);
 	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "row_1",
 		"%s", rowString);
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterWriteFormatElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 	bytesWritten = xmlTextWriterEndElement(writer); //</board>
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterEndElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
 
-	bytesWritten = xmlTextWriterEndDocument(writer); //</game> - close any unclosed element
+	bytesWritten = xmlTextWriterEndDocument(writer); //</game> - closes any unclosed element
 	if (bytesWritten < 0) {
 		printErrorMessage("xmlTextWriterEndElement");
-		xmlFreeTextWriter(writer); return;
+		return;
 	}
-
-	xmlFreeTextWriter(writer);
 }
 
 char** parseXmlBoard(char** board, xmlNode* row) {
@@ -245,7 +249,7 @@ int parseDifficulty(char* difficultyString) {
 char* difficultyToString(int difficulty) {
 	switch (difficulty) {
 		case BEST_DEPTH:
-			return "best":
+			return "best";
 		case 1:
 			return "1";
 		case 2:
