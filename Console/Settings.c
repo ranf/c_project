@@ -14,6 +14,9 @@ Settings applySettingsCommand(Settings settings, char* cmd) {
 		case USER_COLOR_CMD:
 			settings = setUserColor(settings, cmd);
 			break;
+		case NEXT_PLAYER_CMD:
+			settings = setPlayingColor(settings, skipSpaces(cmd + 11)); //|next_player|=11
+			break;
 		case CLEAR_CMD:
 			clearBoard(settings.board);
 			break;
@@ -24,7 +27,7 @@ Settings applySettingsCommand(Settings settings, char* cmd) {
 			setPiece(settings.board, cmd);
 			break;
 		case LOAD_CMD:
-			settings = loadSettings(settings, skipSpaces(cmd+4)); //|load| = 4
+			settings = loadSettings(settings, skipSpaces(cmd + 4)); //|load| = 4
 			printBoard(settings.board);
 			break;
 		case PRINT_CMD:
@@ -93,6 +96,11 @@ Settings setUserColor(Settings settings, char* cmd) {
 	}
 	char* cmdValue = strchr(cmd, ' ') + 1;
 	settings.userColor = strcmp(cmdValue, "white") == 0 ? WHITE_COLOR : BLACK_COLOR;
+	return settings;
+}
+
+Settings setPlayingColor(Settings settings, char* color) {
+	settings.playingColor = strcasecmp(cmdValue, "white") == 0 ? WHITE_COLOR : BLACK_COLOR;
 	return settings;
 }
 
