@@ -3,7 +3,6 @@
 Settings applyGameCommand(Settings settings, char* cmd) {
 	if (startsWith(cmd, "move ")) {
 		settings = moveCommand(settings, cmd);
-		settings = endOfTurn(settings);
 	} else if (startsWith(cmd, "get_moves ")) {
 		getMovesForPositionCommand(settings.board, settings.playingColor, cmd);
 	} else if (startsWith(cmd, "save ")) {
@@ -31,6 +30,7 @@ Settings moveCommand(Settings settings, char* cmd) {
 		MoveList* pieceMoves = getPieceMoves(settings.board, source, true);
 		if (moveIsInList(pieceMoves, wantedMove)) {
 			settings.board = applyMove(settings.board, wantedMove);
+			settings = endOfTurn(settings);
 		} else {
 			printMessage(ILLEGAL_MOVE);
 		}
