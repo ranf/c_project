@@ -100,7 +100,7 @@ Settings setUserColor(Settings settings, char* cmd) {
 }
 
 Settings setPlayingColor(Settings settings, char* color) {
-	settings.playingColor = strcasecmp(cmdValue, "white") == 0 ? WHITE_COLOR : BLACK_COLOR;
+	settings.playingColor = strcasecmp(color, "white") == 0 ? WHITE_COLOR : BLACK_COLOR;
 	return settings;
 }
 
