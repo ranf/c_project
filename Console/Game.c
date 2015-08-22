@@ -76,7 +76,7 @@ void getMovesForPositionCommand(char** board, int player, char* cmd) {
 
 void getBestMovesCommand(char** board, int player, char* depth) {
 	int minimaxDepth = strcmp(depth, "best") == 0 ? BEST_DEPTH : (*depth) - '0';
-	MoveList* moves = getAllMinimaxMoves(board, playingColor, minimaxDepth);
+	MoveList* moves = getAllMinimaxMoves(board, player, minimaxDepth);
 	printAllMoves(moves);
 	freeMoves(moves);
 }
