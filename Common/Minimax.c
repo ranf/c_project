@@ -4,11 +4,16 @@ Move* getMinimaxMove(char** board, int player, int minimaxDepth) {
 	if (minimaxDepth == BEST_DEPTH){
 		return bestMinimax(board, player);
 	}
-	return alphaBetaMinimax(minimaxDepth, -MAX_SCORE, MAX_SCORE, board, player, player == WHITE_COLOR).move;
+	ScoredMoves bestMoves = alphaBetaMinimax(minimaxDepth, -MAX_SCORE, MAX_SCORE, board, player, player == WHITE_COLOR);
+	if(bestMoves.moves == NULL)
+		return NULL;
+	Move* result = copyMove(bestMoves.moves->data);
+	freeMoves(bestMoves.moves);
+	return result;
 }
 
-ScoredMove alphaBetaMinimax(int depth, int alpha, int beta, char** board, int player, bool maximize) {
-	ScoredMove result = {.move = NULL, .score = 0};
+ScoredMoves alphaBetaMinimax(int depth, int alpha, int beta, char** board, int player, bool maximize) {
+	ScoredMove result = {.moves = NULL, .score = 0};
 	MoveList* children;
 	if (depth == 0 || (children = getMoves(board, player, true)) == NULL) {
 		result.score = scoreBoard(board, player);
@@ -20,33 +25,38 @@ ScoredMove alphaBetaMinimax(int depth, int alpha, int beta, char** board, int pl
 	while (head != NULL && !prune) {
 		char** boardCopy = copyBoard(board);
 		boardCopy = applyMove(boardCopy, head->data);
-		ScoredMove otherPlayerMove = alphaBetaMinimax(depth - 1, alpha, beta, boardCopy, otherPlayer(player), !maximize);
+		ScoredMoves otherPlayerMoves = alphaBetaMinimax(depth - 1, alpha, beta, boardCopy, otherPlayer(player), !maximize);
 		freeBoard(boardCopy);
 		if (maximize) {
-			if (otherPlayerMove.score > result.score) {
-				if(result.move != NULL) {
-					freeMove(result.move);
+			if (otherPlayerMoves.score > result.score) {
+				if (result.moves != NULL) {
+					freeMoves(result.moves);
 				}
-				result.score = otherPlayerMove.score;
-				result.move = copyMove(head->data);
+				result.score = otherPlayerMoves.score;
+				result.moves = createMoveList(copyMove(head->data));
+			} else if (otherPlayerMoves.score == result.score) {
+				result.moves = concatMoveLists(result.moves, createMoveList(copyMove(head->data)));
 			}
 			if (result.score > alpha){
 				alpha = result.score;
 			}
 		} else { //minimize
-			if (otherPlayerMove.score < result.score) {
-				if (result.move != NULL) {
-					freeMove(result.move);
+			if (otherPlayerMoves.score < result.score) {
+				if (result.moves != NULL) {
+					freeMoves(result.moves);
 				}
-				result.score = otherPlayerMove.score;
-				result.move = copyMove(head->data);
+				result.score = otherPlayerMoves.score;
+				result.moves = createMoveList(copyMove(head->data));
+			}
+			else if (otherPlayerMoves.score == result.score) {
+				result.moves = concatMoveLists(result.moves, createMoveList(copyMove(head->data)));
 			}
 			if (result.score < beta) {
 				beta = result.score;
 			}
 		}
-		if (otherPlayerMove.move != NULL) {
-			freeMove(otherPlayerMove.move);
+		if (otherPlayerMoves.moves != NULL) {
+			freeMoves(otherPlayerMove.moves);
 		}
 		head = head->next;
 		if (beta <= alpha) {
@@ -120,7 +130,12 @@ Move* bestMinimax(char** board, int player) {
 		// |_depth/2_| is number previous moves by this player
 		maxMoves = getMaxMoves(board, currentPlayer, depth / 2);
 	}
-	return alphaBetaMinimax(depth, -MAX_SCORE, MAX_SCORE, board, player, player == WHITE_COLOR).move;
+	ScoredMoves bestMoves = alphaBetaMinimax(depth, -MAX_SCORE, MAX_SCORE, board, player, player == WHITE_COLOR);
+	if(bestMoves.moves == NULL)
+		return NULL;
+	Move* result = copyMove(bestMoves.moves->data);
+	freeMoves(bestMoves.moves);
+	return result;
 }
 
 int getMaxMoves(char** board, int player, int possibleMovesAlready) {

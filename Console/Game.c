@@ -5,6 +5,8 @@ Settings applyGameCommand(Settings settings, char* cmd) {
 		settings = moveCommand(settings, cmd);
 	} else if (startsWith(cmd, "get_moves ")) {
 		getMovesForPositionCommand(settings.board, settings.playingColor, cmd);
+	} else if (startsWith(cmd, "get_best_moves ")) {
+		getBestMovesCommand(settings.board, settings.playingColor, skipSpaces(cmd + 14));//|get_best_moves|
 	} else if (startsWith(cmd, "save ")) {
 		saveSettings(settings, skipSpaces(cmd + 4)); //|save|=4
 	} else if (strcmp(cmd, "quit") == 0) {
@@ -70,6 +72,10 @@ void getMovesForPositionCommand(char** board, int player, char* cmd) {
 		printAllMoves(moves);
 		freeMoves(moves);
 	}
+}
+
+void getBestMovesCommand(char** board, int player, char* depth) {
+	
 }
 
 void printAllMoves(MoveList* moves) {

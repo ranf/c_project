@@ -18,13 +18,13 @@
 #define K_MAX_MOVES 8
 
 typedef struct {
-	Move* move;
+	MoveList* moves;
 	int score;
-} ScoredMove;
+} ScoredMoves;
 
 Move* getMinimaxMove(char** board, int player, int minimaxDepth);
 
-ScoredMove alphaBetaMinimax(int depth, int alpha, int beta, char** board, int player, bool maximize);
+ScoredMoves alphaBetaMinimax(int depth, int alpha, int beta, char** board, int player, bool maximize);
 int scoreBoard(char** board, int player);
 int scoreChar(char piece);
 
