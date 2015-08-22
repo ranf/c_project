@@ -5,7 +5,7 @@ Settings loadSettings(Settings previousSettings, char* filePath) {
 	xmlNode* rootElement = NULL;
 	if ((doc = xmlReadFile(filePath, NULL, XML_PARSE_RECOVER | XML_PARSE_NOERROR | XML_PARSE_NOWARNING )) == NULL ||
 		(rootElement = xmlDocGetRootElement(doc)) == NULL) { //root element is <game>
-		fprintf(stderr, "error: could not parse file %s\n", filePath);
+		printMessage(WRONG_FILE_NAME);
 		if(doc) xmlFreeDoc(doc);
 		xmlCleanupParser();
 		return previousSettings;
@@ -48,6 +48,131 @@ Settings loadSettings(Settings previousSettings, char* filePath) {
 	return settings;
 }
 
+void saveSettings(Settings settings, char* filename) {
+	int bytesWritten;
+	xmlTextWriterPtr writer;
+
+	writer = xmlNewTextWriterFilename(filename, 0);
+	if (writer == NULL) {
+		printMessage(WRONG_FILE_NAME);
+		return;
+	}
+
+	bytesWritten = xmlTextWriterStartDocument(writer, NULL, NULL, NULL);
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterStartDocument");
+		xmlFreeTextWriter(writer); return;
+	}
+
+	bytesWritten = xmlTextWriterStartElement(writer, BAD_CAST "game");
+	if (rc < 0) {
+		printErrorMessage("xmlTextWriterStartElement");
+		xmlFreeTextWriter(writer); return;
+	}
+	//<game> is root element. now writing inside it.
+
+	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "next_turn",
+		"%s", colorToString(settings.playingColor));
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterWriteFormatElement");
+		xmlFreeTextWriter(writer); return;
+	}
+	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "game_mode",
+		"%d", settings.gameMode);
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterWriteFormatElement");
+		xmlFreeTextWriter(writer); return;
+	}
+	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "difficulty", "%s",
+		setting.gameMode != SINGLEPLAYER_MODE ? "" : difficultyToString(settings.minimaxDepth));
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterWriteFormatElement");
+		xmlFreeTextWriter(writer); return;
+	}
+	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "user_color", "%s",
+		setting.gameMode != SINGLEPLAYER_MODE ? "" : colorToString(settings.userColor));
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterWriteFormatElement");
+		xmlFreeTextWriter(writer); return;
+	}
+
+	bytesWritten = xmlTextWriterStartElement(writer, BAD_CAST "board");
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterStartElement");
+		xmlFreeTextWriter(writer); return;
+	}
+	char rowString[9];
+	boardRowToString(settings.board, 7, rowString);
+	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "row_8",
+		"%s", rowString);
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterWriteFormatElement");
+		xmlFreeTextWriter(writer); return;
+	}
+	boardRowToString(settings.board, 6, rowString);
+	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "row_7",
+		"%s", rowString);
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterWriteFormatElement");
+		xmlFreeTextWriter(writer); return;
+	}
+	boardRowToString(settings.board, 5, rowString);
+	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "row_6",
+		"%s", rowString);
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterWriteFormatElement");
+		xmlFreeTextWriter(writer); return;
+	}
+	boardRowToString(settings.board, 4, rowString);
+	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "row_5",
+		"%s", rowString);
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterWriteFormatElement");
+		xmlFreeTextWriter(writer); return;
+	}
+	boardRowToString(settings.board, 3, rowString);
+	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "row_4",
+		"%s", rowString);
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterWriteFormatElement");
+		xmlFreeTextWriter(writer); return;
+	}
+	boardRowToString(settings.board, 2, rowString);
+	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "row_3",
+		"%s", rowString);
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterWriteFormatElement");
+		xmlFreeTextWriter(writer); return;
+	}
+	boardRowToString(settings.board, 1, rowString);
+	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "row_2",
+		"%s", rowString);
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterWriteFormatElement");
+		xmlFreeTextWriter(writer); return;
+	}
+	boardRowToString(settings.board, 0, rowString);
+	bytesWritten = xmlTextWriterWriteFormatElement(writer, BAD_CAST "row_1",
+		"%s", rowString);
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterWriteFormatElement");
+		xmlFreeTextWriter(writer); return;
+	}
+	bytesWritten = xmlTextWriterEndElement(writer); //</board>
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterEndElement");
+		xmlFreeTextWriter(writer); return;
+	}
+
+	bytesWritten = xmlTextWriterEndDocument(writer); //</game> - close any unclosed element
+	if (bytesWritten < 0) {
+		printErrorMessage("xmlTextWriterEndElement");
+		xmlFreeTextWriter(writer); return;
+	}
+
+	xmlFreeTextWriter(writer);
+}
+
 char** parseXmlBoard(char** board, xmlNode* row) {
 	while (row) {
 		if (row->type == XML_ELEMENT_NODE) {
@@ -84,10 +209,23 @@ void readXmlBoardRow(char** board, xmlChar* xmlRow, int rowIndex) {
 	}
 }
 
+void boardRowToString(char** board, int rowIndex, char rowString[9]) {
+	char piece;
+	for (int i = 0; i < BOARD_SIZE; i++) {
+		piece = board[i][rowIndex];
+		rowString[i] = piece == EMPTY ? '_' : piece;
+	}
+	rowString[BOARD_SIZE] = '\0';
+}
+
 int parseColor(char* colorString) {
 	return (!colorString || !strcasecmp(colorString, "white"))
 		? WHITE_COLOR
 		: BLACK_COLOR;;
+}
+
+char* colorToString(int color) {
+	return color == BLACK_COLOR ? "Black" : "White";
 }
 
 int parseDifficulty(char* difficultyString) {
@@ -102,4 +240,21 @@ int parseDifficulty(char* difficultyString) {
 			depth = 1;
 	}
 	return depth;
+}
+
+char* difficultyToString(int difficulty) {
+	switch (difficulty) {
+		case BEST_DEPTH:
+			return "best":
+		case 1:
+			return "1";
+		case 2:
+			return "2";
+		case 3:
+			return "3";
+		case 4:
+			return "4";
+		default:
+			return "1";
+	}
 }

@@ -6,6 +6,8 @@ Settings applyGameCommand(Settings settings, char* cmd) {
 		settings = endOfTurn(settings);
 	} else if (startsWith(cmd, "get_moves ")) {
 		getMovesForPositionCommand(settings.board, settings.playingColor, cmd);
+	} else if (startsWith(cmd, "save ")) {
+		saveSettings(settings, skipSpaces(cmd + 4)); //|save|=4
 	} else if (strcmp(cmd, "quit") == 0) {
 		settings.state = TERMINATE_STATE;
 	} else {

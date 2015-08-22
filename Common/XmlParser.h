@@ -5,6 +5,8 @@
 #include <libxml/tree.h>
 #include "Settings.h"
 
+#define WRONG_FILE_NAME "Wrong file name\n"
+
 Settings loadSettings(Settings previousSettings, char* filePath);
 
 char** parseXmlBoard(char** board, xmlNode* row);
