@@ -18,6 +18,19 @@ MoveList* getAllMinimaxMoves(char** board, int player, int minimaxDepth) {
 	return bestMoves.moves;
 }
 
+int scoreMove(char** board, Move* move, int player, int minimaxDepth) {
+	char** boardCopy = copyBoard(board);
+	boardCopy = applyMove(boardCopy, move);
+	ScoredMoves minimaxResult = (minimaxDepth == BEST_DEPTH)
+		? bestMinimax(boardCopy, otherPlayer(player))
+		: alphaBetaMinimax(minimaxDepth - 1, -MAX_SCORE, MAX_SCORE, boardCopy, otherPalyer(player), player == BLACK_COLOR);
+	int score = minimaxResult.score;
+	freeBoard(boardCopy);
+	if(minimaxResult.moves != NULL)
+		freeMoves(minimaxResult.moves);
+	return score;
+}
+
 ScoredMoves alphaBetaMinimax(int depth, int alpha, int beta, char** board, int player, bool maximize) {
 	ScoredMoves result = {.moves = NULL, .score = 0};
 	MoveList* children;

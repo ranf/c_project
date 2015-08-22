@@ -24,6 +24,7 @@ typedef struct {
 
 Move* getMinimaxMove(char** board, int player, int minimaxDepth);
 MoveList* getAllMinimaxMoves(char** board, int player, int minimaxDepth);
+int scoreMove(char** board, Move* move, int player, int minimaxDepth);
 
 ScoredMoves alphaBetaMinimax(int depth, int alpha, int beta, char** board, int player, bool maximize);
 int scoreBoard(char** board, int player);
