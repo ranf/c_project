@@ -30,6 +30,7 @@ Settings moveCommand(Settings settings, char* cmd) {
 	} else if (pieceOwner(settings.board[source.x][source.y]) != settings.playingColor) {
 		printMessage(NOT_YOUR_PIECE);
 	} else {
+		promotion = isPawn(settings.board[source.x][source.y]) ? promotion : NO_PROMOTION;
 		Move* wantedMove = createMove(source, target, promotion);
 		MoveList* pieceMoves = getPieceMoves(settings.board, source, true);
 		if (moveIsInList(pieceMoves, wantedMove)) {

@@ -33,5 +33,6 @@ int maxAllowedPiecesOfType(char pieceType);
 int pieceOwner(char pieceType);
 bool endOfBoard(Position position, int player);
 Position getKingPosition(char** board, int player);
+bool isPawn(char piece)
 
 #endif

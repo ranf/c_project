@@ -125,3 +125,7 @@ Position getKingPosition(char** board, int player) {
 	}
 	return (Position) {.x = -1, .y = -1};
 }
+
+bool isPawn(char piece) {
+	return piece == WHITE_P || piece == BLACK_P;
+}
