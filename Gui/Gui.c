@@ -11,25 +11,21 @@ void startGuiMode() {
 	game_menu = NULL;
 	set_color = NULL;
 
-	int menu_selection = 1;
-
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) 
 	{
-		printf("ERROR: unable to init SDL: %s\n", SDL_GetError());
-		return 1;
+		fprintf(stderr, "ERROR: unable to init SDL: %s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
 	}
+	atexit(SDL_Quit);
 
-	screen = SDL_SetVideoMode(WIN_W, WIN_H, 0, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	SDL_Surface *screen = SDL_SetVideoMode(WIN_W, WIN_H, 0, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
 	if (screen == NULL) 
 	{
-		printf("ERROR: failed to set video mode: %s\n", SDL_GetError());
-		return 1;
+		fprintf("ERROR: failed to set video mode: %s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
 	}
-
 	SDL_WM_SetCaption("Chess Game GUI mode", NULL); /* sets the window's name*/
-
-	atexit(SDL_Quit);
 
 	loadImages();
 
@@ -40,7 +36,9 @@ void startGuiMode() {
 	load_menu = build_load_menu();
 	game_menu = build_game_menu();
 	set_color = build_color_set_menu();
+
 	Settings settings = DEFUALT_SETTINGS;
+	settings.state = MENU_STATE;
 
 	while (settings.state != TERMINATE_STATE){
 		switch (settings.state){
@@ -63,48 +61,14 @@ void startGuiMode() {
 			settings = game_menu_handler(game_menu, save_menu, settings);
 			break;
 		default:
+			perror("illegal code path");
+			exit(EXIT_FAILURE);//should never happen
 			break;
 		}
 	}
 
 	if (settings.board != NULL)
 		freeBoard(settings.board);
+	freeImages();
 	SDL_FreeSurface(screen);
-	SDL_FreeSurface(main_img);
-	SDL_FreeSurface(panels_sheet);
-	SDL_FreeSurface(settings_sheet);
-	SDL_FreeSurface(pieces_sheet);
-	SDL_FreeSurface(selected_pieces_sheet);
-
-	SDL_Quit();
-}
-
-void loadImages()
-{
-	main_img = load_link_image(MAIN_IMG);
-	panels_sheet = load_link_image(PANELS_SHEET);
-	settings_sheet = load_link_image(SETTINGS_SHEET);
-	pieces_sheet = load_link_image(PIECES_SHEET);
-	selected_pieces_sheet = load_link_image(SELECTED_PIECES_SHEET);
-	backround = load_link_image(BACKROUND_IMAGE);
-}
-
-void display_screen() {
-	if (SDL_Flip(screen) == -1)
-	{
-		printf("ERROR: unable to init SDL: %s\n", SDL_GetError());
-	}
-}
-
-void apply_surface(int src_x, int src_y, int src_w, int src_h, int dst_x, int dst_y, SDL_Surface* source, SDL_Surface* destination){
-	
-	SDL_Rect src_new;
-	SDL_Rect dst_new;
-	src_new.x = src_x;
-	src_new.y = src_y;
-	src_new.w = src_w;
-	src_new.h = src_h;
-	dst_new.x = dst_x;
-	dst_new.y = dst_y;
-	SDL_BlitSurface(source, &src_new, destination, &dst_new);
 }

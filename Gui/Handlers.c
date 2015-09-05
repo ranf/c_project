@@ -55,7 +55,7 @@ Settings main_menu_handler(gui_chess gui_window, Settings settings)
 }
 
 Settings mode_menu_handler(gui_chess root, Settings settings)
-{//todo implement playingColor selection
+{
 	SDL_Event event;
 	gui_chess tmp, pvp, pvc, button;
 	int x, y, x_bound, y_bound, p_vs_p_x, p_vs_p_y, p_vs_c_x, p_vs_c_y, width, heigth, s_c_width, s_c_heigth, c_x, c_y, start_x, start_y;
@@ -84,7 +84,6 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 	start_x = tmp->box.x + x_bound;
 	start_y = tmp->box.y + y_bound;
 
-	//replace with Settings
 	if (settings.gameMode = SINGLEPLAYER_MODE)
 	{
 		pvp->clip.x = PV_BUTTON_X;
@@ -460,36 +459,13 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 
 				/*op=1 "save"*/
 				if (settings.state == SAVE_STATE){
-					if (settings.userColor == WHITE_COLOR){
-						//TODO save settings to XML
-						save_status=save(mem_slot, "White");
-					}
-					else{
-						save_status=save(mem_slot, "Black");
-					}
-					if (save_status){
-						apply_surface(SAVE_SUCCEED_LABEL_PMT, pieces_sheet, screen);
-					}
-					else{
-						apply_surface(SAVE_FAILED_LABEL_PMT, pieces_sheet, screen);
-					}
-					display_screen();
-					SDL_Delay(3000);
-					settings.state = MAIN_MENU_STATE;
+					saveSettings(settings, mem_slot)
+					settings.state = GAME_STATE;
 					return settings;
-					/*show massage of saving status*/
 				}
-				else{
-					//todo reolace with loadSettings from XML
-					if (load(mem_slot))
-					{
-						settings.state = MODE_MENU_STATE;
-						return settings;
-					}
-					apply_surface(LOAD_FAILED_LABEL_PMT, pieces_sheet, screen);
-					display_screen();
-					SDL_Delay(3000);
-					settings.state = LOAD_STATE;
+				else {
+					settings = loadSettings(settings, mem_slot);
+					settings.state = MODE_SETTINGS_STATE;
 					return settings;
 				}
 			}
@@ -516,75 +492,42 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 	pos[2] = tmp->clip.w;
 	pos[3] = tmp->clip.h;
 	
-	display_board(game_menu, -1, -1,board);
+	display_board(game_menu, -1, -1,settings.board);
 	/* p vs c */
-	if (settings.gameMode == SINGLEPLAYER_MODE){
-		if (settings.userColor == u_color)
-		{
-			situation = gui_player_turn(u_color, pos, game_menu, save_menu);
-			if (situation >= 0)
+	if (settings.gameMode == SINGLEPLAYER_MODE) {
+		while (true) {
+			if (settings.userColor == settings.playingColor)
 			{
-				settings.state = situation;
-				return settings;
-				//return situation;
-			}
-			if (settings.userColor == BLACK_COLOR)
-			{
-				settings.userColor = WHITE_COLOR;
+				situation = gui_player_turn(settings.playingColor, pos, game_menu, save_menu);
+				if (situation >= 0)
+				{
+					settings.state = situation;
+					return settings;
+				}
+				settings.playingColor = otherPlayer(settings.playingColor);
 			}
 			else
 			{
-				settings.userColor = BLACK_COLOR;
-			}
-		}
-		while (true){
-			situation = gui_computer_turn(game_menu);
-			if (settings.userColor == BLACK_COLOR)
-			{
-				settings.userColor = WHITE_COLOR;
-			}
-			else
-			{
-				settings.userColor = BLACK_COLOR;
-			}
-			if (situation >= 0)
-			{
-				settings.state = situation;
-				return settings;
-				//return situation;
-			}
-			situation = gui_player_turn(u_color, pos, game_menu, save_menu);
-			if (situation >= 0){
-				settings.state = situation;
-				return settings;
-			}
-			if (settings.userColor == BLACK_COLOR)
-			{
-				settings.userColor = WHITE_COLOR;
-			}
-			else
-			{
-				settings.userColor = BLACK_COLOR;
+				situation = gui_computer_turn(game_menu);
+				settings.playingColor = otherPlayer(settings.playingColor);
+				if (situation >= 0)
+				{
+					settings.state = situation;
+					return settings;
+				}
 			}
 		}
 	}
 	/*p vs p */
 	if (settings.gameMode == MULTIPLAYER_MODE){
 		while (true){
-			situation = gui_player_turn(settings.userColor, pos, game_menu, save_menu);
+			situation = gui_player_turn(settings.playingColor, pos, game_menu, save_menu);
 			if (situation >= 0)
 			{
 				settings.state = situation;
 				return settings;
 			}
-			if (settings.userColor == BLACK_COLOR)
-			{
-				settings.userColor = WHITE_COLOR;
-			}
-			else
-			{
-				settings.userColor = BLACK_COLOR;
-			}
+			settings.playingColor = otherPlayer(settings.playingColor);
 		}
 	}
 	

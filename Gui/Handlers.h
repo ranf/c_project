@@ -1,7 +1,8 @@
 #ifndef GUI_HANDLERS_H
 #define GUI_HANDLERS_H
 
-#include <SDL.h>
+#include "Frame.h"
+#include "../Common/Settings.h"
 
 
 #define NUM_HORIZONTAL_OFFSET 60
@@ -19,8 +20,5 @@
 #define BOARD_TOP_CORNER 35
 #define BOARD_BOTTOM_CORNER 562
 #define BOARD_SQUARE 66
-
-
-#include "Gui.h"
 
 #endif

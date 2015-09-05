@@ -1,7 +1,8 @@
 #ifndef GUI_BUILD_H
 #define GUI_BUILD_H
 
-#include "Gui.h"
+#include "Image.h"
+#include "ElementFactory.h"
 
 /*check & mate labels parameters*/
 #define CHECKMATE_LABEL 119,117,325,49,170,150
@@ -108,39 +109,22 @@
 #define SAVE_FAILED_LABEL_PMT 168,249,250,83,300,340
 #define SAVE_SUCCEED_LABEL_PMT 104,366,196,111,300,340
 
-/*files for saving*/
-#define MEM_SLOT_1 "mem_slot_1.xml"
-#define MEM_SLOT_2 "mem_slot_2.xml"
-#define MEM_SLOT_3 "mem_slot_3.xml"
-#define MEM_SLOT_4 "mem_slot_4.xml"
-#define MEM_SLOT_5 "mem_slot_5.xml"
-
 /*type of conrolers*/
 #define WINDOW 1
 #define PANEL 2
 #define LABEL 3
 #define BUTTON 4
 
-/*menus numbering*/
-#define QUIT 0
-#define MAIN_MENU 1
-#define LOAD_MENU 2
-#define MODE_MENU 3
-#define SETTINGS_MENU 4
-#define GAME_MENU 5
-
-/*images paths*/
-#define MAIN_IMG "Images/main_img.bmp"
-#define PANELS_SHEET "Images/panels sheet.bmp"
-#define SETTINGS_SHEET "Images/settings sheet.bmp"
-#define PIECES_SHEET "Images/pieces sheet.bmp"
-#define SELECTED_PIECES_SHEET "Images/selected pieces sheet.bmp"
-#define BACKROUND_IMAGE "Images/back.bmp"
-
-
-SDL_Surface *load_link_image(char *path);
-
-
-#include "ElementFactory.h"
+gui_chess build_main_menu();
+gui_chess build_mode_menu();
+gui_chess build_color_set_menu();
+gui_chess build_diffculty_menu();
+gui_chess build_settings_menu();
+gui_chess build_save_menu();
+gui_chess build_load_menu();
+gui_chess build_game_menu();
+gui_chess white_player_promots();
+gui_chess black_player_promots();
+gui_chess build_promotion_menu(int now_playing);
 
 #endif

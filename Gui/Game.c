@@ -1,4 +1,4 @@
-#include ""
+#include "Game.h"
 
 
 int gui_player_turn(int current_color, int offsets[4], gui_chess game_menu, gui_chess save_menu)
@@ -177,16 +177,13 @@ int gui_computer_turn(gui_chess game_menu)
 	return -1;
 }
 
-//todo replace with MoveList
-void show_possible_moves(pboard_node moves)
+void show_possible_moves(MoveList* moves)
 {
-	pboard_node tmp_move;
-
-	tmp_move = moves;
-	while (tmp_move != NULL){
+	MoveList* head = moves;
+	while (head != NULL){
 		apply_surface(GET_MOVES_SELECT_SQURE, BOARD_SQUARE, BOARD_SQUARE, 
-			tmp_move->moved_to[0] * BOARD_SQUARE + BOARD_TOP_CORNER, 
-			(7 - tmp_move->moved_to[1])*BOARD_SQUARE + BOARD_TOP_CORNER, selected_pieces_sheet, screen);
-		tmp_move = tmp_move->next;
+			head->data.to.x * BOARD_SQUARE + BOARD_TOP_CORNER, 
+			(7 - head->data.to.y)*BOARD_SQUARE + BOARD_TOP_CORNER, selected_pieces_sheet, screen);
+		head = head->next;
 	}
 }

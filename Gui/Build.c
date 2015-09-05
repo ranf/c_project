@@ -1,43 +1,6 @@
 #include "Build.h"
 
 
-SDL_Surface *screen = NULL;
-SDL_Surface *main_img = NULL;
-SDL_Surface *panels_sheet = NULL;
-SDL_Surface *settings_sheet = NULL;
-SDL_Surface *pieces_sheet = NULL;
-SDL_Surface *selected_pieces_sheet = NULL;
-SDL_Surface *backround = NULL;
-
-SDL_Surface *load_link_image(char *path)
-{
-	/*declare & initialize*/
-	SDL_Surface *tmp, *result ;
-	tmp = NULL;
-	result = NULL;
-
-	/*load the image*/
-	tmp = SDL_LoadBMP(path);
-
-	if (tmp != NULL)
-	{
-		result = SDL_DisplayFormat(tmp);
-		if (result != NULL){
-			//Uint32 colorkey = SDL_MapRGB(result->format, 0, 0xFF, 0xFF);
-			Uint32 colorkey = SDL_MapRGB(result->format, 0xFF, 0, 0xFF);
-			SDL_SetColorKey(result, SDL_SRCCOLORKEY, colorkey);
-		}
-		SDL_FreeSurface(tmp);
-		return (result);
-	}
-	else
-	{
-		printf("ERROR: failed to load image: %s\n", SDL_GetError());
-		return NULL;
-	}
-}
-
-
 /*menus building functions*/
 gui_chess build_main_menu()
 {
@@ -296,16 +259,5 @@ gui_chess black_player_promots()
 
 gui_chess build_promotion_menu(int now_playing)
 {
-	gui_chess result;
-	if (now_playing == WHITE)
-	{
-		result = white_player_promots();
-		return result;
-	}
-	/* black player play now*/
-	else
-	{
-		result = black_player_promots();
-		return result;
-	}
+	return now_playing == WHITE_COLOR ? white_player_promots() : black_player_promots;
 }
