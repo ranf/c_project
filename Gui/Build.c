@@ -81,6 +81,55 @@ gui_chess build_mode_menu()
 	return (result);
 }
 
+gui_chess build_color_set_menu()
+{
+	gui_chess result, tmp, tmp_parent;
+
+	result = window_factory(backround);
+	tmp = result;
+	tmp->child = panel_factory(panels_sheet, FISH_PANEL_PMT, tmp);
+	tmp = tmp->child;
+	tmp->child = label_factory(settings_sheet, COLOR_LABEL_PMT, tmp);
+	tmp_parent = tmp;
+	tmp = tmp->child;
+	tmp->next = button_factory(settings_sheet, WHITE_S_BUTTON_PMT, tmp_parent);
+	tmp = tmp->next;
+	tmp->next = button_factory(settings_sheet, BLACK_BUTTON_PMT, tmp_parent);
+	tmp = tmp->next;
+	tmp->next = button_factory(settings_sheet, CANCEL_BUTTON_PMT, tmp_parent);
+	tmp = tmp->next;
+	tmp->next = button_factory(settings_sheet, NEXT_BUTTON_PMT, tmp_parent);
+
+	return result;
+}
+
+gui_chess build_diffculty_menu()
+{
+	gui_chess result, tmp, tmp_parent;
+
+	result = window_factory(backround);
+	tmp = result;
+	tmp->child = panel_factory(panels_sheet, FISH_PANEL_PMT, tmp);
+	tmp = tmp->child;
+	tmp->child = label_factory(settings_sheet, DIFFICULTY_LABEL_PMT, tmp_parent);
+	tmp_parent = tmp;
+	tmp = tmp->child;
+	tmp->next = button_factory(settings_sheet, ONE_S_BUTTON_PMT, tmp_parent);
+	tmp = tmp->next;
+	tmp->next = button_factory(settings_sheet, TWO_BUTTON_PMT, tmp_parent);
+	tmp = tmp->next;
+	tmp->next = button_factory(settings_sheet, THREE_BUTTON_PMT, tmp_parent);
+	tmp = tmp->next;
+	tmp->next = button_factory(settings_sheet, FOUR_BUTTON_PMT, tmp_parent);
+	tmp = tmp->next;
+	tmp->next = button_factory(settings_sheet, BEST_BUTTON_PMT, tmp_parent);
+	tmp = tmp->next;
+	tmp->next = button_factory(settings_sheet, CANCEL_BUTTON_PMT, tmp_parent);
+	tmp = tmp->next;
+	tmp->next = button_factory(settings_sheet, START_BUTTON_PMT, tmp_parent);
+
+	return (result);
+}
 gui_chess build_settings_menu()
 {
 	gui_chess result, tmp, tmp_parent;

@@ -131,17 +131,9 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 				return settings;
 			}
 			else if ((x>start_x) && (x<start_x + s_c_width) && (y>start_y) && (y<start_y + s_c_heigth)){
-				if (settings.gameMode == SINGLEPLAYER_MODE) /*comp VS player*/
-				{
-					settings.state = GAME_STATE;
-					return settings;
-				}
-				else
-				{
-					settings.state = SETTINGS_STATE;
-					return settings;
-				}
-			}
+				settings.state = CHOOSE_COLOR_STATE;
+				return settings;
+
 			else
 			{
 				continue;
@@ -153,6 +145,92 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 	return settings;
 }
 
+Settings color_menu_handler(gui_chess root, Settings settings)
+{
+	SDL_Event event;
+	gui_chess tmp, white, black, button_1;
+	int x, y, c_x, c_y, s_x, s_y, bound_x, bound_y, cb_x, cb_y, cb_w, cb_h;
+	int numb_x, numb_y, numb_w, numb_h, best_w, best_h, s_c_w, s_c_h;
+
+	tmp = root->child;
+	bound_x = tmp->box.x;
+	bound_y = tmp->box.y;
+	tmp = tmp->child->next;
+	white = tmp;
+	cb_x = tmp->box.x + bound_x;
+	cb_y = tmp->box.y + bound_y;
+	cb_w = tmp->clip.w;
+	cb_h = tmp->clip.h;
+	tmp = tmp->next;
+	black = tmp;
+	tmp = tmp->next->next;
+	button_1 = tmp;
+	numb_x = tmp->box.x + bound_x;
+	numb_y = tmp->box.y + bound_y;
+	numb_w = tmp->clip.w;
+	numb_h = tmp->clip.h;
+	tmp = tmp->next;
+	tmp = tmp->next;
+	tmp = tmp->next;
+	tmp = tmp->next;
+	best_w = tmp->clip.w;
+	best_h = tmp->clip.h;
+	tmp = tmp->next;
+	c_x = tmp->box.x + bound_x;
+	c_y = tmp->box.y + bound_y;
+	s_c_w = tmp->clip.w;
+	s_c_h = tmp->clip.h;
+	tmp = tmp->next;
+	s_x = tmp->box.x + bound_x;
+	s_y = tmp->box.y + bound_y;
+
+	if (settings.userColor == WHITE_COLOR)
+	{
+		white->clip.y = COLOR_S_BUTTON_Y;
+		black->clip.y = COLOR_BUTTON_Y;
+	}
+	else
+	{
+		white->clip.y = COLOR_BUTTON_Y;
+		black->clip.y = COLOR_S_BUTTON_Y;
+	}
+	blit_tree(root, 0, 0);
+	display_screen();
+	while (true)
+	{
+		//check error
+		SDL_WaitEvent(&event);
+		if (event.type == SDL_QUIT){
+			break;
+		}
+		else if (event.type == SDL_MOUSEBUTTONUP){
+			x = event.button.x;
+			y = event.button.y;
+			if ((x > (cb_x + COLOR_HORIZONTSL_OFFSET)) && (x<(cb_x + cb_w + COLOR_HORIZONTSL_OFFSET)) && (y>cb_y) && (y < cb_y + cb_h))
+			{
+				settings.userColor = BLACK_COLOR;
+				white->clip.y = COLOR_BUTTON_Y;
+				black->clip.y = COLOR_S_BUTTON_Y;
+			}
+			else if ((x > cb_x) && (x<cb_x + cb_w) && (y>cb_y) && (y < cb_y + cb_h)){
+				settings.userColor = WHITE_COLOR;
+				white->clip.y = COLOR_S_BUTTON_Y;
+				black->clip.y = COLOR_BUTTON_Y;
+			}
+			else
+			{
+				continue;
+			}
+			blit_tree(root, 0, 0);
+			display_screen();
+		}
+	}
+	if (settings.gameMode == MULTIPLAYER_MODE)
+		settings.state = GAME_STATE;
+	else
+		settings.state = MODE_SETTINGS_STATE;
+	return settings;
+}
 Settings settings_menu_handler(gui_chess root, Settings settings){
 	SDL_Event event;
 	gui_chess tmp, white, black, button_1;
