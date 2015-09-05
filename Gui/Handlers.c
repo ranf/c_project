@@ -85,7 +85,7 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 	start_y = tmp->box.y + y_bound;
 
 	//replace with Settings
-	if (settings.gameMode = SINGLEPLAYER_MODE})
+	if (settings.gameMode = SINGLEPLAYER_MODE)
 	{
 		pvp->clip.x = PV_BUTTON_X;
 		pvc->clip.x = PV_S_BUTTON_X;
@@ -231,6 +231,7 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 		settings.state = MODE_SETTINGS_STATE;
 	return settings;
 }
+
 Settings settings_menu_handler(gui_chess root, Settings settings){
 	SDL_Event event;
 	gui_chess tmp, white, black, button_1;
@@ -310,42 +311,44 @@ Settings settings_menu_handler(gui_chess root, Settings settings){
 			}
 			else if ((x > numb_x) && (x<numb_x + numb_w) && (y>numb_y) && (y < numb_y + numb_h))
 			{
-				
-				difficulty = 1;
+				settings.minimaxDepth = 1;
 				is_best = 0;
-				update_num_selction(button_1, difficulty);
+				update_num_selction(button_1, settings.minimaxDepth);
 			}
 			else if ((x >(numb_x + NUM_HORIZONTAL_OFFSET)) && (x<(numb_x + numb_w+NUM_HORIZONTAL_OFFSET)) && (y>numb_y) && (y < numb_y + numb_h))
 			{
-				difficulty = 2;
+				settings.minimaxDepth = 2;
 				is_best = 0;
-				update_num_selction(button_1, difficulty);
+				update_num_selction(button_1, settings.minimaxDepth);
 			}
 			else if ((x >(numb_x + 2 * NUM_HORIZONTAL_OFFSET)) && (x<(numb_x + numb_w + 2 * NUM_HORIZONTAL_OFFSET)) && (y>numb_y) && (y < numb_y + numb_h))
 			{
-				difficulty = 3;
+				settings.minimaxDepth = 3;
 				is_best = 0;
-				update_num_selction(button_1, difficulty);
+				update_num_selction(button_1, settings.minimaxDepth);
 			}
 			else if ((x >(numb_x + 3 * NUM_HORIZONTAL_OFFSET)) && (x<(numb_x + numb_w + 3 * NUM_HORIZONTAL_OFFSET)) && (y>numb_y) && (y < numb_y + numb_h))
 			{
-				difficulty = 4;
+				settings.minimaxDepth = 4;
 				is_best = 0;
-				update_num_selction(button_1, difficulty);
+				update_num_selction(button_1, settings.minimaxDepth);
 			}
 			else if ((x >(numb_x + 4 * NUM_HORIZONTAL_OFFSET)) && (x<(numb_x + best_w + 4 * NUM_HORIZONTAL_OFFSET)) && (y>numb_y) && (y < numb_y + best_h))
 			{
-				difficulty = 4;
+				settings.minimaxDepth = 4;
 				is_best = 1;
 				update_num_selction(button_1, 5);
 			}
 			else if ((x > c_x) && (x<c_x + s_c_w) && (y>c_y) && (y < c_y + s_c_h))
 			{
-				return MODE_MENU;
+				settings.gameMode = MODE_SETTINGS_STATE;
+				return settings;
 			}
 			else if ((x > s_x) && (x<s_x + s_c_w) && (y>s_y) && (y < s_y + s_c_h))
 			{
-				return GAME_MENU;
+				//return GAME_MENU;
+				settings.gameMode = GAME_STATE;
+				return settings;
 			}
 			else
 			{
@@ -358,7 +361,7 @@ Settings settings_menu_handler(gui_chess root, Settings settings){
 	return QUIT;
 }
 
-int load_save_menu_handler(gui_chess root, int op){
+Settings load_save_menu_handler(gui_chess root, Settings settings){
 	SDL_Event event;
 	gui_chess tmp, button_1;
 	char mem_slot[MEM_SLOT_FILE_NAME_LENGTH];
@@ -419,16 +422,20 @@ int load_save_menu_handler(gui_chess root, int op){
 			{
 				current_slot = 5;
 			}
-			else if ((x>c_x) && (x<c_x + s_l_x) && (y>c_y) && (y<c_y + s_l_y)){
-				if (op){
+			else if ((x>c_x) && (x<c_x + s_l_x) && (y>c_y) && (y<c_y + s_l_y))
+			{
+				if (settings.state == SAVE_STATE)
+				{
 					return -1;
 				}
 				else{
-					return MAIN_MENU;
+					settings.state = MAIN_MENU_STATE;
+					return settings;
 				}
 			}
 			/*choose button selected*/
-			else if ((x>ch_x) && (x<ch_x + s_l_x) && (y>ch_y) && (y < ch_y + s_l_y)){
+			else if ((x>ch_x) && (x<ch_x + s_l_x) && (y>ch_y) && (y < ch_y + s_l_y))
+			{
 				switch (current_slot)
 					{
 				case 1:
@@ -452,8 +459,8 @@ int load_save_menu_handler(gui_chess root, int op){
 				}
 
 				/*op=1 "save"*/
-				if (op){
-					if (now_playing == WHITE){
+				if (settings.state == SAVE_STATE){
+					if (settings.userColor == WHITE_COLOR){
 						//TODO save settings to XML
 						save_status=save(mem_slot, "White");
 					}
@@ -468,18 +475,22 @@ int load_save_menu_handler(gui_chess root, int op){
 					}
 					display_screen();
 					SDL_Delay(3000);
-					return -1;
+					settings.state = MAIN_MENU_STATE;
+					return settings;
 					/*show massage of saving status*/
 				}
 				else{
 					//todo reolace with loadSettings from XML
-					if (load(mem_slot)){
-						return MODE_MENU;
+					if (load(mem_slot))
+					{
+						settings.state = MODE_MENU_STATE;
+						return settings;
 					}
 					apply_surface(LOAD_FAILED_LABEL_PMT, pieces_sheet, screen);
 					display_screen();
 					SDL_Delay(3000);
-					return LOAD_MENU;
+					settings.state = LOAD_STATE;
+					return settings;
 				}
 			}
 			else{
@@ -490,10 +501,10 @@ int load_save_menu_handler(gui_chess root, int op){
 			display_screen();
 		}
 	}
-	return QUIT;
+	return settings;
 }
 
-int game_menu_handler(gui_chess game_menu, gui_chess save_menu)
+Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings settings)
 {
 	int situation,pos[4];
 	gui_chess tmp;
@@ -507,70 +518,77 @@ int game_menu_handler(gui_chess game_menu, gui_chess save_menu)
 	
 	display_board(game_menu, -1, -1,board);
 	/* p vs c */
-	if (play_mode == 0){
-		if (now_playing == u_color)
+	if (settings.gameMode == SINGLEPLAYER_MODE){
+		if (settings.userColor == u_color)
 		{
 			situation = gui_player_turn(u_color, pos, game_menu, save_menu);
-			if (situation >= 0){
-				return situation;
-			}
-			if (now_playing == BLACK)
+			if (situation >= 0)
 			{
-				now_playing = WHITE;
+				settings.state = situation;
+				return settings;
+				//return situation;
+			}
+			if (settings.userColor == BLACK_COLOR)
+			{
+				settings.userColor = WHITE_COLOR;
 			}
 			else
 			{
-				now_playing = BLACK;
+				settings.userColor = BLACK_COLOR;
 			}
 		}
 		while (true){
 			situation = gui_computer_turn(game_menu);
-			if (now_playing == BLACK)
+			if (settings.userColor == BLACK_COLOR)
 			{
-				now_playing = WHITE;
+				settings.userColor = WHITE_COLOR;
 			}
 			else
 			{
-				now_playing = BLACK;
+				settings.userColor = BLACK_COLOR;
 			}
 			if (situation >= 0)
 			{
-				return situation;
+				settings.state = situation;
+				return settings;
+				//return situation;
 			}
 			situation = gui_player_turn(u_color, pos, game_menu, save_menu);
 			if (situation >= 0){
-				return situation;
+				settings.state = situation;
+				return settings;
 			}
-			if (now_playing == BLACK)
+			if (settings.userColor == BLACK_COLOR)
 			{
-				now_playing = WHITE;
+				settings.userColor = WHITE_COLOR;
 			}
 			else
 			{
-				now_playing = BLACK;
+				settings.userColor = BLACK_COLOR;
 			}
 		}
 	}
 	/*p vs p */
-	if (play_mode == 1){
-		while (TRUE){
-			situation = gui_player_turn(now_playing, pos, game_menu, save_menu);
+	if (settings.gameMode == MULTIPLAYER_MODE){
+		while (true){
+			situation = gui_player_turn(settings.userColor, pos, game_menu, save_menu);
 			if (situation >= 0)
 			{
-				return situation;
+				settings.state = situation;
+				return settings;
 			}
-			if (now_playing == BLACK)
+			if (settings.userColor == BLACK_COLOR)
 			{
-				now_playing = WHITE;
+				settings.userColor = WHITE_COLOR;
 			}
 			else
 			{
-				now_playing = BLACK;
+				settings.userColor = BLACK_COLOR;
 			}
 		}
 	}
 	
-	return QUIT;
+	return settings;
 }
 
 void promotion_handler(gui_chess root, char promote_to[7]){

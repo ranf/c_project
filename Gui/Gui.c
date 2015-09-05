@@ -1,7 +1,7 @@
 #include "Gui.h"
 
 void startGuiMode() {
-	gui_chess main_menu, mode_menu, settings_menu, load_menu, save_menu, game_menu;
+	gui_chess main_menu, mode_menu, settings_menu, load_menu, save_menu, game_menu, set_color;
 
 	main_menu = NULL;
 	mode_menu = NULL;
@@ -9,6 +9,7 @@ void startGuiMode() {
 	load_menu = NULL;
 	save_menu = NULL;
 	game_menu = NULL;
+	set_color = NULL;
 
 	int menu_selection = 1;
 
@@ -38,6 +39,7 @@ void startGuiMode() {
 	save_menu = build_save_menu();
 	load_menu = build_load_menu();
 	game_menu = build_game_menu();
+	set_color = build_color_set_menu();
 	Settings settings = DEFUALT_SETTINGS;
 
 	while (settings.state != TERMINATE_STATE){
@@ -49,6 +51,8 @@ void startGuiMode() {
 		case SAVE_STATE:
 			settings = load_save_menu_handler(load_menu, settings);
 			break;
+		case CHOOSE_COLOR_STATE:
+			settings = color_menu_handler(set_color, settings);
 		case MODE_SETTINGS_STATE:
 			settings = mode_menu_handler(mode_menu, settings);
 			break;
