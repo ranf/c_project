@@ -85,6 +85,8 @@ int apply_board_click(Position clicked, Settings settings, Move* move, bool* mov
 		if (isPawn(board[clicked.x][clicked.y] && endOfBoard(clicked, settings.playingColor))) {
 			gui_chess promote_menu = build_promotion_menu(settings.playingColor);
 			move->promotion = promotion_handler(promote_menu, settings.playingColor);
+			if (move->promotion == NO_PROMOTION) //must promote pawn
+				return GS_QUIT;
 		}
 		move->to = clicked;
 		MoveList* valid_moves = getPieceMoves(settings.board, move->from, true);

@@ -134,7 +134,7 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 			{
 				settings.state = CHOOSE_COLOR_STATE;
 				return settings;
-
+			}
 			else
 			{
 				continue;
@@ -519,22 +519,22 @@ Settings end_of_turn(Settings settings, int situation) {
 	bool check = isInCheck(settings.board, settings.playingColor);
 	bool stuck = !canMove(settings.board, settings.playingColor);
 	if (check && stuck /*mate*/) {
-		apply_surface(CHECKMATE_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
+		apply_surface(CHECKMATE_LABEL, getImage(SELECTED_getImage(PIECES_SHEET)), get_screen());
 		if (settings.playingColor == WHITE_COLOR) {
-			apply_surface(BLACK_MATE_IMG, getImage(SELECTED_PIECES_SHEET), get_screen());
+			apply_surface(BLACK_MATE_IMG, getImage(SELECTED_getImage(PIECES_SHEET)), get_screen());
 		}
 		else {
-			apply_surface(WHITE_MATE_IMG, getImage(SELECTED_PIECES_SHEET), get_screen());
+			apply_surface(WHITE_MATE_IMG, getImage(SELECTED_getImage(PIECES_SHEET)), get_screen());
 		}
 		display_screen();
 		SDL_Delay(2500);
 		settings.state = MAIN_MENU_STATE;
 	} else if (stuck) {
 		// todo - TIE message
-		printMessage(TIE);
+		//printMessage(TIE);
 		settings.state = MAIN_MENU_STATE;
 	} else if (check) {
-		apply_surface(CHECK_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
+		apply_surface(CHECK_LABEL, getImage(SELECTED_getImage(PIECES_SHEET)), get_screen());
 		display_screen();
 		SDL_Delay(2500);
 	}
@@ -543,7 +543,7 @@ Settings end_of_turn(Settings settings, int situation) {
 
 Settings reset_settings(Settings settings) {
 	freeBoard(settings.board);
-	settings = DEFAULT_SETTINGS;
+	settings = (Settings) DEFAULT_SETTINGS;
 	return settings;
 }
 
@@ -562,7 +562,7 @@ char promotion_handler(gui_chess root, int player) {
 	while (true){
 		SDL_WaitEvent(&event); // todo - check return value
 		if (event.type == SDL_QUIT){
-			break;
+			return NO_PROMOTION;
 		}
 		else if (SDL_GetMouseState(&x, &y) & SDL_BUTTON_LMASK) {
 			if ((y > y_bound) && (y < (y_bound + BOARD_SQUARE))){
@@ -642,7 +642,7 @@ void display_board(gui_chess game_menu, int selected_x, int selected_y, char** c
 	int i, j, x, y;
 	SDL_Surface *current_surface;
 
-	current_surface = pieces_sheet;
+	current_surface = getImage(PIECES_SHEET);
 	i = 0;
 	j = 0;
 
@@ -656,48 +656,48 @@ void display_board(gui_chess game_menu, int selected_x, int selected_y, char** c
 			y = (7 - j)*BOARD_SQUARE + BOARD_TOP_CORNER;
 			if (selected_x != i || selected_y != j)
 			{
-				current_surface = pieces_sheet; // just solider on the board
+				current_surface = getImage(PIECES_SHEET); // just solider on the board
 			}
 			else
 			{
-				current_surface = getImage(SELECTED_PIECES_SHEET); // selsected solider on the board
+				current_surface = getImage(SELECTED_getImage(PIECES_SHEET)); // selsected solider on the board
 			}
 			switch (current_board[i][j])
 			{
-			case W_PAWN:
+			case WHITE_P:
 				apply_surface(W_PAWN_PMT, x, y, current_surface, get_screen());
 				break;
-			case W_BISHOP:
+			case WHITE_B:
 				apply_surface(W_BISHOP_PMT, x, y, current_surface, get_screen());
 				break;
-			case W_ROOK:
+			case WHITE_R:
 				apply_surface(W_ROOK_PMT, x, y, current_surface, get_screen());
 				break;
-			case W_KNIGHT:
+			case WHITE_N:
 				apply_surface(W_KNIGHT_PMT, x, y, current_surface, get_screen());
 				break;
-			case W_QUEEN:
+			case WHITE_Q:
 				apply_surface(W_QUEEN_PMT, x, y, current_surface, get_screen());
 				break;
-			case W_KING:
+			case WHITE_K:
 				apply_surface(W_KING_PMT, x, y, current_surface, get_screen());
 				break;
-			case B_PAWN:
+			case BLACK_P:
 				apply_surface(B_PAWN_PMT, x, y, current_surface, get_screen());
 				break;
-			case B_BISHOP:
+			case BLACK_B:
 				apply_surface(B_BISHOP_PMT, x, y, current_surface, get_screen());
 				break;
-			case B_ROOK:
+			case BLACK_R:
 				apply_surface(B_ROOK_PMT, x, y, current_surface, get_screen());
 				break;
-			case B_KNIGHT:
+			case BLACK_N:
 				apply_surface(B_KNIGHT_PMT, x, y, current_surface, get_screen());
 				break;
-			case B_QUEEN:
+			case BLACK_Q:
 				apply_surface(B_QUEEN_PMT, x, y, current_surface, get_screen());
 				break;
-			case B_KING:
+			case BLACK_K:
 				apply_surface(B_KING_PMT, x, y, current_surface, get_screen());
 				break;
 			default:
