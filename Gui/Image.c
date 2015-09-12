@@ -34,7 +34,7 @@ SDL_Surface *getImage(char *path) {
 	} else if (strcmp(path, PIECES_SHEET) == 0) {
 		return pieces_sheet;
 	} else if (strcmp(path, SELECTED_PIECES_SHEET) == 0) {
-		return SELECTED_PIECES_SHEET;
+		return selected_pieces_sheet;
 	} else if (strcmp(path, BACKROUND_IMAGE) == 0) {
 		return backround;
 	}
