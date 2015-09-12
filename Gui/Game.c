@@ -3,8 +3,8 @@
 
 int gui_player_turn(Settings settings, int offsets[4], gui_chess game_menu, gui_chess save_menu)
 {
+	//todo - should probably convert to return settings as well (here and every internal function)
 	SDL_Event event;
-	gui_chess promote_menu;
 	bool moving_piece_selected = false;
 	Position from, to;
 	Move* move = createMove(from, to, NO_PROMOTION);
@@ -52,7 +52,7 @@ int apply_player_click(Settings settings, SDL_Event event, int offsets[4],
 		return GS_MAIN_MENU;
 	}
 	if (player_clicked_save(x, y, offsets)) {
-		load_save_menu_handler(save_menu, 1);
+		load_save_menu_handler(save_menu, settings); //todo - use settings return value
 		moving_piece_selected = false;
 		display_board(game_menu, -1, -1, settings.board);
 		return GS_PLAYER_TURN;
@@ -65,12 +65,12 @@ int apply_player_click(Settings settings, SDL_Event event, int offsets[4],
 	}
 	if (player_clicked_board(x, y ,offsets)) {
 		Position clicked = board_clicked_position(x, y);
-		return apply_board_click(clicked, settings,move, moving_piece_selected);
+		return apply_board_click(game_menu, clicked, settings,move, moving_piece_selected);
 	}
 	return GS_PLAYER_TURN;
 }
 
-int apply_board_click(Position clicked, Settings settings, Move* move, bool* moving_piece_selected)
+int apply_board_click(gui_chess game_menu, Position clicked, Settings settings, Move* move, bool* moving_piece_selected)
 {
 	if (pieceOwner(settings.board[clicked.x][clicked.y]) == settings.playingColor) {
 		move->from = clicked;
