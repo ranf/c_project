@@ -6,6 +6,7 @@
 #include "Frame.h"
 #include "Image.h"
 #include "Build.h"
+#include "Handlers.h"
 #include "../Common/Settings.h"
 
 /*screen size*/

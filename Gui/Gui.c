@@ -22,7 +22,7 @@ void startGuiMode() {
 
 	if (screen == NULL) 
 	{
-		fprintf("ERROR: failed to set video mode: %s\n", SDL_GetError());
+		fprintf(stderr, "ERROR: failed to set video mode: %s\n", SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
 	SDL_WM_SetCaption("Chess Game GUI mode", NULL); /* sets the window's name*/
@@ -37,12 +37,12 @@ void startGuiMode() {
 	game_menu = build_game_menu();
 	set_color = build_color_set_menu();
 
-	Settings settings = DEFUALT_SETTINGS;
-	settings.state = MENU_STATE;
+	Settings settings = DEFAULT_SETTINGS;
+	settings.state = MAIN_MENU_STATE;
 
 	while (settings.state != TERMINATE_STATE){
 		switch (settings.state){
-		case MENU_STATE:
+		case MAIN_MENU_STATE:
 			settings = main_menu_handler(main_menu, settings);
 			break;
 		case LOAD_STATE:
