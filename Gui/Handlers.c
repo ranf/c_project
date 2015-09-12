@@ -519,12 +519,12 @@ Settings end_of_turn(Settings settings, int situation) {
 	bool check = isInCheck(settings.board, settings.playingColor);
 	bool stuck = !canMove(settings.board, settings.playingColor);
 	if (check && stuck /*mate*/) {
-		apply_surface(CHECKMATE_LABEL, getImage(SELECTED_getImage(PIECES_SHEET)), get_screen());
+		apply_surface(CHECKMATE_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
 		if (settings.playingColor == WHITE_COLOR) {
-			apply_surface(BLACK_MATE_IMG, getImage(SELECTED_getImage(PIECES_SHEET)), get_screen());
+			apply_surface(BLACK_MATE_IMG, getImage(SELECTED_PIECES_SHEET), get_screen());
 		}
 		else {
-			apply_surface(WHITE_MATE_IMG, getImage(SELECTED_getImage(PIECES_SHEET)), get_screen());
+			apply_surface(WHITE_MATE_IMG, getImage(SELECTED_PIECES_SHEET), get_screen());
 		}
 		display_screen();
 		SDL_Delay(2500);
@@ -534,7 +534,7 @@ Settings end_of_turn(Settings settings, int situation) {
 		//printMessage(TIE);
 		settings.state = MAIN_MENU_STATE;
 	} else if (check) {
-		apply_surface(CHECK_LABEL, getImage(SELECTED_getImage(PIECES_SHEET)), get_screen());
+		apply_surface(CHECK_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
 		display_screen();
 		SDL_Delay(2500);
 	}
@@ -660,7 +660,7 @@ void display_board(gui_chess game_menu, int selected_x, int selected_y, char** c
 			}
 			else
 			{
-				current_surface = getImage(SELECTED_getImage(PIECES_SHEET)); // selsected solider on the board
+				current_surface = getImage(SELECTED_PIECES_SHEET); // selsected solider on the board
 			}
 			switch (current_board[i][j])
 			{
