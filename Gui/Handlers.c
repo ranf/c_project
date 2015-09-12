@@ -197,7 +197,7 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 	display_screen();
 	while (true)
 	{
-		//check error
+		//todo check error
 		SDL_WaitEvent(&event);
 		if (event.type == SDL_QUIT){
 			break;

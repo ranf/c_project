@@ -21,4 +21,17 @@
 #define BOARD_BOTTOM_CORNER 562
 #define BOARD_SQUARE 66
 
+
+Settings main_menu_handler(gui_chess gui_window, Settings settings);
+Settings mode_menu_handler(gui_chess root, Settings settings);
+Settings color_menu_handler(gui_chess root, Settings settings);
+Settings settings_menu_handler(gui_chess root, Settings settings);
+Settings load_save_menu_handler(gui_chess root, Settings settings);
+Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings settings);
+Settings end_of_turn(Settings settings, int situation);
+Settings reset_settings(Settings settings);
+char promotion_handler(gui_chess root, int player);
+void blit_tree(gui_chess start_point, int x, int y);
+void display_board(gui_chess game_menu, int selected_x, int selected_y, char** current_board);
+
 #endif
