@@ -6,7 +6,7 @@ gui_chess build_main_menu()
 {
 	gui_chess result, tmp, tmp_parent;
 
-	result = window_factory(getImage(BACKGROUND_IMAGE); /* set backround image */
+	result = window_factory(getImage(BACKGROUND_IMAGE));
 	tmp = result;
 	tmp->child = panel_factory(getImage(PANELS_SHEET), FISH_PANEL_PMT, tmp);
 	tmp = tmp->child;
@@ -19,7 +19,7 @@ gui_chess build_main_menu()
 	tmp = tmp->next;
 	tmp->next = button_factory(getImage(SETTINGS_SHEET), QUIT_BUTTON_PMT, tmp_parent);
 
-	return (result);
+	return result;
 }
 
 gui_chess build_mode_menu()

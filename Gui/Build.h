@@ -3,6 +3,7 @@
 
 #include "Image.h"
 #include "ElementFactory.h"
+#include "../Common/Board.h"
 
 /*check & mate labels parameters*/
 #define CHECKMATE_LABEL 119,117,325,49,170,150
