@@ -9,7 +9,7 @@
 #define SETTINGS_SHEET "Gui/Images/settings sheet.bmp"
 #define PIECES_SHEET "Gui/Images/pieces sheet.bmp"
 #define SELECTED_PIECES_SHEET "Gui/Images/selected pieces sheet.bmp"
-#define BACKROUND_IMAGE "Gui/Images/back.bmp"
+#define BACKGROUND_IMAGE "Gui/Images/back.bmp"
 
 void loadImages();
 void freeImages();

@@ -13,7 +13,7 @@ void loadImages() {
 	settings_sheet = load_link_image(SETTINGS_SHEET);
 	pieces_sheet = load_link_image(PIECES_SHEET);
 	selected_pieces_sheet = load_link_image(SELECTED_PIECES_SHEET);
-	backround = load_link_image(BACKROUND_IMAGE);
+	backround = load_link_image(BACKGROUND_IMAGE);
 }
 
 void freeImages() {
@@ -35,7 +35,7 @@ SDL_Surface *getImage(char *path) {
 		return pieces_sheet;
 	} else if (strcmp(path, SELECTED_PIECES_SHEET) == 0) {
 		return selected_pieces_sheet;
-	} else if (strcmp(path, BACKROUND_IMAGE) == 0) {
+	} else if (strcmp(path, BACKGROUND_IMAGE) == 0) {
 		return backround;
 	}
 	return NULL; //should never happen
