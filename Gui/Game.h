@@ -3,6 +3,9 @@
 
 #include "../Common/Move.h"
 #include "../Common/Settings.h"
+#include "../Common/Minimax.h"
+#include "Frame.h"
+#include "Image.h"
 
 /* Game states*/
 #define GS_PLAYER_TURN 1

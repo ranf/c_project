@@ -12,7 +12,7 @@ int gui_player_turn(Settings settings, int offsets[4], gui_chess game_menu, gui_
 
 	while (game_state == GS_PLAYER_TURN) {
 		if (SDL_WaitEvent(&event) == 0) {
-			fprintf("ERROR: SDL_WaitEvent failed: %s\n", SDL_GetError());
+			fprintf(stderr, "ERROR: SDL_WaitEvent failed: %s\n", SDL_GetError());
 			exit(EXIT_FAILURE);
 		}
 		game_state = apply_player_click(settings, event, offsets,
@@ -54,7 +54,7 @@ int apply_player_click(Settings settings, SDL_Event event, int offsets[4],
 	if (player_clicked_save(x, y, offsets)) {
 		load_save_menu_handler(save_menu, 1);
 		moving_piece_selected = false;
-		display_board(game_menu, -1, -1,board);
+		display_board(game_menu, -1, -1, settings.board);
 		return GS_PLAYER_TURN;
 	}
 	if (player_clicked_restart(x, y, offsets)) {
@@ -72,17 +72,17 @@ int apply_player_click(Settings settings, SDL_Event event, int offsets[4],
 
 int apply_board_click(Position clicked, Settings settings, Move* move, bool* moving_piece_selected)
 {
-	if (pieceOwner(board[clicked.x][clicked.y]) == settings.playingColor) {
+	if (pieceOwner(settings.board[clicked.x][clicked.y]) == settings.playingColor) {
 		move->from = clicked;
 		move->promotion = NO_PROMOTION;
 		*moving_piece_selected = true;
 		display_board(game_menu, move->from.x, move->from.y, settings.board);
-		MoveList* moves = getPieceMoves(board, clicked, true);
+		MoveList* moves = getPieceMoves(settings.board, clicked, true);
 		show_possible_moves(moves);
 		freeMoves(moves);
 		display_screen();
 	} else if (*moving_piece_selected) {
-		if (isPawn(board[clicked.x][clicked.y] && endOfBoard(clicked, settings.playingColor))) {
+		if (isPawn(settings.board[clicked.x][clicked.y] && endOfBoard(clicked, settings.playingColor))) {
 			gui_chess promote_menu = build_promotion_menu(settings.playingColor);
 			move->promotion = promotion_handler(promote_menu, settings.playingColor);
 			if (move->promotion == NO_PROMOTION) //must promote pawn
@@ -92,7 +92,7 @@ int apply_board_click(Position clicked, Settings settings, Move* move, bool* mov
 		MoveList* valid_moves = getPieceMoves(settings.board, move->from, true);
 		if (moveIsInList(valid_moves, move)) {
 			settings.board = applyMove(settings.board, move);
-			display_board(game_menu, -1, -1,board);
+			display_board(game_menu, -1, -1, settings.board);
 			freeMoves(valid_moves);
 			return GS_PLAYER_FINISHED;
 		}
@@ -106,8 +106,8 @@ void show_possible_moves(MoveList* moves)
 	MoveList* head = moves;
 	while (head != NULL){
 		apply_surface(GET_MOVES_SELECT_SQURE, BOARD_SQUARE, BOARD_SQUARE, 
-			head->data.to.x * BOARD_SQUARE + BOARD_TOP_CORNER, 
-			(7 - head->data.to.y)*BOARD_SQUARE + BOARD_TOP_CORNER, selected_pieces_sheet, screen);
+			head->data->to.x * BOARD_SQUARE + BOARD_TOP_CORNER, 
+			(7 - head->data->to.y)*BOARD_SQUARE + BOARD_TOP_CORNER, getImage(SELECTED_PIECES_SHEET), get_screen());
 		//todo replace 7 with meaningful const
 		head = head->next;
 	}
