@@ -17,7 +17,6 @@ void loadImages() {
 }
 
 void freeImages() {
-	SDL_FreeSurface(screen);
 	SDL_FreeSurface(main_img);
 	SDL_FreeSurface(panels_sheet);
 	SDL_FreeSurface(settings_sheet);
