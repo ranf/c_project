@@ -2,6 +2,11 @@
 #define GUI_FRAME_H
 
 #include <SDL.h>
+#include <SDL_video.h>
+
+/*screen size*/
+#define WIN_W 800
+#define WIN_H 600
 
 typedef struct game_frame{
 	

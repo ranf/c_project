@@ -18,15 +18,7 @@ void startGuiMode() {
 	}
 	atexit(SDL_Quit);
 
-	SDL_Surface *screen = SDL_SetVideoMode(WIN_W, WIN_H, 0, SDL_HWSURFACE | SDL_DOUBLEBUF);
-
-	if (screen == NULL) 
-	{
-		fprintf(stderr, "ERROR: failed to set video mode: %s\n", SDL_GetError());
-		exit(EXIT_FAILURE);
-	}
-	SDL_WM_SetCaption("Chess Game GUI mode", NULL); /* sets the window's name*/
-
+	create_screen();
 	loadImages();
 
 	main_menu = build_main_menu();
@@ -70,5 +62,5 @@ void startGuiMode() {
 	if (settings.board != NULL)
 		freeBoard(settings.board);
 	freeImages();
-	SDL_FreeSurface(screen);
+	free_screen();
 }

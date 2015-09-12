@@ -9,10 +9,6 @@
 #include "Handlers.h"
 #include "../Common/Settings.h"
 
-/*screen size*/
-#define WIN_W 800
-#define WIN_H 600
-
 
 void startGuiMode();
 
