@@ -487,54 +487,68 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 
 	tmp = game_menu;
 	tmp = tmp->child;
+	//todo replace pos with meaningful struct/existing data. used combination of box+clip is not clear.
 	pos[0] = tmp->box.x;
 	pos[1] = tmp->box.y;
 	pos[2] = tmp->clip.w;
 	pos[3] = tmp->clip.h;
 	
 	display_board(game_menu, -1, -1,settings.board);
-	/* p vs c */
-	if (settings.gameMode == SINGLEPLAYER_MODE) {
-		while (true) {
-			if (settings.userColor == settings.playingColor)
-			{
-				situation = gui_player_turn(settings.playingColor, pos, game_menu, save_menu);
-				if (situation >= 0)
-				{
-					settings.state = situation;
-					return settings;
-				}
-				settings.playingColor = otherPlayer(settings.playingColor);
-			}
-			else
-			{
-				situation = gui_computer_turn(game_menu);
-				settings.playingColor = otherPlayer(settings.playingColor);
-				if (situation >= 0)
-				{
-					settings.state = situation;
-					return settings;
-				}
-			}
-		}
-	}
-	/*p vs p */
-	if (settings.gameMode == MULTIPLAYER_MODE){
-		while (true){
-			situation = gui_player_turn(settings.playingColor, pos, game_menu, save_menu);
-			if (situation >= 0)
-			{
-				settings.state = situation;
-				return settings;
-			}
-			settings.playingColor = otherPlayer(settings.playingColor);
-		}
-	}
 	
+	while (settings.state == GAME_STATE) {
+		int situation = settings.gameMode == MULTIPLAYER_MODE || settings.userColor == settings.playingColor
+			? gui_player_turn(settings, pos, game_menu, save_menu)
+			: gui_computer_turn(settings, game_menu);
+		settings = end_of_turn(settings, situation);
+	}
 	return settings;
 }
 
-void promotion_handler(gui_chess root, char promote_to[7]){
+Settings end_of_turn(Settings settings, int situation) {
+	if (situation == GS_MAIN_MENU || situation == GS_RESTART /*todo fix restart logic*/) {
+		settings = reset_settings(settings);
+		settings.state = MAIN_MENU_STATE;
+		return settings;
+	}
+	if (situation == GS_QUIT) {
+		settings.state = TERMINATE_STATE;
+		return settings;
+	}
+
+	settings.playingColor = otherPlayer(settings.playingColor);
+	bool check = isInCheck(settings.board, settings.playingColor);
+	bool stuck = !canMove(settings.board, settings.playingColor);
+	if (check && stuck /*mate*/) {
+		apply_surface(CHECKMATE_LABEL, selected_pieces_sheet, screen);
+		if (settings.playingColor == WHITE_COLOR) {
+			apply_surface(BLACK_MATE_IMG, selected_pieces_sheet, screen);
+		}
+		else {
+			apply_surface(WHITE_MATE_IMG, selected_pieces_sheet, screen);
+		}
+		display_screen();
+		SDL_Delay(2500);
+		settings.state = MAIN_MENU_STATE;
+	} else if (stuck) {
+		// todo - TIE message
+		printMessage(TIE);
+		settings.state = MAIN_MENU_STATE;
+	} else if (check) {
+		apply_surface(CHECK_LABEL, selected_pieces_sheet, screen);
+		display_screen();
+		SDL_Delay(2500);
+		display_board(game_menu, -1, -1, settings.board);
+	}
+	return settings;
+}
+
+Settings reset_settings(Settings settings) {
+	freeBoard(settings.board);
+	settings = DEFUALT_SETTINGS;
+	return settings;
+}
+
+char promotion_handler(gui_chess root, int player) {
 	gui_chess tmp;
 	SDL_Event event;
 	int x, y, x_bound, y_bound;
@@ -547,27 +561,23 @@ void promotion_handler(gui_chess root, char promote_to[7]){
 	y_bound = tmp->box.y + PROMOTE_FIRST_POS_Y;
 	
 	while (true){
-		SDL_WaitEvent(&event);
+		SDL_WaitEvent(&event); // todo - check return value
 		if (event.type == SDL_QUIT){
 			break;
 		}
 		else if (SDL_GetMouseState(&x, &y) & SDL_BUTTON_LMASK) {
 			if ((y > y_bound) && (y < (y_bound + BOARD_SQUARE))){
-				if ((x > x_bound) && (x<(x_bound + BOARD_SQUARE))){
-					strcpy(promote_to, "queen");
-					return;
+				if ((x > x_bound) && (x<(x_bound + BOARD_SQUARE))) {
+					return player == WHITE_COLOR ? WHITE_Q : BLACK_Q;
 				}
-				if ((x >(x_bound + PROMOTE_OFFSET)) && (x<(x_bound + BOARD_SQUARE + PROMOTE_OFFSET))){
-					strcpy(promote_to, "rook");
-					return;
+				if ((x >(x_bound + PROMOTE_OFFSET)) && (x<(x_bound + BOARD_SQUARE + PROMOTE_OFFSET))) {
+					return player == WHITE_COLOR ? WHITE_R : BLACK_R;
 				}
 				if ((x >(x_bound + 2 * PROMOTE_OFFSET)) && (x<(x_bound + BOARD_SQUARE + 2 * PROMOTE_OFFSET))){
-					strcpy(promote_to, "bishop");
-					return;
+					return player == WHITE_COLOR ? WHITE_B : BLACK_B;
 				}
 				if ((x >(x_bound + 3 * PROMOTE_OFFSET)) && (x < (x_bound + BOARD_SQUARE + 3 * PROMOTE_OFFSET))){
-					strcpy(promote_to, "knight");
-					return;
+					return player == WHITE_COLOR ? WHITE_N : BLACK_N;
 				}
 			}
 		}

@@ -1,180 +1,102 @@
 #include "Game.h"
 
 
-int gui_player_turn(int current_color, int offsets[4], gui_chess game_menu, gui_chess save_menu)
+int gui_player_turn(Settings settings, int offsets[4], gui_chess game_menu, gui_chess save_menu)
 {
-	pboard_node moves_list,tmp_move;
 	SDL_Event event;
 	gui_chess promote_menu;
-	char promoted_to[7];
-	int x, y, is_first = 1;
-	int first_i, first_j, second_i, second_j;
+	bool moving_piece_selected = false;
+	Position from, to;
+	Move* move = createMove(from, to, NO_PROMOTION);
+	int game_state = GS_PLAYER_TURN;
 
-	moves_list = NULL;
-	//todo replace with real ischeck+ismate
-	if (is_mate(board, current_color, kings_positions)){
-		apply_surface(CHECKMATE_LABEL, selected_pieces_sheet, screen);
-		if (current_color == WHITE){
-			apply_surface(BLACK_MATE_IMG, selected_pieces_sheet, screen);
+	while (game_state == GS_PLAYER_TURN) {
+		if (SDL_WaitEvent(&event) == 0) {
+			fprintf("ERROR: SDL_WaitEvent failed: %s\n", SDL_GetError());
+			exit(EXIT_FAILURE);
 		}
-		else{
-			apply_surface(WHITE_MATE_IMG, selected_pieces_sheet, screen);
-		}
-		display_screen();
-		SDL_Delay(2500);
-		return MAIN_MENU;
+		game_state = apply_player_click(settings, event, offsets,
+			game_menu, save_menu, &moving_piece_selected, move);
 	}
-
-	if (is_check(board, current_color, kings_positions)){
-		apply_surface(CHECK_LABEL, selected_pieces_sheet, screen);
-		display_screen();
-		SDL_Delay(2500);
-		display_board(game_menu, -1, -1,board);
-	}
-
-	while (true){
-		SDL_WaitEvent(&event);
-		if (event.type == SDL_QUIT){
-			return QUIT;
-		}
-
-		else if (event.type == SDL_MOUSEBUTTONUP){
-			x = event.button.x;
-			y = event.button.y;
-					/*if the mouse clicked in the buttons zone*/
-			if ((x > offsets[0]) && (x < (offsets[0] + offsets[2]))){
-						/*main menu button selected*/
-				if ((y>offsets[1]) && (y < (offsets[1] + offsets[3]))){
-					return MAIN_MENU;
-				}
-						/*save button selected*/
-				else if ((y>(offsets[1] + GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + GAME_MENU_VERTICAL_OFFSET))){
-					load_save_menu_handler(save_menu, 1);
-					is_first = 1;
-					display_board(game_menu, -1, -1,board);
-				}
-						/*restart button selected*/
-				else if ((y>(offsets[1] + 2 * GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + 2 * GAME_MENU_VERTICAL_OFFSET))){
-					now_playing = WHITE;
-					init_board();
-					return GAME_MENU;
-				}
-						/*quit button selected*/
-				else if ((y>QUIT_SIDE_Y) && (y < (QUIT_SIDE_Y + offsets[3]))){
-					return QUIT;
-				}
-			}
-			else if ((x>BOARD_TOP_CORNER) && (x<BOARD_BOTTOM_CORNER) && (y>BOARD_TOP_CORNER) && (y < BOARD_BOTTOM_CORNER)){
-				//first click is source and second is target
-				if (is_first){
-					first_i = (x - BOARD_TOP_CORNER) / BOARD_SQUARE;
-					first_j = 7 - ((y - BOARD_TOP_CORNER) / BOARD_SQUARE);
-					//todo use piece color
-					if (is_friendly(current_color, board[first_i][first_j])){
-						//reaplace with getPieceMoves
-						moves_list = piece_move(board, current_color, first_i, first_j, kings_positions);
-						is_first = 0;
-						display_board(game_menu, first_i, first_j,board);
-						if (get_moves_allowed){
-							show_possible_moves(moves_list);
-							display_screen();
-						}
-					}
-				}
-				else{
-					second_i = (x - BOARD_TOP_CORNER) / BOARD_SQUARE;
-					second_j = 7 - ((y - BOARD_TOP_CORNER) / BOARD_SQUARE);
-					if (is_friendly(current_color, board[second_i][second_j])){
-						first_i = second_i;
-						first_j = second_j;
-						free(moves_list);
-						moves_list = piece_move(board, current_color, first_i, first_j, kings_positions);
-						display_board(game_menu, first_i, first_j,board);
-						if (get_moves_allowed){
-							show_possible_moves(moves_list);
-							display_screen();
-						}
-					}
-					else{
-								/*check if the moving piece is a pawn*/
-						if (tolower(board[first_i][first_j]) == 'm'){
-									/*check if the pawn get a promotion*/
-
-							if ((second_j % 7) == 0){
-								if (player_move(board, first_i, first_j, second_i, second_j, promoted_to, moves_list, current_color))
-								{
-									promote_menu = build_promotion_menu(now_playing);
-									promotion_handler(promote_menu, promoted_to);
-									board[first_i][first_j] = 'm';
-						}
-					}
-				}
-				if (player_move(board, first_i, first_j, second_i, second_j, promoted_to, moves_list, current_color)){
-					display_board(game_menu, -1, -1,board);
-					free_list(moves_list);
-					return -1;
-				}
-				free_list(moves_list);
-			}
-
-		}
-	}
-
-		}
-	}
+	freeMove(move);
+	return game_state;
 }
 
-int gui_computer_turn(gui_chess game_menu)
+int gui_computer_turn(Settings settings, gui_chess game_menu)
 {
-	//todo convert function to use Settings
-	pboard_node com_move;
-	char tmp_board[BOARD_SIZE][BOARD_SIZE];
-	int i, j;
-	bool check;
-	check = true;
-	if (u_color == WHITE)
-		u_color = BLACK;
-	else
-		u_color = WHITE;
-
-	if (is_mate(board, u_color)) {
-		apply_surface(CHECKMATE_LABEL, selected_pieces_sheet, screen);
-		if (-1 * u_color == WHITE) {
-			apply_surface(BLACK_MATE_IMG, selected_pieces_sheet, screen);
-		}
-		else {
-			apply_surface(WHITE_MATE_IMG, selected_pieces_sheet, screen);
-		}
-		display_screen();
-		SDL_Delay(2500);
-		return MAIN_MENU;
-	}
-	if (is_check(board, u_color)){
-		apply_surface(CHECK_LABEL, selected_pieces_sheet, screen);
-		display_screen();
-		SDL_Delay(2500);
-		display_board(game_menu, -1, -1, board);
-	}
-	
-	//todo use copyBoard
-	for (i = 0; i < BOARD_SIZE; i++){
-		for (j = 0; j < BOARD_SIZE; j++){
-			tmp_board[i][j] = board[i][j];
-		}
-	}
-	if (u_color == WHITE)
-		u_color = BLACK;
-	else
-		u_color = WHITE;
-	//todo use getMinimaxMove
-	com_move = computer_move(board, u_color);
-	display_board(game_menu, com_move->moved_from[0], com_move->moved_from[1], tmp_board);
+	Move* com_move = getMinimaxMove(settings.board, settings.playingColor, settings.minimaxDepth);
+	char** temp_board = copyBoard(settings.board);
+	settings.board = applyMove(settings.board, com_move);
+	display_board(game_menu, com_move->from.x, com_move->from.y, temp_board);
 	SDL_Delay(1500);
-	display_board(game_menu, -1, -1,board);
+	display_board(game_menu, -1, -1, settings.board);
 
-	free(com_move);
+	freeMove(com_move);
+	freeBoard(temp_board);
+	return GS_PLAYER_TURN;
+}
 
-	return -1;
+int apply_player_click(Settings settings, SDL_Event event, int offsets[4],
+	gui_chess game_menu, gui_chess save_menu, bool* moving_piece_selected, Move* move)
+{
+	if (event.type == SDL_QUIT) {
+		return GS_QUIT;
+	}
+	if (event.type != SDL_MOUSEBUTTONUP) {
+		return GS_PLAYER_TURN;
+	}
+	//Mouse Click
+	int x = event.button.x;
+	int y = event.button.y;
+	if (player_clicked_main_menu(x, y, offsets)) {
+		return GS_MAIN_MENU;
+	}
+	if (player_clicked_save(x, y, offsets)) {
+		load_save_menu_handler(save_menu, 1);
+		moving_piece_selected = false;
+		display_board(game_menu, -1, -1,board);
+		return GS_PLAYER_TURN;
+	}
+	if (player_clicked_restart(x, y, offsets)) {
+		return GS_RESTART;
+	}
+	if (player_clicked_quit(x, y, offsets)) {
+		return GS_QUIT;
+	}
+	if (player_clicked_board(x, y ,offsets)) {
+		Position clicked = board_clicked_position(x, y);
+		return apply_board_click(clicked, settings,move, moving_piece_selected);
+	}
+	return GS_PLAYER_TURN;
+}
+
+int apply_board_click(Position clicked, Settings settings, Move* move, bool* moving_piece_selected)
+{
+	if (pieceOwner(board[clicked.x][clicked.y]) == settings.playingColor) {
+		move->from = clicked;
+		move->promotion = NO_PROMOTION;
+		*moving_piece_selected = true;
+		display_board(game_menu, move->from.x, move->from.y, settings.board);
+		MoveList* moves = getPieceMoves(board, clicked, true);
+		show_possible_moves(moves);
+		freeMoves(moves);
+		display_screen();
+	} else if (*moving_piece_selected) {
+		if (isPawn(board[clicked.x][clicked.y] && endOfBoard(clicked, settings.playingColor))) {
+			gui_chess promote_menu = build_promotion_menu(settings.playingColor);
+			move->promotion = promotion_handler(promote_menu, settings.playingColor);
+		}
+		move->to = clicked;
+		MoveList* valid_moves = getPieceMoves(settings.board, move->from, true);
+		if (moveIsInList(valid_moves, move)) {
+			settings.board = applyMove(settings.board, move);
+			display_board(game_menu, -1, -1,board);
+			freeMoves(valid_moves);
+			return GS_PLAYER_FINISHED;
+		}
+		freeMoves(valid_moves);
+	}
+	return GS_PLAYER_TURN;
 }
 
 void show_possible_moves(MoveList* moves)
@@ -184,6 +106,52 @@ void show_possible_moves(MoveList* moves)
 		apply_surface(GET_MOVES_SELECT_SQURE, BOARD_SQUARE, BOARD_SQUARE, 
 			head->data.to.x * BOARD_SQUARE + BOARD_TOP_CORNER, 
 			(7 - head->data.to.y)*BOARD_SQUARE + BOARD_TOP_CORNER, selected_pieces_sheet, screen);
+		//todo replace 7 with meaningful const
 		head = head->next;
 	}
+}
+
+bool player_clicked_buttons_zone(int x, int offsets[4])
+{
+	return x > offsets[0] && x < offsets[0] + offsets[2];
+}
+
+bool player_clicked_main_menu(int x, int y, int offsets[4])
+{
+	return player_clicked_buttons_zone(x,offsets) &&
+		y > offsets[1] && y < offsets[1] + offsets[3];
+}
+
+bool player_clicked_save(int x, int y, int offsets[4])
+{
+	return player_clicked_buttons_zone(x,offsets) &&
+		y > offsets[1] + GAME_MENU_VERTICAL_OFFSET &&
+		y < offsets[1] + offsets[3] + GAME_MENU_VERTICAL_OFFSET;
+}
+
+bool player_clicked_restart(int x, int y, int offsets[4])
+{
+	return player_clicked_buttons_zone(x,offsets) &&
+		y > offsets[1] + 2 * GAME_MENU_VERTICAL_OFFSET &&
+		y < offsets[1] + offsets[3] + 2 * GAME_MENU_VERTICAL_OFFSET;
+}
+
+bool player_clicked_quit(int x, int y, int offsets[4])
+{
+	return player_clicked_buttons_zone(x,offsets) &&
+		y > QUIT_SIDE_Y && y < QUIT_SIDE_Y + offsets[3];
+}
+
+bool player_clicked_board(int x, int y, int offsets[4])
+{
+	return x > BOARD_TOP_CORNER && x < BOARD_BOTTOM_CORNER &&
+		y > BOARD_TOP_CORNER && y < BOARD_BOTTOM_CORNER;
+}
+
+Position board_clicked_position(int x, int y)
+{
+	Position p;
+	p.x = (x - BOARD_TOP_CORNER) / BOARD_SQUARE;
+	p.y = 7 - ((y - BOARD_TOP_CORNER) / BOARD_SQUARE);
+	return p;
 }
