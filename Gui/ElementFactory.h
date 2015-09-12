@@ -3,6 +3,11 @@
 
 #include "Frame.h"
 
+/*type of conrolers*/
+#define WINDOW 1
+#define PANEL 2
+#define LABEL 3
+#define BUTTON 4
 
 gui_chess window_factory(SDL_Surface* win_img);
 gui_chess panel_factory(SDL_Surface* pnl_img, int sheet_x_offset, int sheet_y_offset, 

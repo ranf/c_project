@@ -74,7 +74,7 @@ gui_chess build_diffculty_menu()
 	tmp = result;
 	tmp->child = panel_factory(getImage(PANELS_SHEET), FISH_PANEL_PMT, tmp);
 	tmp = tmp->child;
-	tmp->child = label_factory(getImage(SETTINGS_SHEET), DIFFICULTY_LABEL_PMT, tmp_parent);
+	tmp->child = label_factory(getImage(SETTINGS_SHEET), DIFFICULTY_LABEL_PMT, tmp_parent/*todo fix used uninitialized warning*/);
 	tmp_parent = tmp;
 	tmp = tmp->child;
 	tmp->next = button_factory(getImage(SETTINGS_SHEET), ONE_S_BUTTON_PMT, tmp_parent);
