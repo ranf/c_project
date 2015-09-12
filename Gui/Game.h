@@ -2,6 +2,7 @@
 #define GUI_GAME_H
 
 #include "../Common/Move.h"
+#include "../Common/Settings.h"
 
 /* Game states*/
 #define GS_PLAYER_TURN 1
@@ -23,5 +24,7 @@ bool player_clicked_restart(int x, int y, int offsets[4]);
 bool player_clicked_quit(int x, int y, int offsets[4]);
 bool player_clicked_board(int x, int y, int offsets[4]);
 Position board_clicked_position(int x, int y);
+
+#include "Handlers.h"
 
 #endif
