@@ -84,7 +84,7 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 	start_x = tmp->box.x + x_bound;
 	start_y = tmp->box.y + y_bound;
 
-	if (settings.gameMode = SINGLEPLAYER_MODE)
+	if (settings.gameMode == SINGLEPLAYER_MODE)
 	{
 		pvp->clip.x = PV_BUTTON_X;
 		pvc->clip.x = PV_S_BUTTON_X;
@@ -109,7 +109,8 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 		else if (event.type == SDL_MOUSEBUTTONUP){
 			x = event.button.x;
 			y = event.button.y;
-			if ((x>p_vs_c_x) && (x<p_vs_c_x + width) && (y>p_vs_c_y) && (y<p_vs_c_y + heigth)){
+			if ((x>p_vs_c_x) && (x<p_vs_c_x + width) && (y>p_vs_c_y) && (y<p_vs_c_y + heigth))
+			{
 				settings.gameMode = SINGLEPLAYER_MODE;
 				pvp->clip.x = PV_BUTTON_X;
 				pvc->clip.x = PV_S_BUTTON_X;
@@ -125,11 +126,12 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 			else if ((x>c_x) && (x<c_x + s_c_width) && (y>c_y) && (y<c_y + s_c_heigth))
 			{
 				freeBoard(settings.board);
-				settings = DEFAULT_SETTINGS;
+				settings = (Settings) DEFAULT_SETTINGS;
 				settings.state = MAIN_MENU_STATE;
 				return settings;
 			}
-			else if ((x>start_x) && (x<start_x + s_c_width) && (y>start_y) && (y<start_y + s_c_heigth)){
+			else if ((x>start_x) && (x<start_x + s_c_width) && (y>start_y) && (y<start_y + s_c_heigth))
+			{
 				settings.state = CHOOSE_COLOR_STATE;
 				return settings;
 
@@ -517,12 +519,12 @@ Settings end_of_turn(Settings settings, int situation) {
 	bool check = isInCheck(settings.board, settings.playingColor);
 	bool stuck = !canMove(settings.board, settings.playingColor);
 	if (check && stuck /*mate*/) {
-		apply_surface(CHECKMATE_LABEL, selected_pieces_sheet, get_screen());
+		apply_surface(CHECKMATE_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
 		if (settings.playingColor == WHITE_COLOR) {
-			apply_surface(BLACK_MATE_IMG, selected_pieces_sheet, get_screen());
+			apply_surface(BLACK_MATE_IMG, getImage(SELECTED_PIECES_SHEET), get_screen());
 		}
 		else {
-			apply_surface(WHITE_MATE_IMG, selected_pieces_sheet, get_screen());
+			apply_surface(WHITE_MATE_IMG, getImage(SELECTED_PIECES_SHEET), get_screen());
 		}
 		display_screen();
 		SDL_Delay(2500);
@@ -532,17 +534,16 @@ Settings end_of_turn(Settings settings, int situation) {
 		printMessage(TIE);
 		settings.state = MAIN_MENU_STATE;
 	} else if (check) {
-		apply_surface(CHECK_LABEL, selected_pieces_sheet, get_screen());
+		apply_surface(CHECK_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
 		display_screen();
 		SDL_Delay(2500);
-		display_board(game_menu, -1, -1, settings.board);
 	}
 	return settings;
 }
 
 Settings reset_settings(Settings settings) {
 	freeBoard(settings.board);
-	settings = DEFUALT_SETTINGS;
+	settings = DEFAULT_SETTINGS;
 	return settings;
 }
 
@@ -597,14 +598,14 @@ void blit_tree(gui_chess start_point, int x, int y)
 	{
 		place_in_frame.x = start_point->box.x + x;
 		place_in_frame.y = start_point->box.y + y;
-		SDL_BlitSurface(start_point->img, &(start_point->clip), screen, &place_in_frame);
+		SDL_BlitSurface(start_point->img, &(start_point->clip), get_screen(), &place_in_frame);
 		
 	}
 	else
 	{
 		place_in_frame.x = x;
 		place_in_frame.y = y;
-		SDL_BlitSurface(start_point->img, NULL, screen, NULL);
+		SDL_BlitSurface(start_point->img, NULL, get_screen(), NULL);
 	}
 
 	tmp = start_point->child;
@@ -659,7 +660,7 @@ void display_board(gui_chess game_menu, int selected_x, int selected_y, char** c
 			}
 			else
 			{
-				current_surface = selected_pieces_sheet; // selsected solider on the board
+				current_surface = getImage(SELECTED_PIECES_SHEET); // selsected solider on the board
 			}
 			switch (current_board[i][j])
 			{

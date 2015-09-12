@@ -5,12 +5,6 @@
 #include "ElementFactory.h"
 #include "../Common/Board.h"
 
-/*check & mate labels parameters*/
-#define CHECKMATE_LABEL 119,117,325,49,170,150
-#define CHECK_LABEL 379,26,133,38,250,260
-#define WHITE_MATE_IMG 262,193,240,200,210,250
-#define BLACK_MATE_IMG 3,196,230,200,210,250
-
 /*black pieces parameters*/
 #define B_PAWN_PMT 16,76,65,65
 #define B_BISHOP_PMT 147,11,65,65

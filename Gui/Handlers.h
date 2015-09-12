@@ -3,6 +3,7 @@
 
 #include "Frame.h"
 #include "Game.h"
+#include "Build.h"
 #include "../Common/Settings.h"
 #include "../Common/XmlParser.h"
 #include "../Common/Board.h"
