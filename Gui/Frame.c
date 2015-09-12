@@ -12,6 +12,10 @@ void create_screen() {
 	SDL_WM_SetCaption("Chess Game GUI mode", NULL);
 }
 
+SDL_Surface* get_screen() {
+	return screen;
+}
+
 void display_screen() {
 	if (SDL_Flip(screen) == -1)
 	{

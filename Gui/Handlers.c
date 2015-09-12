@@ -117,7 +117,7 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 			}
 			else if ((x>p_vs_p_x) && (x<p_vs_p_x + width) && (y>p_vs_p_y) && (y<p_vs_p_y + heigth))
 			{
-				settings.gameMode = MULTIPLYER_MODE;
+				settings.gameMode = MULTIPLAYER_MODE;
 				pvp->clip.x = PV_S_BUTTON_X;
 				pvc->clip.x = PV_BUTTON_X;
 				button->clip.x = START_ARROW_X;
@@ -125,7 +125,7 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 			else if ((x>c_x) && (x<c_x + s_c_width) && (y>c_y) && (y<c_y + s_c_heigth))
 			{
 				freeBoard(settings.board);
-				settings = DEFUALT_SETTINGS;
+				settings = DEFAULT_SETTINGS;
 				settings.state = MAIN_MENU_STATE;
 				return settings;
 			}
@@ -147,9 +147,9 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 Settings color_menu_handler(gui_chess root, Settings settings)
 {
 	SDL_Event event;
-	gui_chess tmp, white, black, button_1;
-	int x, y, c_x, c_y, s_x, s_y, bound_x, bound_y, cb_x, cb_y, cb_w, cb_h;
-	int numb_x, numb_y, numb_w, numb_h, best_w, best_h, s_c_w, s_c_h;
+	gui_chess tmp, white, black;
+	int x, y, bound_x, bound_y, cb_x, cb_y, cb_w, cb_h;
+	//todo - no idea what is happening here - many unused vars
 
 	tmp = root->child;
 	bound_x = tmp->box.x;
@@ -163,25 +163,25 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 	tmp = tmp->next;
 	black = tmp;
 	tmp = tmp->next->next;
-	button_1 = tmp;
-	numb_x = tmp->box.x + bound_x;
-	numb_y = tmp->box.y + bound_y;
-	numb_w = tmp->clip.w;
-	numb_h = tmp->clip.h;
+	// button_1 = tmp;
+	// numb_x = tmp->box.x + bound_x;
+	// numb_y = tmp->box.y + bound_y;
+	// numb_w = tmp->clip.w;
+	// numb_h = tmp->clip.h;
 	tmp = tmp->next;
 	tmp = tmp->next;
 	tmp = tmp->next;
 	tmp = tmp->next;
-	best_w = tmp->clip.w;
-	best_h = tmp->clip.h;
+	// best_w = tmp->clip.w;
+	// best_h = tmp->clip.h;
 	tmp = tmp->next;
-	c_x = tmp->box.x + bound_x;
-	c_y = tmp->box.y + bound_y;
-	s_c_w = tmp->clip.w;
-	s_c_h = tmp->clip.h;
+	// c_x = tmp->box.x + bound_x;
+	// c_y = tmp->box.y + bound_y;
+	// s_c_w = tmp->clip.w;
+	// s_c_h = tmp->clip.h;
 	tmp = tmp->next;
-	s_x = tmp->box.x + bound_x;
-	s_y = tmp->box.y + bound_y;
+	// s_x = tmp->box.x + bound_x;
+	// s_y = tmp->box.y + bound_y;
 
 	if (settings.userColor == WHITE_COLOR)
 	{
@@ -292,6 +292,7 @@ Settings settings_menu_handler(gui_chess root, Settings settings){
 		//check error
 		SDL_WaitEvent(&event);
 		if (event.type == SDL_QUIT){
+			settings.state = TERMINATE_STATE;
 			break;
 		}
 		else if (event.type == SDL_MOUSEBUTTONUP){
@@ -311,31 +312,26 @@ Settings settings_menu_handler(gui_chess root, Settings settings){
 			else if ((x > numb_x) && (x<numb_x + numb_w) && (y>numb_y) && (y < numb_y + numb_h))
 			{
 				settings.minimaxDepth = 1;
-				is_best = 0;
 				update_num_selction(button_1, settings.minimaxDepth);
 			}
 			else if ((x >(numb_x + NUM_HORIZONTAL_OFFSET)) && (x<(numb_x + numb_w+NUM_HORIZONTAL_OFFSET)) && (y>numb_y) && (y < numb_y + numb_h))
 			{
 				settings.minimaxDepth = 2;
-				is_best = 0;
 				update_num_selction(button_1, settings.minimaxDepth);
 			}
 			else if ((x >(numb_x + 2 * NUM_HORIZONTAL_OFFSET)) && (x<(numb_x + numb_w + 2 * NUM_HORIZONTAL_OFFSET)) && (y>numb_y) && (y < numb_y + numb_h))
 			{
 				settings.minimaxDepth = 3;
-				is_best = 0;
 				update_num_selction(button_1, settings.minimaxDepth);
 			}
 			else if ((x >(numb_x + 3 * NUM_HORIZONTAL_OFFSET)) && (x<(numb_x + numb_w + 3 * NUM_HORIZONTAL_OFFSET)) && (y>numb_y) && (y < numb_y + numb_h))
 			{
 				settings.minimaxDepth = 4;
-				is_best = 0;
 				update_num_selction(button_1, settings.minimaxDepth);
 			}
 			else if ((x >(numb_x + 4 * NUM_HORIZONTAL_OFFSET)) && (x<(numb_x + best_w + 4 * NUM_HORIZONTAL_OFFSET)) && (y>numb_y) && (y < numb_y + best_h))
 			{
-				settings.minimaxDepth = 4;
-				is_best = 1;
+				settings.minimaxDepth = BEST_DEPTH;
 				update_num_selction(button_1, 5);
 			}
 			else if ((x > c_x) && (x<c_x + s_c_w) && (y>c_y) && (y < c_y + s_c_h))
@@ -357,7 +353,7 @@ Settings settings_menu_handler(gui_chess root, Settings settings){
 			display_screen();
 		}
 	}
-	return QUIT;
+	return settings;
 }
 
 Settings load_save_menu_handler(gui_chess root, Settings settings){
@@ -365,7 +361,7 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 	gui_chess tmp, button_1;
 	char mem_slot[MEM_SLOT_FILE_NAME_LENGTH];
 	int x, y, bound_x, bound_y, number_x, number_y, width, heigth, s_l_x, s_l_y, c_x, c_y, ch_x, ch_y;
-	int current_slot = 0,save_status;
+	int current_slot = 0;
 
 	tmp = root->child;
 	bound_x = tmp->box.x;
@@ -397,7 +393,8 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 
 		SDL_WaitEvent(&event);
 		if (event.type == SDL_QUIT){
-			return QUIT;
+			settings.state = TERMINATE_STATE;
+			return settings;
 		}
 		else if (event.type == SDL_MOUSEBUTTONUP){
 			x = event.button.x;
@@ -425,7 +422,8 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 			{
 				if (settings.state == SAVE_STATE)
 				{
-					return -1;
+					//todo -1 meaning is unclear - what should happen?
+					//return -1;
 				}
 				else{
 					settings.state = MAIN_MENU_STATE;
@@ -459,7 +457,7 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 
 				/*op=1 "save"*/
 				if (settings.state == SAVE_STATE){
-					saveSettings(settings, mem_slot)
+					saveSettings(settings, mem_slot);
 					settings.state = GAME_STATE;
 					return settings;
 				}
@@ -482,7 +480,7 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 
 Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings settings)
 {
-	int situation,pos[4];
+	int pos[4];
 	gui_chess tmp;
 
 	tmp = game_menu;
@@ -519,12 +517,12 @@ Settings end_of_turn(Settings settings, int situation) {
 	bool check = isInCheck(settings.board, settings.playingColor);
 	bool stuck = !canMove(settings.board, settings.playingColor);
 	if (check && stuck /*mate*/) {
-		apply_surface(CHECKMATE_LABEL, selected_pieces_sheet, screen);
+		apply_surface(CHECKMATE_LABEL, selected_pieces_sheet, get_screen());
 		if (settings.playingColor == WHITE_COLOR) {
-			apply_surface(BLACK_MATE_IMG, selected_pieces_sheet, screen);
+			apply_surface(BLACK_MATE_IMG, selected_pieces_sheet, get_screen());
 		}
 		else {
-			apply_surface(WHITE_MATE_IMG, selected_pieces_sheet, screen);
+			apply_surface(WHITE_MATE_IMG, selected_pieces_sheet, get_screen());
 		}
 		display_screen();
 		SDL_Delay(2500);
@@ -534,7 +532,7 @@ Settings end_of_turn(Settings settings, int situation) {
 		printMessage(TIE);
 		settings.state = MAIN_MENU_STATE;
 	} else if (check) {
-		apply_surface(CHECK_LABEL, selected_pieces_sheet, screen);
+		apply_surface(CHECK_LABEL, selected_pieces_sheet, get_screen());
 		display_screen();
 		SDL_Delay(2500);
 		display_board(game_menu, -1, -1, settings.board);
@@ -666,40 +664,40 @@ void display_board(gui_chess game_menu, int selected_x, int selected_y, char** c
 			switch (current_board[i][j])
 			{
 			case W_PAWN:
-				apply_surface(W_PAWN_PMT, x, y, current_surface, screen);
+				apply_surface(W_PAWN_PMT, x, y, current_surface, get_screen());
 				break;
 			case W_BISHOP:
-				apply_surface(W_BISHOP_PMT, x, y, current_surface, screen);
+				apply_surface(W_BISHOP_PMT, x, y, current_surface, get_screen());
 				break;
 			case W_ROOK:
-				apply_surface(W_ROOK_PMT, x, y, current_surface, screen);
+				apply_surface(W_ROOK_PMT, x, y, current_surface, get_screen());
 				break;
 			case W_KNIGHT:
-				apply_surface(W_KNIGHT_PMT, x, y, current_surface, screen);
+				apply_surface(W_KNIGHT_PMT, x, y, current_surface, get_screen());
 				break;
 			case W_QUEEN:
-				apply_surface(W_QUEEN_PMT, x, y, current_surface, screen);
+				apply_surface(W_QUEEN_PMT, x, y, current_surface, get_screen());
 				break;
 			case W_KING:
-				apply_surface(W_KING_PMT, x, y, current_surface, screen);
+				apply_surface(W_KING_PMT, x, y, current_surface, get_screen());
 				break;
 			case B_PAWN:
-				apply_surface(B_PAWN_PMT, x, y, current_surface, screen);
+				apply_surface(B_PAWN_PMT, x, y, current_surface, get_screen());
 				break;
 			case B_BISHOP:
-				apply_surface(B_BISHOP_PMT, x, y, current_surface, screen);
+				apply_surface(B_BISHOP_PMT, x, y, current_surface, get_screen());
 				break;
 			case B_ROOK:
-				apply_surface(B_ROOK_PMT, x, y, current_surface, screen);
+				apply_surface(B_ROOK_PMT, x, y, current_surface, get_screen());
 				break;
 			case B_KNIGHT:
-				apply_surface(B_KNIGHT_PMT, x, y, current_surface, screen);
+				apply_surface(B_KNIGHT_PMT, x, y, current_surface, get_screen());
 				break;
 			case B_QUEEN:
-				apply_surface(B_QUEEN_PMT, x, y, current_surface, screen);
+				apply_surface(B_QUEEN_PMT, x, y, current_surface, get_screen());
 				break;
 			case B_KING:
-				apply_surface(B_KING_PMT, x, y, current_surface, screen);
+				apply_surface(B_KING_PMT, x, y, current_surface, get_screen());
 				break;
 			default:
 				break;

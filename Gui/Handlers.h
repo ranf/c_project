@@ -2,7 +2,10 @@
 #define GUI_HANDLERS_H
 
 #include "Frame.h"
+#include "Game.h"
 #include "../Common/Settings.h"
+#include "../Common/XmlParser.h"
+#include "../Common/Board.h"
 
 
 #define NUM_HORIZONTAL_OFFSET 60
@@ -21,6 +24,19 @@
 #define BOARD_BOTTOM_CORNER 562
 #define BOARD_SQUARE 66
 
+/*mode menu parameters*/
+#define PV_BUTTON_X 55
+#define PV_S_BUTTON_X 267
+#define NEXT_ARROW_X 553
+#define START_ARROW_X 185
+/*settinges menu parameters*/
+#define COLOR_BUTTON_Y 353
+#define COLOR_S_BUTTON_Y 403
+/*check & mate labels parameters*/
+#define CHECKMATE_LABEL 119,117,325,49,170,150
+#define CHECK_LABEL 379,26,133,38,250,260
+#define WHITE_MATE_IMG 262,193,240,200,210,250
+#define BLACK_MATE_IMG 3,196,230,200,210,250
 
 Settings main_menu_handler(gui_chess gui_window, Settings settings);
 Settings mode_menu_handler(gui_chess root, Settings settings);
@@ -33,5 +49,6 @@ Settings reset_settings(Settings settings);
 char promotion_handler(gui_chess root, int player);
 void blit_tree(gui_chess start_point, int x, int y);
 void display_board(gui_chess game_menu, int selected_x, int selected_y, char** current_board);
+void update_num_selction(gui_chess number_button, int number);
 
 #endif
