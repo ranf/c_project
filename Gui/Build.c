@@ -259,5 +259,5 @@ gui_chess black_player_promots()
 
 gui_chess build_promotion_menu(int now_playing)
 {
-	return now_playing == WHITE_COLOR ? white_player_promots() : black_player_promots;
+	return now_playing == WHITE_COLOR ? white_player_promots() : black_player_promots();
 }
