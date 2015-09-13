@@ -7,6 +7,10 @@ int gui_player_turn(Settings settings, int offsets[4], gui_chess game_menu, gui_
 	SDL_Event event;
 	bool moving_piece_selected = false;
 	Position from, to;
+	from.x = 0;
+	from.y = 0;
+	to.x = 0;
+	to.y = 0;
 	Move* move = createMove(from, to, NO_PROMOTION);
 	int game_state = GS_PLAYER_TURN;
 
@@ -157,3 +161,4 @@ Position board_clicked_position(int x, int y)
 	p.y = 7 - ((y - BOARD_TOP_CORNER) / BOARD_SQUARE);
 	return p;
 }
+

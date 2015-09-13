@@ -3,14 +3,18 @@
 
 #include "Board.h"
 
-#define SETTINGS_STATE 0
-#define GAME_STATE 1
-#define TERMINATE_STATE 2
-#define MAIN_MENU_STATE 3
-#define LOAD_STATE 4
-#define SAVE_STATE 5
-#define MODE_SETTINGS_STATE 6
-#define CHOOSE_COLOR_STATE 7
+#define TERMINATE_STATE 0
+#define MAIN_MENU_STATE 1
+#define LOAD_STATE 2
+#define SAVE_STATE 3
+#define MODE_SETTINGS_STATE 4
+#define CHOOSE_COLOR_STATE 5
+#define SETTINGS_STATE 6
+#define SET_MENU 7
+#define GAME_STATE 8
+
+
+
 
 
 #define MULTIPLAYER_MODE 1

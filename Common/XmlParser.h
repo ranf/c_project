@@ -4,6 +4,8 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xmlwriter.h>
+# include <libxml/encoding.h>
+
 #include "Settings.h"
 
 #define WRONG_FILE_NAME "Wrong file name\n"

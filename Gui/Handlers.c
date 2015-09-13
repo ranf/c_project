@@ -31,24 +31,28 @@ Settings main_menu_handler(gui_chess gui_window, Settings settings)
 			mouse_y = event.button.y;
 			if ((mouse_x > x_bound) && (mouse_x<(x_bound + width)) && (mouse_y>y_bound) && (mouse_y < (y_bound + heigth)))
 			{
-				settings.state = MAIN_MENU_STATE;
+				settings.state = MODE_SETTINGS_STATE;
 				quitting = true;
+				return settings;
 			}
 			if ((mouse_x > x_bound) && (mouse_x<(x_bound + width)) && (mouse_y>(y_bound + MAIN_VERTICAL_OFFSET)) && (mouse_y < (y_bound + MAIN_VERTICAL_OFFSET + heigth)))
 			{
 				settings.state = LOAD_STATE;
 				quitting = true;
+				return settings;
 			}
 			if ((mouse_x > x_bound) && (mouse_x<(x_bound + width)) && (mouse_y>(y_bound + 2 * MAIN_VERTICAL_OFFSET)) && (mouse_y < (y_bound + 2 * MAIN_VERTICAL_OFFSET + heigth)))
 			{
 				settings.state = TERMINATE_STATE;
 				quitting = true;
+				return settings;
 			}
 		}
 		if (event.type == SDL_QUIT)
 		{
 			settings.state = TERMINATE_STATE;
 			quitting = true;
+			return settings;
 		}
 	}
 	return settings;
@@ -132,6 +136,7 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 			}
 			else if ((x>start_x) && (x<start_x + s_c_width) && (y>start_y) && (y<start_y + s_c_heigth))
 			{
+				
 				settings.state = CHOOSE_COLOR_STATE;
 				return settings;
 			}
@@ -149,8 +154,9 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 Settings color_menu_handler(gui_chess root, Settings settings)
 {
 	SDL_Event event;
-	gui_chess tmp, white, black;
-	int x, y, bound_x, bound_y, cb_x, cb_y, cb_w, cb_h;
+	gui_chess tmp, white, black, button_1;
+	int x, y, c_x, c_y, s_x, s_y, bound_x, bound_y, cb_x, cb_y, cb_w, cb_h;
+	int numb_x, numb_y, numb_w, numb_h, best_w, best_h, s_c_w, s_c_h;
 	//todo - no idea what is happening here - many unused vars
 
 	tmp = root->child;
@@ -165,25 +171,25 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 	tmp = tmp->next;
 	black = tmp;
 	tmp = tmp->next->next;
-	// button_1 = tmp;
-	// numb_x = tmp->box.x + bound_x;
-	// numb_y = tmp->box.y + bound_y;
-	// numb_w = tmp->clip.w;
-	// numb_h = tmp->clip.h;
+	button_1 = tmp;
+	numb_x = tmp->box.x + bound_x;
+	numb_y = tmp->box.y + bound_y;
+	numb_w = tmp->clip.w;
+	numb_h = tmp->clip.h;
 	tmp = tmp->next;
 	tmp = tmp->next;
 	tmp = tmp->next;
 	tmp = tmp->next;
-	// best_w = tmp->clip.w;
-	// best_h = tmp->clip.h;
+	best_w = tmp->clip.w;
+	best_h = tmp->clip.h;
 	tmp = tmp->next;
-	// c_x = tmp->box.x + bound_x;
-	// c_y = tmp->box.y + bound_y;
-	// s_c_w = tmp->clip.w;
-	// s_c_h = tmp->clip.h;
+	c_x = tmp->box.x + bound_x;
+	c_y = tmp->box.y + bound_y;
+	s_c_w = tmp->clip.w;
+	s_c_h = tmp->clip.h;
 	tmp = tmp->next;
-	// s_x = tmp->box.x + bound_x;
-	// s_y = tmp->box.y + bound_y;
+	s_x = tmp->box.x + bound_x;
+	s_y = tmp->box.y + bound_y;
 
 	if (settings.userColor == WHITE_COLOR)
 	{
@@ -218,6 +224,25 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 				white->clip.y = COLOR_S_BUTTON_Y;
 				black->clip.y = COLOR_BUTTON_Y;
 			}
+			else if ((x > c_x) && (x<c_x + s_c_w) && (y>c_y) && (y < c_y + s_c_h))
+			{
+				if (settings.gameMode == SINGLEPLAYER_MODE)
+				{
+					settings.state = SETTINGS_STATE;
+					return settings;
+				}
+				else
+				{
+					settings.state = GAME_STATE;
+					return settings;
+				}
+
+			}
+			else if ((x < s_x) && (x<s_x + s_c_w) && (y>s_y) && (y < s_y + s_c_h))
+			{
+				settings.state = MODE_SETTINGS_STATE;
+				return settings;
+			}
 			else
 			{
 				continue;
@@ -226,10 +251,7 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 			display_screen();
 		}
 	}
-	if (settings.gameMode == MULTIPLAYER_MODE)
-		settings.state = GAME_STATE;
-	else
-		settings.state = MODE_SETTINGS_STATE;
+	
 	return settings;
 }
 

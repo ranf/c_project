@@ -98,6 +98,9 @@
 #define SAVE_FAILED_LABEL_PMT 168,249,250,83,300,340
 #define SAVE_SUCCEED_LABEL_PMT 104,366,196,111,300,340
 
+#define EMPTY_BUTTON 277,476,65,65
+#define SET 495,44,120,38,625,270
+#define START 495,44,120,38,625,340
 
 gui_chess build_main_menu();
 gui_chess build_mode_menu();

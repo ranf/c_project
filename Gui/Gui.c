@@ -10,13 +10,16 @@ void startGuiMode() {
 	save_menu = NULL;
 	game_menu = NULL;
 	set_color = NULL;
-
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) 
+	/*freopen( "CON", "w", stdout );
+freopen( "CON", "w", stderr );*/
+if (SDL_Init(SDL_INIT_VIDEO) < 0) 
 	{
 		fprintf(stderr, "ERROR: unable to init SDL: %s\n", SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
 	atexit(SDL_Quit);
+	/*freopen( "CON", "w", stdout );
+freopen( "CON", "w", stderr );*/
 
 	create_screen();
 	loadImages();
@@ -31,21 +34,25 @@ void startGuiMode() {
 
 	Settings settings = DEFAULT_SETTINGS;
 	settings.state = MAIN_MENU_STATE;
+	fprintf(stdout,"%s\n","start");
+	fflush(stdout);
 
 	while (settings.state != TERMINATE_STATE){
 		switch (settings.state){
 		case MAIN_MENU_STATE:
+			printf("main_menu\n");
 			settings = main_menu_handler(main_menu, settings);
-			break;
+			printf("main_menu\n");
+			break;		
 		case LOAD_STATE:
 		case SAVE_STATE:
 			settings = load_save_menu_handler(load_menu, settings);
 			break;
-		case CHOOSE_COLOR_STATE:
-			settings = color_menu_handler(set_color, settings);
 		case MODE_SETTINGS_STATE:
 			settings = mode_menu_handler(mode_menu, settings);
 			break;
+		case CHOOSE_COLOR_STATE:
+			settings = color_menu_handler(set_color, settings);
 		case SETTINGS_STATE:
 			settings = settings_menu_handler(settings_menu, settings);
 			break;

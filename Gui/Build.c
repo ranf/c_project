@@ -44,6 +44,7 @@ gui_chess build_mode_menu()
 	return (result);
 }
 
+
 gui_chess build_color_set_menu()
 {
 	gui_chess result, tmp, tmp_parent;
@@ -64,12 +65,13 @@ gui_chess build_color_set_menu()
 	tmp->next = button_factory(getImage(SETTINGS_SHEET), NEXT_BUTTON_PMT, tmp_parent);
 
 	return result;
+	
 }
 
 gui_chess build_diffculty_menu()
 {
 	gui_chess result, tmp, tmp_parent;
-
+	tmp_parent = NULL;
 	result = window_factory(getImage(BACKGROUND_IMAGE));
 	tmp = result;
 	tmp->child = panel_factory(getImage(PANELS_SHEET), FISH_PANEL_PMT, tmp);

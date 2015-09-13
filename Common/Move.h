@@ -36,3 +36,4 @@ void freeMoves(MoveList* moves);
 #include "MoveLogic.h"
 
 #endif
+
