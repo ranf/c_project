@@ -18,7 +18,8 @@ Settings main_menu_handler(gui_chess gui_window, Settings settings)
 	y_bound += tmp->box.y;
 	width = tmp->clip.w;
 	heigth = tmp->clip.h;
-
+	
+	settings.can_set = 1;
 	bool quitting = false;
 	while (!quitting)
 	{
@@ -451,8 +452,8 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 			{
 				if (settings.state == SAVE_STATE)
 				{
-					//todo -1 meaning is unclear - what should happen?
-					//return -1;
+					settings.state = GAME_STATE;
+					return settings;
 				}
 				else{
 					settings.state = MAIN_MENU_STATE;
@@ -491,6 +492,7 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 					return settings;
 				}
 				else {
+					strcpy(mem_slot,MEM_SLOT_1);
 					settings = loadSettings(settings, mem_slot);
 					settings.state = MODE_SETTINGS_STATE;
 					return settings;
@@ -524,7 +526,7 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 	
 	int set = 1;
 
-	while (set)
+	while (settings.can_set)
 	{
 		SDL_WaitEvent(&event);
 		if (event.type == SDL_QUIT){
@@ -543,41 +545,18 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 			}
 			else if ((x > offsets[0]) && (x < (offsets[0] + offsets[2])))
 			{
-				if ((y>offsets[1]) && (y < (offsets[1] + offsets[3])))
+				
+				// start -- can not set anymore
+				if((y>QUIT_SIDE_Y) && (y < (QUIT_SIDE_Y + offsets[3])))
+				// ((y>(offsets[1] + 4 * GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + 4 * GAME_MENU_VERTICAL_OFFSET)))
 				{
-					set = 1;
-					settings.state = MAIN_MENU_STATE;
+					settings.state = GAME_STATE;
+					settings.can_set = 0;
 					return settings;
 				}
-				else if ((y>(offsets[1] + GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + GAME_MENU_VERTICAL_OFFSET)))
+				else
 				{
-					set = 1;
-					settings.state = SAVE_STATE;
-					settings = load_save_menu_handler(save_menu, settings);
-					return settings;
-					
-				}
-				else if ((y>(offsets[1] + 2 * GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + 2 * GAME_MENU_VERTICAL_OFFSET)))
-				{
-					settings = reset_settings(settings);
-					settings.state = MAIN_MENU_STATE;
-					return settings;
-			//		settings.playingColor = WHITE_COLOR;
-			//		set = 1;
-			//		settings.state = GAME_STATE;
-			//		settings = init_board(settings);
-			//		return settings;
-				}
-				else if ((y>QUIT_SIDE_Y) && (y < (QUIT_SIDE_Y + offsets[3])))
-				{
-					set = 1;
-					settings.state = TERMINATE_STATE;
-					return settings;
-				}
-				else if ((y>(offsets[1] + 4 * GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + 4 * GAME_MENU_VERTICAL_OFFSET)))
-				{
-					set = 0;
-					continue;
+					gui_player_turn(settings, offsets, game_menu, save_menu);
 				}
 			}
 		}

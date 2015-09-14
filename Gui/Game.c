@@ -55,7 +55,10 @@ int apply_player_click(Settings settings, SDL_Event event, int offsets[4],
 	if (player_clicked_main_menu(x, y, offsets)) {
 		return GS_MAIN_MENU;
 	}
-	if (player_clicked_save(x, y, offsets)) {
+	if (player_clicked_save(x, y, offsets)) 
+	{
+		//printf("save ??????\n");
+		//fflush(stdout);
 		load_save_menu_handler(save_menu, settings); //todo - use settings return value
 		moving_piece_selected = false;
 		display_board(game_menu, -1, -1, settings.board);

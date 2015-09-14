@@ -24,6 +24,7 @@ typedef struct {
 	int minimaxDepth;
 	int userColor;
 	int playingColor;
+	int can_set;
 	char** board;
 } Settings;
 
