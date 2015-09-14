@@ -1,5 +1,5 @@
 #include "Game.h"
-
+#include "Handlers.h"
 
 int gui_player_turn(Settings settings, int offsets[4], gui_chess game_menu, gui_chess save_menu)
 {

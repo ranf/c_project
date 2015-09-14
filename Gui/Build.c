@@ -197,7 +197,11 @@ gui_chess build_game_menu()
 	tmp->next = button_factory(getImage(SETTINGS_SHEET), RESTART_BUTTON_PMT, tmp_parent);
 	tmp = tmp->next;
 	tmp->next = button_factory(getImage(SETTINGS_SHEET), QUIT_SIDE_BUTTON_PMT, tmp_parent);
-
+	tmp = tmp->next;
+	tmp->next = button_factory(getImage(SETTINGS_SHEET), SET, tmp_parent);
+	/*sould be replace with start*/
+	tmp = tmp->next;
+	tmp->next = button_factory(getImage(SETTINGS_SHEET), START, tmp_parent);
 	return (result);
 }
 
@@ -263,3 +267,58 @@ gui_chess build_promotion_menu(int now_playing)
 {
 	return now_playing == WHITE_COLOR ? white_player_promots() : black_player_promots();
 }
+
+gui_chess build_set_menu()
+{
+	gui_chess result, tmp, tmp_parent;
+
+	result = window_factory(getImage(MAIN_IMG));
+	tmp = result;
+	tmp_parent = result;
+	tmp->child = label_factory(getImage(PIECES_SHEET), PROMOTE_LABEL, tmp);
+	tmp = tmp->child;
+	tmp->parent = tmp_parent;
+	tmp_parent = tmp;
+	tmp->next = button_factory(getImage(PIECES_SHEET), B_ROOK_PMT, (PROMOTE_FIRST_POS_X + PROMOTE_OFFSET), PROMOTE_FIRST_POS_Y, tmp_parent);
+	tmp = tmp->next;
+	tmp->parent = tmp_parent;
+	tmp->next = button_factory(getImage(PIECES_SHEET), B_QUEEN_PMT, PROMOTE_FIRST_POS_X, PROMOTE_FIRST_POS_Y, tmp_parent);
+	tmp = tmp->next;
+	tmp->parent = tmp_parent;
+	tmp->next = button_factory(getImage(PIECES_SHEET), B_KNIGHT_PMT, (PROMOTE_FIRST_POS_X + 3 * PROMOTE_OFFSET), PROMOTE_FIRST_POS_Y, tmp_parent);
+	tmp = tmp->next;
+	tmp->parent = tmp_parent;
+	tmp->next = button_factory(getImage(PIECES_SHEET), B_BISHOP_PMT, (PROMOTE_FIRST_POS_X + 2 * PROMOTE_OFFSET), PROMOTE_FIRST_POS_Y, tmp_parent);
+	tmp = tmp->next;
+	tmp->parent = tmp_parent;
+	tmp->next = button_factory(getImage(PIECES_SHEET), B_KING_PMT, (PROMOTE_FIRST_POS_X + 4 * PROMOTE_OFFSET), PROMOTE_FIRST_POS_Y, tmp_parent);
+	tmp = tmp->next;
+	tmp->parent = tmp_parent;
+	tmp->next = button_factory(getImage(PIECES_SHEET), B_PAWN_PMT, (PROMOTE_FIRST_POS_X + 5 * PROMOTE_OFFSET), PROMOTE_FIRST_POS_Y, tmp_parent);
+	tmp = tmp->next;
+	tmp->parent = tmp_parent;
+	tmp->next = button_factory(getImage(PIECES_SHEET), W_ROOK_PMT, (PROMOTE_FIRST_POS_X + PROMOTE_OFFSET), 2 * PROMOTE_FIRST_POS_Y, tmp_parent);
+	tmp = tmp->next;
+	tmp->parent = tmp_parent;
+	tmp->next = button_factory(getImage(PIECES_SHEET), W_QUEEN_PMT, PROMOTE_FIRST_POS_X, 2 * PROMOTE_FIRST_POS_Y, tmp_parent);
+	tmp = tmp->next;
+	tmp->parent = tmp_parent;
+	tmp->next = button_factory(getImage(PIECES_SHEET), W_KNIGHT_PMT, (PROMOTE_FIRST_POS_X + 3 * PROMOTE_OFFSET), 2 * PROMOTE_FIRST_POS_Y, tmp_parent);
+	tmp = tmp->next;
+	tmp->parent = tmp_parent;
+	tmp->next = button_factory(getImage(PIECES_SHEET), W_BISHOP_PMT, (PROMOTE_FIRST_POS_X + 2 * PROMOTE_OFFSET), 2 * PROMOTE_FIRST_POS_Y, tmp_parent);
+	tmp = tmp->next;
+	tmp->parent = tmp_parent;
+	tmp->next = button_factory(getImage(PIECES_SHEET), W_KING_PMT, (PROMOTE_FIRST_POS_X + 4 * PROMOTE_OFFSET), 2 * PROMOTE_FIRST_POS_Y, tmp_parent);
+	tmp = tmp->next;
+	tmp->parent = tmp_parent;
+	tmp->next = button_factory(getImage(PIECES_SHEET), W_PAWN_PMT, (PROMOTE_FIRST_POS_X + 5 * PROMOTE_OFFSET), 2 * PROMOTE_FIRST_POS_Y, tmp_parent);
+	tmp = tmp->next;
+	tmp->parent = tmp_parent;
+	tmp->next = button_factory(getImage(PIECES_SHEET), EMPTY_BUTTON, (PROMOTE_FIRST_POS_X), 3 * PROMOTE_FIRST_POS_Y, tmp_parent);
+	tmp = tmp->next;
+	tmp->parent = tmp_parent;
+	
+	return result;
+}
+

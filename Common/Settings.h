@@ -13,10 +13,6 @@
 #define SET_MENU 7
 #define GAME_STATE 8
 
-
-
-
-
 #define MULTIPLAYER_MODE 1
 #define SINGLEPLAYER_MODE 2
 

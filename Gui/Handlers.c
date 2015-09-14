@@ -1,6 +1,5 @@
 #include "Handlers.h"
 
-
 Settings main_menu_handler(gui_chess gui_window, Settings settings)
 {
 	gui_chess tmp;
@@ -115,6 +114,8 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 			y = event.button.y;
 			if ((x>p_vs_c_x) && (x<p_vs_c_x + width) && (y>p_vs_c_y) && (y<p_vs_c_y + heigth))
 			{
+				printf("game mode : p_vs_c -- SINGLEPLAYER_MODE\n");
+				fflush(stdout);
 				settings.gameMode = SINGLEPLAYER_MODE;
 				pvp->clip.x = PV_BUTTON_X;
 				pvc->clip.x = PV_S_BUTTON_X;
@@ -122,6 +123,8 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 			}
 			else if ((x>p_vs_p_x) && (x<p_vs_p_x + width) && (y>p_vs_p_y) && (y<p_vs_p_y + heigth))
 			{
+				printf("game mode: p_vs_p -- MULTIPLAYER_MODE\n");
+				fflush(stdout);
 				settings.gameMode = MULTIPLAYER_MODE;
 				pvp->clip.x = PV_S_BUTTON_X;
 				pvc->clip.x = PV_BUTTON_X;
@@ -129,14 +132,15 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 			}
 			else if ((x>c_x) && (x<c_x + s_c_width) && (y>c_y) && (y<c_y + s_c_heigth))
 			{
-				freeBoard(settings.board);
-				settings = (Settings) DEFAULT_SETTINGS;
+				//freeBoard(settings.board);
+				//settings = (Settings) DEFAULT_SETTINGS;
 				settings.state = MAIN_MENU_STATE;
 				return settings;
 			}
 			else if ((x>start_x) && (x<start_x + s_c_width) && (y>start_y) && (y<start_y + s_c_heigth))
 			{
-				
+				//freeBoard(settings.board);
+				//settings = (Settings) DEFAULT_SETTINGS;
 				settings.state = CHOOSE_COLOR_STATE;
 				return settings;
 			}
@@ -156,7 +160,7 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 	SDL_Event event;
 	gui_chess tmp, white, black, button_1;
 	int x, y, c_x, c_y, s_x, s_y, bound_x, bound_y, cb_x, cb_y, cb_w, cb_h;
-	int numb_x, numb_y, numb_w, numb_h, best_w, best_h, s_c_w, s_c_h;
+	int numb_x, numb_y, numb_w, numb_h, s_c_w, s_c_h;
 	//todo - no idea what is happening here - many unused vars
 
 	tmp = root->child;
@@ -176,18 +180,10 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 	numb_y = tmp->box.y + bound_y;
 	numb_w = tmp->clip.w;
 	numb_h = tmp->clip.h;
-	tmp = tmp->next;
-	tmp = tmp->next;
-	tmp = tmp->next;
-	tmp = tmp->next;
-	best_w = tmp->clip.w;
-	best_h = tmp->clip.h;
-	tmp = tmp->next;
 	c_x = tmp->box.x + bound_x;
 	c_y = tmp->box.y + bound_y;
 	s_c_w = tmp->clip.w;
 	s_c_h = tmp->clip.h;
-	tmp = tmp->next;
 	s_x = tmp->box.x + bound_x;
 	s_y = tmp->box.y + bound_y;
 
@@ -226,22 +222,32 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 			}
 			else if ((x > c_x) && (x<c_x + s_c_w) && (y>c_y) && (y < c_y + s_c_h))
 			{
-				if (settings.gameMode == SINGLEPLAYER_MODE)
+				if (settings.gameMode == MULTIPLAYER_MODE)
 				{
-					settings.state = SETTINGS_STATE;
-					return settings;
-				}
-				else
-				{
+					printf("p_vs_p -> game\n");
+					fflush(stdout);
 					settings.state = GAME_STATE;
+					return settings;
+					
+				}
+				else if (settings.gameMode == SINGLEPLAYER_MODE)
+				{
+					printf("p_vs_c -> settings\n");
+					fflush(stdout);
+					settings.state = SETTINGS_STATE;
+					printf("p_vs_c -> settings\n");
+					fflush(stdout);
 					return settings;
 				}
 
 			}
 			else if ((x < s_x) && (x<s_x + s_c_w) && (y>s_y) && (y < s_y + s_c_h))
 			{
+				printf("game_mode\n");
+				fflush(stdout);
 				settings.state = MODE_SETTINGS_STATE;
 				return settings;
+				
 			}
 			else
 			{
@@ -360,13 +366,12 @@ Settings settings_menu_handler(gui_chess root, Settings settings){
 			}
 			else if ((x > c_x) && (x<c_x + s_c_w) && (y>c_y) && (y < c_y + s_c_h))
 			{
-				settings.gameMode = MODE_SETTINGS_STATE;
+				settings.state = CHOOSE_COLOR_STATE;
 				return settings;
 			}
 			else if ((x > s_x) && (x<s_x + s_c_w) && (y>s_y) && (y < s_y + s_c_h))
 			{
-				//return GAME_MENU;
-				settings.gameMode = GAME_STATE;
+				settings.state = GAME_STATE;
 				return settings;
 			}
 			else
@@ -504,30 +509,252 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 
 Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings settings)
 {
-	int pos[4];
+	int offsets[4], x, y;
 	gui_chess tmp;
-
+	SDL_Event event;
 	tmp = game_menu;
 	tmp = tmp->child;
 	//todo replace pos with meaningful struct/existing data. used combination of box+clip is not clear.
-	pos[0] = tmp->box.x;
-	pos[1] = tmp->box.y;
-	pos[2] = tmp->clip.w;
-	pos[3] = tmp->clip.h;
+	offsets[0] = tmp->box.x;
+	offsets[1] = tmp->box.y;
+	offsets[2] = tmp->clip.w;
+	offsets[3] = tmp->clip.h;
 	
 	display_board(game_menu, -1, -1,settings.board);
 	
+	int set = 1;
+
+	while (set)
+	{
+		SDL_WaitEvent(&event);
+		if (event.type == SDL_QUIT){
+			settings.state = TERMINATE_STATE;
+			return settings;
+		}
+
+		else if (event.type == SDL_MOUSEBUTTONUP){
+			x = event.button.x;
+			y = event.button.y;
+
+			if ((y > (offsets[1] + 3 * GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + 3 * GAME_MENU_VERTICAL_OFFSET)))
+			{
+				settings.state = SET_MENU;
+				return settings;
+			}
+			else if ((x > offsets[0]) && (x < (offsets[0] + offsets[2])))
+			{
+				if ((y>offsets[1]) && (y < (offsets[1] + offsets[3])))
+				{
+					set = 1;
+					settings.state = MAIN_MENU_STATE;
+					return settings;
+				}
+				else if ((y>(offsets[1] + GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + GAME_MENU_VERTICAL_OFFSET)))
+				{
+					set = 1;
+					settings.state = SAVE_STATE;
+					settings = load_save_menu_handler(save_menu, settings);
+					return settings;
+					
+				}
+				else if ((y>(offsets[1] + 2 * GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + 2 * GAME_MENU_VERTICAL_OFFSET)))
+				{
+					settings = reset_settings(settings);
+					settings.state = MAIN_MENU_STATE;
+					return settings;
+			//		settings.playingColor = WHITE_COLOR;
+			//		set = 1;
+			//		settings.state = GAME_STATE;
+			//		settings = init_board(settings);
+			//		return settings;
+				}
+				else if ((y>QUIT_SIDE_Y) && (y < (QUIT_SIDE_Y + offsets[3])))
+				{
+					set = 1;
+					settings.state = TERMINATE_STATE;
+					return settings;
+				}
+				else if ((y>(offsets[1] + 4 * GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + 4 * GAME_MENU_VERTICAL_OFFSET)))
+				{
+					set = 0;
+					continue;
+				}
+			}
+		}
+	}
+	
 	while (settings.state == GAME_STATE) {
 		int situation = settings.gameMode == MULTIPLAYER_MODE || settings.userColor == settings.playingColor
-			? gui_player_turn(settings, pos, game_menu, save_menu)
+			? gui_player_turn(settings, offsets, game_menu, save_menu)
 			: gui_computer_turn(settings, game_menu);
 		settings = end_of_turn(settings, situation);
 	}
 	return settings;
 }
 
+Settings init_board(Settings settings)
+{
+	int i, j;
+
+	for (i = 0; i < BOARD_SIZE; i++){
+		settings.board[i][1] = WHITE_P;
+		settings.board[i][6] = BLACK_P;
+		for (j = 2; j < 6; j++){
+			settings.board[i][j]=EMPTY;
+		}
+
+	}
+	settings.board[0][0] = settings.board[7][0] = WHITE_R;
+	settings.board[1][0] = settings.board[6][0] = WHITE_K;
+	settings.board[2][0] = settings.board[5][0] = WHITE_B;
+	settings.board[3][0] = WHITE_Q;
+	settings.board[4][0] = WHITE_Q;
+	settings.board[0][7] = settings.board[7][7] = BLACK_R;
+	settings.board[1][7] = settings.board[6][7] = BLACK_K;
+	settings.board[2][7] = settings.board[5][7] = BLACK_B;
+	settings.board[3][7] = BLACK_Q;
+	settings.board[4][7] = BLACK_K;
+	return settings;
+}
+
+Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_menu, Settings settings)
+{
+	SDL_Event event;
+	int x, y, i, j, x2, y2, x_bound, y_bound, offsets[4];
+	gui_chess tmp, tmp2;
+	tmp2 = root->child;
+	x_bound = tmp2->box.x + PROMOTE_FIRST_POS_X;
+	y_bound = tmp2->box.y + PROMOTE_FIRST_POS_Y;
+	tmp = game_menu;
+	tmp = tmp->child;
+	offsets[0] = tmp->box.x;
+	offsets[1] = tmp->box.y;
+	offsets[2] = tmp->clip.w;
+	offsets[3] = tmp->clip.h;
+	while (true)
+	{
+		SDL_WaitEvent(&event);
+		if (event.type == SDL_QUIT){
+			settings.state = TERMINATE_STATE;
+			return settings;
+		}
+		else if (event.type == SDL_MOUSEBUTTONUP){
+			x2 = event.button.x;
+			y2 = event.button.y;
+			i = (x2 - BOARD_TOP_CORNER) / BOARD_SQUARE;
+			j = 7 - ((y2 - BOARD_TOP_CORNER) / BOARD_SQUARE);
+			blit_tree(root, 0, 0);
+			display_screen();
+			while (true)
+			{
+				SDL_WaitEvent(&event);
+				if (event.type == SDL_QUIT){
+					settings.state = TERMINATE_STATE;
+					return settings;
+				}
+				else if (event.type == SDL_MOUSEBUTTONUP)
+				{
+					x = event.button.x;
+					y = event.button.y;
+
+
+					if ((x >= x_bound - 3 * BOARD_SQUARE) && (x <= (x_bound - 3 * 66 + 6 * PROMOTE_OFFSET)))
+					{
+						set_piece(x, y, x_bound, y_bound, i, j, settings);
+						settings.state = GAME_STATE;
+						return settings;
+					}
+				}
+				else
+				{
+					continue;
+				}
+			}
+		}
+	}
+	//settings.state = GAME_STATE;
+	return settings;
+}
+
+void set_piece(int x, int y, int x_bound, int y_bound, int i, int j, Settings settings)
+{
+	char **board = settings.board;
+	if ((x < x_bound - 2 * BOARD_SQUARE) && (x>(x_bound - 3 * BOARD_SQUARE)))
+	{
+		if ((y > y_bound - 66) && (y<(y_bound + 66)))
+		{
+			board[i][j] = 'Q';
+		}
+		else if ((y > y_bound - 66) && (y<(y_bound + 3 * 66)))
+		{
+			board[i][j] = 'q';
+		}
+		else if ((y > y_bound - 66) && (y<(y_bound + 5 * 66)))
+		{
+			board[i][j] = EMPTY;
+		}
+	}
+	else if ((x < x_bound) && (x>(x_bound - 2 * BOARD_SQUARE))){
+		if ((y > y_bound - 66) && (y<(y_bound + 66)))
+		{
+			board[i][j] = 'R';
+		}
+		else if ((y > y_bound - 66) && (y<(y_bound + 3 * 66)))
+		{
+			board[i][j] = 'r';
+		}
+	}
+	else if ((x >(x_bound + 2 * PROMOTE_OFFSET - 3 * 66)) && (x<(x_bound - 2 * 66 + 2 * PROMOTE_OFFSET))){
+		if ((y > y_bound - 66) && (y<(y_bound + 66)))
+		{
+			board[i][j] = 'B';
+		}
+		else if ((y > y_bound - 66) && (y<(y_bound + 3 * 66)))
+		{
+			board[i][j] = 'b';
+		}
+	}
+	else if ((x >(x_bound - 3 * 66 + 3 * PROMOTE_OFFSET)) && (x < (x_bound - 2 * 66 + 3 * PROMOTE_OFFSET))){
+		if ((y > y_bound - 66) && (y<(y_bound + 66)))
+		{
+			board[i][j] = 'N';
+		}
+		else if ((y > y_bound - 66) && (y<(y_bound + 3 * 66)))
+		{
+			board[i][j] = 'n';
+		}
+	}
+	else if ((x >(x_bound - 3 * 66 + 4 * PROMOTE_OFFSET)) && (x < (x_bound - 2 * 66 + 4 * PROMOTE_OFFSET)))
+	{
+		if ((y > y_bound - 66) && (y<(y_bound + 66)))
+		{
+			board[i][j] = 'K';
+		}
+		else if ((y > y_bound - 66) && (y<(y_bound + 3 * 66)))
+		{
+			board[i][j] = 'k';
+		}
+	}
+	else if ((x >(x_bound - 3 * 66 + 5 * PROMOTE_OFFSET)) && (x < (x_bound - 2 * 66 + 5 * PROMOTE_OFFSET)))
+	{
+		if ((y > y_bound - 66) && (y<(y_bound + 66)))
+		{
+			board[i][j] = 'M';
+		}
+		else if ((y > y_bound - 66) && (y<(y_bound + 3 * 66)))
+		{
+			board[i][j] = 'm';
+		}
+	}
+
+}
+
+
+
+
 Settings end_of_turn(Settings settings, int situation) {
-	if (situation == GS_MAIN_MENU || situation == GS_RESTART /*todo fix restart logic*/) {
+	if (situation == GS_MAIN_MENU || situation == GS_RESTART /*todo fix restart logic*/) 
+	{
 		settings = reset_settings(settings);
 		settings.state = MAIN_MENU_STATE;
 		return settings;
@@ -542,7 +769,8 @@ Settings end_of_turn(Settings settings, int situation) {
 	bool stuck = !canMove(settings.board, settings.playingColor);
 	if (check && stuck /*mate*/) {
 		apply_surface(CHECKMATE_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
-		if (settings.playingColor == WHITE_COLOR) {
+		if (settings.playingColor == WHITE_COLOR) 
+		{
 			apply_surface(BLACK_MATE_IMG, getImage(SELECTED_PIECES_SHEET), get_screen());
 		}
 		else {

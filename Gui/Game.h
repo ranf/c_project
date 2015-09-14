@@ -27,6 +27,7 @@ bool player_clicked_restart(int x, int y, int offsets[4]);
 bool player_clicked_quit(int x, int y, int offsets[4]);
 bool player_clicked_board(int x, int y, int offsets[4]);
 Position board_clicked_position(int x, int y);
+Settings init_board(Settings settings);
 
 #include "Handlers.h"
 

@@ -1,7 +1,7 @@
 #include "Gui.h"
 
 void startGuiMode() {
-	gui_chess main_menu, mode_menu, settings_menu, load_menu, save_menu, game_menu, set_color;
+	gui_chess main_menu, mode_menu, settings_menu, load_menu, save_menu, game_menu, set_color, set_menu;
 
 	main_menu = NULL;
 	mode_menu = NULL;
@@ -10,16 +10,14 @@ void startGuiMode() {
 	save_menu = NULL;
 	game_menu = NULL;
 	set_color = NULL;
-	/*freopen( "CON", "w", stdout );
-freopen( "CON", "w", stderr );*/
+	set_menu = NULL;
+	
 if (SDL_Init(SDL_INIT_VIDEO) < 0) 
 	{
 		fprintf(stderr, "ERROR: unable to init SDL: %s\n", SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
 	atexit(SDL_Quit);
-	/*freopen( "CON", "w", stdout );
-freopen( "CON", "w", stderr );*/
 
 	create_screen();
 	loadImages();
@@ -31,6 +29,7 @@ freopen( "CON", "w", stderr );*/
 	load_menu = build_load_menu();
 	game_menu = build_game_menu();
 	set_color = build_color_set_menu();
+	set_menu = build_set_menu();
 
 	Settings settings = DEFAULT_SETTINGS;
 	settings.state = MAIN_MENU_STATE;
@@ -41,22 +40,36 @@ freopen( "CON", "w", stderr );*/
 		switch (settings.state){
 		case MAIN_MENU_STATE:
 			printf("main_menu\n");
-			settings = main_menu_handler(main_menu, settings);
-			printf("main_menu\n");
+			fflush(stdout);
+			settings = main_menu_handler(main_menu, settings); 
 			break;		
 		case LOAD_STATE:
 		case SAVE_STATE:
+			printf("load_save_menu\n");
+			fflush(stdout);
 			settings = load_save_menu_handler(load_menu, settings);
 			break;
 		case MODE_SETTINGS_STATE:
+			printf("mode_menu\n");
+			fflush(stdout);
 			settings = mode_menu_handler(mode_menu, settings);
 			break;
 		case CHOOSE_COLOR_STATE:
+			printf("choose_color_menu\n");
+			fflush(stdout);
 			settings = color_menu_handler(set_color, settings);
+			break;
 		case SETTINGS_STATE:
+			printf("setting_state\n");
+			fflush(stdout);
 			settings = settings_menu_handler(settings_menu, settings);
+			break;	
+		case SET_MENU:
+			settings = set_menu_handler(set_menu, game_menu, save_menu, settings);
 			break;
 		case GAME_STATE:
+			printf("game_state\n");
+			fflush(stdout);
 			settings = game_menu_handler(game_menu, save_menu, settings);
 			break;
 		default:

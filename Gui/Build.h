@@ -113,5 +113,6 @@ gui_chess build_game_menu();
 gui_chess white_player_promots();
 gui_chess black_player_promots();
 gui_chess build_promotion_menu(int now_playing);
+gui_chess build_set_menu();
 
 #endif

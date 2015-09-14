@@ -47,9 +47,12 @@ Settings load_save_menu_handler(gui_chess root, Settings settings);
 Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings settings);
 Settings end_of_turn(Settings settings, int situation);
 Settings reset_settings(Settings settings);
+Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_menu, Settings settings);
 char promotion_handler(gui_chess root, int player);
 void blit_tree(gui_chess start_point, int x, int y);
 void display_board(gui_chess game_menu, int selected_x, int selected_y, char** current_board);
 void update_num_selction(gui_chess number_button, int number);
-
+void set_piece(int x, int y, int x_bound, int y_bound, int i, int j, Settings settings);
+Settings init_board(Settings settings);
+Settings change_color(Settings settings);
 #endif
