@@ -10,7 +10,7 @@
 #define PIECES_SHEET "Gui/Images/pieces sheet.bmp"
 #define SELECTED_PIECES_SHEET "Gui/Images/selected pieces sheet.bmp"
 #define BACKGROUND_IMAGE "Gui/Images/back.bmp"
-
+#define ADD_IMAGE "Gui/Images/add.bmp"
 void loadImages();
 void freeImages();
 SDL_Surface *getImage(char *path);

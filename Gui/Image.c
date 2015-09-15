@@ -6,7 +6,7 @@ SDL_Surface *settings_sheet = NULL;
 SDL_Surface *pieces_sheet = NULL;
 SDL_Surface *selected_pieces_sheet = NULL;
 SDL_Surface *backround = NULL;
-
+SDL_Surface *add = NULL;
 void loadImages() {
 	main_img = load_link_image(MAIN_IMG);
 	panels_sheet = load_link_image(PANELS_SHEET);
@@ -14,6 +14,7 @@ void loadImages() {
 	pieces_sheet = load_link_image(PIECES_SHEET);
 	selected_pieces_sheet = load_link_image(SELECTED_PIECES_SHEET);
 	backround = load_link_image(BACKGROUND_IMAGE);
+	add = load_link_image(ADD_IMAGE);
 }
 
 void freeImages() {
@@ -22,6 +23,8 @@ void freeImages() {
 	SDL_FreeSurface(settings_sheet);
 	SDL_FreeSurface(pieces_sheet);
 	SDL_FreeSurface(selected_pieces_sheet);
+	SDL_FreeSurface(backround);
+	SDL_FreeSurface(add);
 }
 
 SDL_Surface *getImage(char *path) {
@@ -37,6 +40,8 @@ SDL_Surface *getImage(char *path) {
 		return selected_pieces_sheet;
 	} else if (strcmp(path, BACKGROUND_IMAGE) == 0) {
 		return backround;
+	} else if (strcmp(path, ADD_IMAGE) == 0) {
+		return add;
 	}
 	return NULL; //should never happen
 }

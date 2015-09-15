@@ -1,5 +1,5 @@
 #include "Game.h"
-#include "Handlers.h"
+
 
 int gui_player_turn(Settings settings, int offsets[4], gui_chess game_menu, gui_chess save_menu)
 {
@@ -57,8 +57,9 @@ int apply_player_click(Settings settings, SDL_Event event, int offsets[4],
 	}
 	if (player_clicked_save(x, y, offsets)) 
 	{
-		//printf("save ??????\n");
-		//fflush(stdout);
+		printf("in save\n");
+		fflush(stdout);
+		settings.state = SAVE_STATE;
 		load_save_menu_handler(save_menu, settings); //todo - use settings return value
 		moving_piece_selected = false;
 		display_board(game_menu, -1, -1, settings.board);
@@ -88,7 +89,9 @@ int apply_board_click(gui_chess game_menu, Position clicked, Settings settings, 
 		show_possible_moves(moves);
 		freeMoves(moves);
 		display_screen();
-	} else if (*moving_piece_selected) {
+	} else if (*moving_piece_selected) 
+	{
+		
 		if (isPawn(settings.board[clicked.x][clicked.y] && endOfBoard(clicked, settings.playingColor))) {
 			gui_chess promote_menu = build_promotion_menu(settings.playingColor);
 			move->promotion = promotion_handler(promote_menu, settings.playingColor);

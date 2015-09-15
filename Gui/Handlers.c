@@ -10,6 +10,7 @@ Settings main_menu_handler(gui_chess gui_window, Settings settings)
 	display_screen();
 	
 	//todo etract to function
+	/*define & find bounderies of the buttons*/
 	tmp = gui_window->child;
 	x_bound = tmp->box.x;
 	y_bound = tmp->box.y;
@@ -18,8 +19,7 @@ Settings main_menu_handler(gui_chess gui_window, Settings settings)
 	y_bound += tmp->box.y;
 	width = tmp->clip.w;
 	heigth = tmp->clip.h;
-	
-	settings.can_set = 1;
+
 	bool quitting = false;
 	while (!quitting)
 	{
@@ -30,19 +30,19 @@ Settings main_menu_handler(gui_chess gui_window, Settings settings)
 			mouse_x = event.button.x;
 			mouse_y = event.button.y;
 			if ((mouse_x > x_bound) && (mouse_x<(x_bound + width)) && (mouse_y>y_bound) && (mouse_y < (y_bound + heigth)))
-			{
+			{ /* new game*/
 				settings.state = MODE_SETTINGS_STATE;
 				quitting = true;
 				return settings;
 			}
 			if ((mouse_x > x_bound) && (mouse_x<(x_bound + width)) && (mouse_y>(y_bound + MAIN_VERTICAL_OFFSET)) && (mouse_y < (y_bound + MAIN_VERTICAL_OFFSET + heigth)))
-			{
+			{ /* load game*/
 				settings.state = LOAD_STATE;
 				quitting = true;
 				return settings;
 			}
 			if ((mouse_x > x_bound) && (mouse_x<(x_bound + width)) && (mouse_y>(y_bound + 2 * MAIN_VERTICAL_OFFSET)) && (mouse_y < (y_bound + 2 * MAIN_VERTICAL_OFFSET + heigth)))
-			{
+			{ /* quit game*/
 				settings.state = TERMINATE_STATE;
 				quitting = true;
 				return settings;
@@ -104,7 +104,6 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 	blit_tree(root, 0, 0);
 	display_screen();
 	while (true){
-
 		//todo check SDL_Wait return value for error
 		SDL_WaitEvent(&event);
 		if (event.type == SDL_QUIT){
@@ -115,6 +114,7 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 			y = event.button.y;
 			if ((x>p_vs_c_x) && (x<p_vs_c_x + width) && (y>p_vs_c_y) && (y<p_vs_c_y + heigth))
 			{
+				// debug
 				printf("game mode : p_vs_c -- SINGLEPLAYER_MODE\n");
 				fflush(stdout);
 				settings.gameMode = SINGLEPLAYER_MODE;
@@ -124,6 +124,7 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 			}
 			else if ((x>p_vs_p_x) && (x<p_vs_p_x + width) && (y>p_vs_p_y) && (y<p_vs_p_y + heigth))
 			{
+				// debug
 				printf("game mode: p_vs_p -- MULTIPLAYER_MODE\n");
 				fflush(stdout);
 				settings.gameMode = MULTIPLAYER_MODE;
@@ -162,8 +163,8 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 	gui_chess tmp, white, black, button_1;
 	int x, y, c_x, c_y, s_x, s_y, bound_x, bound_y, cb_x, cb_y, cb_w, cb_h;
 	int numb_x, numb_y, numb_w, numb_h, s_c_w, s_c_h;
-	//todo - no idea what is happening here - many unused vars
 
+	/*define & find bounderies of the buttons*/
 	tmp = root->child;
 	bound_x = tmp->box.x;
 	bound_y = tmp->box.y;
@@ -225,6 +226,7 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 			{
 				if (settings.gameMode == MULTIPLAYER_MODE)
 				{
+					// debug
 					printf("p_vs_p -> game\n");
 					fflush(stdout);
 					settings.state = GAME_STATE;
@@ -233,6 +235,7 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 				}
 				else if (settings.gameMode == SINGLEPLAYER_MODE)
 				{
+					//debug
 					printf("p_vs_c -> settings\n");
 					fflush(stdout);
 					settings.state = SETTINGS_STATE;
@@ -240,10 +243,10 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 					fflush(stdout);
 					return settings;
 				}
-
 			}
 			else if ((x < s_x) && (x<s_x + s_c_w) && (y>s_y) && (y < s_y + s_c_h))
 			{
+				// debug
 				printf("game_mode\n");
 				fflush(stdout);
 				settings.state = MODE_SETTINGS_STATE;
@@ -268,6 +271,7 @@ Settings settings_menu_handler(gui_chess root, Settings settings){
 	int x, y, c_x, c_y, s_x, s_y, bound_x, bound_y, cb_x, cb_y, cb_w, cb_h;
 	int numb_x, numb_y, numb_w, numb_h, best_w, best_h ,s_c_w, s_c_h;
 
+	/*define & find bounderies of the buttons*/
 	tmp = root->child;
 	bound_x = tmp->box.x;
 	bound_y = tmp->box.y;
@@ -393,6 +397,7 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 	int x, y, bound_x, bound_y, number_x, number_y, width, heigth, s_l_x, s_l_y, c_x, c_y, ch_x, ch_y;
 	int current_slot = 0;
 
+	/*define & find bounderies of the buttons*/
 	tmp = root->child;
 	bound_x = tmp->box.x;
 	bound_y = tmp->box.y;
@@ -448,6 +453,7 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 			{
 				current_slot = 5;
 			}
+			//cancel
 			else if ((x>c_x) && (x<c_x + s_l_x) && (y>c_y) && (y<c_y + s_l_y))
 			{
 				if (settings.state == SAVE_STATE)
@@ -455,7 +461,8 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 					settings.state = GAME_STATE;
 					return settings;
 				}
-				else{
+				else
+				{
 					settings.state = MAIN_MENU_STATE;
 					return settings;
 				}
@@ -486,19 +493,27 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 				}
 
 				/*op=1 "save"*/
-				if (settings.state == SAVE_STATE){
+				if (settings.state == SAVE_STATE)
+				{
+					// debug
+					printf("in load_save = save\n");
+					fflush(stdout);
 					saveSettings(settings, mem_slot);
 					settings.state = GAME_STATE;
 					return settings;
 				}
-				else {
-					strcpy(mem_slot,MEM_SLOT_1);
+				else 
+				{
+					// debug
+					printf("in load_save = load\n");
+					fflush(stdout);
 					settings = loadSettings(settings, mem_slot);
 					settings.state = MODE_SETTINGS_STATE;
 					return settings;
 				}
 			}
-			else{
+			else
+			{
 				continue;
 			}
 			update_num_selction(button_1, current_slot);
@@ -526,42 +541,35 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 	
 	int set = 1;
 
-	while (settings.can_set)
+	while (set)
 	{
 		SDL_WaitEvent(&event);
 		if (event.type == SDL_QUIT){
 			settings.state = TERMINATE_STATE;
 			return settings;
 		}
-
-		else if (event.type == SDL_MOUSEBUTTONUP){
+		else if (event.type == SDL_MOUSEBUTTONUP)
+		{
 			x = event.button.x;
 			y = event.button.y;
-
 			if ((y > (offsets[1] + 3 * GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + 3 * GAME_MENU_VERTICAL_OFFSET)))
-			{
+			{ /* set button was selected */
+				set = 0;
 				settings.state = SET_MENU;
 				return settings;
 			}
-			else if ((x > offsets[0]) && (x < (offsets[0] + offsets[2])))
-			{
-				
-				// start -- can not set anymore
-				if((y>QUIT_SIDE_Y) && (y < (QUIT_SIDE_Y + offsets[3])))
-				// ((y>(offsets[1] + 4 * GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + 4 * GAME_MENU_VERTICAL_OFFSET)))
-				{
-					settings.state = GAME_STATE;
-					settings.can_set = 0;
-					return settings;
-				}
-				else
-				{
-					gui_player_turn(settings, offsets, game_menu, save_menu);
-				}
+			else if ((y>(offsets[1] + 4 * GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + 4 * GAME_MENU_VERTICAL_OFFSET)))
+			{ /* start button was selected */
+				continue;
+			}
+			else
+			{ /* main_menu, reset, quit, save buttons was selected*/
+				int situation = gui_player_turn(settings, offsets, game_menu, save_menu);
+				settings = end_of_turn(settings, situation);
+				break;
 			}
 		}
 	}
-	
 	while (settings.state == GAME_STATE) {
 		int situation = settings.gameMode == MULTIPLAYER_MODE || settings.userColor == settings.playingColor
 			? gui_player_turn(settings, offsets, game_menu, save_menu)
@@ -571,36 +579,12 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 	return settings;
 }
 
-Settings init_board(Settings settings)
-{
-	int i, j;
-
-	for (i = 0; i < BOARD_SIZE; i++){
-		settings.board[i][1] = WHITE_P;
-		settings.board[i][6] = BLACK_P;
-		for (j = 2; j < 6; j++){
-			settings.board[i][j]=EMPTY;
-		}
-
-	}
-	settings.board[0][0] = settings.board[7][0] = WHITE_R;
-	settings.board[1][0] = settings.board[6][0] = WHITE_K;
-	settings.board[2][0] = settings.board[5][0] = WHITE_B;
-	settings.board[3][0] = WHITE_Q;
-	settings.board[4][0] = WHITE_Q;
-	settings.board[0][7] = settings.board[7][7] = BLACK_R;
-	settings.board[1][7] = settings.board[6][7] = BLACK_K;
-	settings.board[2][7] = settings.board[5][7] = BLACK_B;
-	settings.board[3][7] = BLACK_Q;
-	settings.board[4][7] = BLACK_K;
-	return settings;
-}
-
 Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_menu, Settings settings)
 {
 	SDL_Event event;
 	int x, y, i, j, x2, y2, x_bound, y_bound, offsets[4];
 	gui_chess tmp, tmp2;
+	
 	tmp2 = root->child;
 	x_bound = tmp2->box.x + PROMOTE_FIRST_POS_X;
 	y_bound = tmp2->box.y + PROMOTE_FIRST_POS_Y;
@@ -610,6 +594,7 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 	offsets[1] = tmp->box.y;
 	offsets[2] = tmp->clip.w;
 	offsets[3] = tmp->clip.h;
+	
 	while (true)
 	{
 		SDL_WaitEvent(&event);
@@ -635,8 +620,6 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 				{
 					x = event.button.x;
 					y = event.button.y;
-
-
 					if ((x >= x_bound - 3 * BOARD_SQUARE) && (x <= (x_bound - 3 * 66 + 6 * PROMOTE_OFFSET)))
 					{
 						set_piece(x, y, x_bound, y_bound, i, j, settings);
@@ -651,7 +634,6 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 			}
 		}
 	}
-	//settings.state = GAME_STATE;
 	return settings;
 }
 
@@ -728,12 +710,8 @@ void set_piece(int x, int y, int x_bound, int y_bound, int i, int j, Settings se
 
 }
 
-
-
-
 Settings end_of_turn(Settings settings, int situation) {
-	if (situation == GS_MAIN_MENU || situation == GS_RESTART /*todo fix restart logic*/) 
-	{
+	if (situation == GS_MAIN_MENU || situation == GS_RESTART /*todo fix restart logic*/) {
 		settings = reset_settings(settings);
 		settings.state = MAIN_MENU_STATE;
 		return settings;
@@ -748,8 +726,7 @@ Settings end_of_turn(Settings settings, int situation) {
 	bool stuck = !canMove(settings.board, settings.playingColor);
 	if (check && stuck /*mate*/) {
 		apply_surface(CHECKMATE_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
-		if (settings.playingColor == WHITE_COLOR) 
-		{
+		if (settings.playingColor == WHITE_COLOR) {
 			apply_surface(BLACK_MATE_IMG, getImage(SELECTED_PIECES_SHEET), get_screen());
 		}
 		else {

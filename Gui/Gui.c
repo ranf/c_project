@@ -45,8 +45,6 @@ if (SDL_Init(SDL_INIT_VIDEO) < 0)
 			break;		
 		case LOAD_STATE:
 		case SAVE_STATE:
-			printf("load_save_menu\n");
-			fflush(stdout);
 			settings = load_save_menu_handler(load_menu, settings);
 			break;
 		case MODE_SETTINGS_STATE:

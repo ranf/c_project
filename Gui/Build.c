@@ -198,10 +198,10 @@ gui_chess build_game_menu()
 	tmp = tmp->next;
 	tmp->next = button_factory(getImage(SETTINGS_SHEET), QUIT_SIDE_BUTTON_PMT, tmp_parent);
 	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS_SHEET), SET, tmp_parent);
+	tmp->next = button_factory(getImage(ADD_IMAGE), SET, tmp_parent);
 	/*sould be replace with start*/
 	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS_SHEET), START, tmp_parent);
+	tmp->next = button_factory(getImage(ADD_IMAGE), START, tmp_parent);
 	return (result);
 }
 
