@@ -167,12 +167,15 @@ bool player_clicked_board(int x, int y, int offsets[4])
 
 bool player_clicked_set(int x, int y, int offsets[4])
 {
-	return ((y > (offsets[1] + 3 * GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + 3 * GAME_MENU_VERTICAL_OFFSET)));
+	return player_clicked_buttons_zone(x,offsets) &&
+		y > offsets[1] + 3 * GAME_MENU_VERTICAL_OFFSET &&
+		y < offsets[1] + offsets[3] + 3 * GAME_MENU_VERTICAL_OFFSET;
 }
 
 bool player_clicked_start(int x, int y, int offsets[4])
 {
-	return ((y>(offsets[1] + 4 * GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + 4 * GAME_MENU_VERTICAL_OFFSET)));
+	return player_clicked_buttons_zone(x,offsets) &&
+		y > offsets[1] + 4 * GAME_MENU_VERTICAL_OFFSET && y < offsets[1] + offsets[3] + 4 * GAME_MENU_VERTICAL_OFFSET;
 }
 Position board_clicked_position(int x, int y)
 {
@@ -181,4 +184,3 @@ Position board_clicked_position(int x, int y)
 	p.y = 7 - ((y - BOARD_TOP_CORNER) / BOARD_SQUARE);
 	return p;
 }
-
