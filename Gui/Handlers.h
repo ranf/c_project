@@ -20,6 +20,8 @@
 #define MEM_SLOT_3 "mem_slot_3.xml"
 #define MEM_SLOT_4 "mem_slot_4.xml"
 #define MEM_SLOT_5 "mem_slot_5.xml"
+#define MEM_SLOT_6 "mem_slot_6.xml"
+#define MEM_SLOT_7 "mem_slot_7.xml"
 
 #define BOARD_TOP_CORNER 35
 #define BOARD_BOTTOM_CORNER 562
@@ -39,21 +41,31 @@
 #define WHITE_MATE_IMG 262,193,240,200,210,250
 #define BLACK_MATE_IMG 3,196,230,200,210,250
 
+
+
+
+#define TEI_MES 5,620,345,44,125,140
+
+
 Settings main_menu_handler(gui_chess gui_window, Settings settings);
 Settings mode_menu_handler(gui_chess root, Settings settings);
 Settings color_menu_handler(gui_chess root, Settings settings);
 Settings settings_menu_handler(gui_chess root, Settings settings);
 Settings load_save_menu_handler(gui_chess root, Settings settings);
 Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings settings);
-Settings end_of_turn(Settings settings, int situation);
+Settings end_of_turn(Settings settings, int situation, gui_chess game_menu);
 Settings reset_settings(Settings settings);
 Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_menu, Settings settings);
 char promotion_handler(gui_chess root, int player);
 void blit_tree(gui_chess start_point, int x, int y);
 void display_board(gui_chess game_menu, int selected_x, int selected_y, char** current_board);
 void update_num_selction(gui_chess number_button, int number);
-void set_piece(int x, int y, int x_bound, int y_bound, int i, int j, Settings settings);
+char** set_piece(int x, int y, int x_bound, int y_bound, int i, int j, char** board);
 Settings init_board(Settings settings);
 Settings change_color(Settings settings);
 int * put_in_offset(gui_chess root);
+Settings minimax_menu_handler(gui_chess root, Settings settings);
+Settings best_move_handler ( Settings settings, gui_chess game_menu);
+char** applyMove1(char** board, Move* move);
+Settings cancel_after_best_move(Settings settings);
 #endif

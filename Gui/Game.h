@@ -13,6 +13,7 @@
 #define GS_PLAYER_FINISHED 3
 #define GS_MAIN_MENU 4
 #define GS_RESTART 5
+#define GS_CAN_NOT_SET 6
 
 int gui_player_turn(Settings settings, int offsets[4], gui_chess game_menu, gui_chess save_menu);
 int gui_computer_turn(Settings settings, gui_chess game_menu);
@@ -26,9 +27,11 @@ bool player_clicked_save(int x, int y, int offsets[4]);
 bool player_clicked_restart(int x, int y, int offsets[4]);
 bool player_clicked_quit(int x, int y, int offsets[4]);
 bool player_clicked_board(int x, int y, int offsets[4]);
+bool player_clicked_start(int x, int y, int offsets[4]);
+bool player_clicked_set(int x, int y, int offsets[4]);
 Position board_clicked_position(int x, int y);
 Settings init_board(Settings settings);
-
+void show_best_move(Move* move);
 #include "Handlers.h"
 
 #endif

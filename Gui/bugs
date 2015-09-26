@@ -1,4 +1,3 @@
-
 1. new empty project compiles
 2. console implementation
 2.1. settings implementation - without save/load
@@ -23,9 +22,18 @@
 5.5.2. move - allow valid moves by selecting the source tile and then the target
 5.5.3. suggest best move button - possible showing AI settings dialog
 5.5.4. game over logic
-5.6. keyboard travel - for all windows
-5.7. save/load window
+5.6. save/load window
 6. go over project instructions - verify everything is implemented
+6.3. BUG - no valid board verfication when starting new game
+6.4. LEAK - malloc'd Elements (created in element factory) are not freed
+6.5. NOT IMPLEMENTED - 5.5.3. "Also, you must provide an option for the user to see the best move for him. For "computer vs. AI" mode, the depth of the minimax will be the depth of the AI. For "2 players" the player should choose the depth of the minimax (don't forget the "best" option)."
+
+6.10. BUG - set button should disappear on game start since it's disabled
+6.11. BUG -  must click on set every time, otherwise game starts
+6.14. BUG - tie is prefered over indecisive board (need to change its score from 0)
+6.97. resolve/remove all TODOs in the code
+6.98. fix all compilation warnings
+6.99. remove debug prints
 7. bonuses
 7.1. castling
 7.2. best scoring function - simple piece boards for pawns, knights and bishop should be enough http://chessprogramming.wikispaces.com/Simplified+evaluation+function

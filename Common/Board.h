@@ -17,6 +17,8 @@
 #define BLACK_Q 'Q'
 #define BLACK_K 'K'
 
+#define BLUE 'y'
+
 #define EMPTY ' '
 
 #define WHITE_COLOR 1

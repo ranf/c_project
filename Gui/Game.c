@@ -55,10 +55,12 @@ int apply_player_click(Settings settings, SDL_Event event, int offsets[4],
 	if (player_clicked_main_menu(x, y, offsets)) {
 		return GS_MAIN_MENU;
 	}
+	if (player_clicked_set(x,y,offsets) && settings.can_set == 0)
+	{
+		return GS_CAN_NOT_SET;
+	}
 	if (player_clicked_save(x, y, offsets)) 
 	{
-		printf("in save\n");
-		fflush(stdout);
 		settings.state = SAVE_STATE;
 		load_save_menu_handler(save_menu, settings); //todo - use settings return value
 		moving_piece_selected = false;
@@ -114,7 +116,8 @@ int apply_board_click(gui_chess game_menu, Position clicked, Settings settings, 
 void show_possible_moves(MoveList* moves)
 {
 	MoveList* head = moves;
-	while (head != NULL){
+	while (head != NULL)
+	{
 		apply_surface(GET_MOVES_SELECT_SQURE, BOARD_SQUARE, BOARD_SQUARE, 
 			head->data->to.x * BOARD_SQUARE + BOARD_TOP_CORNER, 
 			(7 - head->data->to.y)*BOARD_SQUARE + BOARD_TOP_CORNER, getImage(SELECTED_PIECES_SHEET), get_screen());
@@ -122,6 +125,8 @@ void show_possible_moves(MoveList* moves)
 		head = head->next;
 	}
 }
+
+
 
 bool player_clicked_buttons_zone(int x, int offsets[4])
 {
@@ -160,6 +165,15 @@ bool player_clicked_board(int x, int y, int offsets[4])
 		y > BOARD_TOP_CORNER && y < BOARD_BOTTOM_CORNER;
 }
 
+bool player_clicked_set(int x, int y, int offsets[4])
+{
+	return ((y > (offsets[1] + 3 * GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + 3 * GAME_MENU_VERTICAL_OFFSET)));
+}
+
+bool player_clicked_start(int x, int y, int offsets[4])
+{
+	return ((y>(offsets[1] + 4 * GAME_MENU_VERTICAL_OFFSET)) && (y < (offsets[1] + offsets[3] + 4 * GAME_MENU_VERTICAL_OFFSET)));
+}
 Position board_clicked_position(int x, int y)
 {
 	Position p;

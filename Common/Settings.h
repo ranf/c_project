@@ -12,6 +12,8 @@
 #define SETTINGS_STATE 6
 #define SET_MENU 7
 #define GAME_STATE 8
+#define BEST_MOVE 9
+#define CANCEL_BEST_MOVE 10
 
 #define MULTIPLAYER_MODE 1
 #define SINGLEPLAYER_MODE 2

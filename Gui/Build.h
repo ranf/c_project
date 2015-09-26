@@ -22,6 +22,7 @@
 #define W_KING_PMT 277,476,65,65
 
 #define EMPTY_BUTTON 82,76,65,65
+#define BLUE_B 16,141,65,65
 
 /*board parameters*/
 
@@ -39,11 +40,15 @@
 #define THREE_BUTTON_PMT 735,584,40,50,260,240
 #define FOUR_BUTTON_PMT 775,584,40,50,320,240
 #define FIVE_BUTTON_PMT 910,584,40,50,380,240
+#define SIX_BUTTON_PMT 735,584,40,50,440,240
+#define SEVEN_BUTTON_PMT 654,584,40,50,500,240
 #define ONE_S_BUTTON_PMT 654,640,40,50,140,240
 #define TWO_S_BUTTON_PMT 695,640,40,50,200,240
 #define THREE_S_BUTTON_PMT 735,640,40,50,260,240
 #define FOUR_S_BUTTON_PMT 775,640,40,50,320,240
 #define FIVE_S_BUTTON_PMT 910,640,40,50,380,240
+#define SIX_S_BUTTON_PMT 775,640,40,50,440,240
+#define SEVEN_S_BUTTON_PMT 654,640,40,50,500,240
 #define NUM_BUTTON_Y 584
 #define NUM_S_BUTTON_Y 640
 #define NUM_HORIZONTAL_OFFSET 60
@@ -107,7 +112,7 @@
 gui_chess build_main_menu();
 gui_chess build_mode_menu();
 gui_chess build_color_set_menu();
-gui_chess build_diffculty_menu();
+gui_chess build_minmax_menu();
 gui_chess build_settings_menu();
 gui_chess build_save_menu();
 gui_chess build_load_menu();
