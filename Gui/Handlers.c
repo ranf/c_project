@@ -751,7 +751,7 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 			j = 7 - ((y2 - BOARD_TOP_CORNER) / BOARD_SQUARE);
 			blit_tree(root, 0, 0);
 			display_screen();
-			while (true)
+			while (i >= 0 && j >= 0 && i < BOARD_SIZE && j < BOARD_SIZE)
 			{
 				SDL_WaitEvent(&event);
 				if (event.type == SDL_QUIT){
