@@ -38,3 +38,15 @@ void apply_surface(int src_x, int src_y, int src_w, int src_h, int dst_x, int ds
 	dst_new.y = dst_y;
 	SDL_BlitSurface(source, &src_new, destination, &dst_new);
 }
+
+void free_element(gui_chess element) {
+	if (element == NULL)
+		return;
+	free_element(element->child);
+	gui_chess head = element;
+	while (head != NULL) {
+		gui_chess tmp  = head->next;
+		free_element(head);
+		head = tmp;
+	}
+}

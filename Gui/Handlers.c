@@ -1048,7 +1048,7 @@ void blit_tree(gui_chess start_point, int x, int y)
 void update_num_selction(gui_chess number_button, int number)
 {
 	gui_chess tmp;
-	int i;
+	int i = 0;
 	tmp = number_button;
 
 	//max save slots = 5

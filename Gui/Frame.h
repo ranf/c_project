@@ -26,5 +26,6 @@ SDL_Surface* get_screen();
 void display_screen();
 void free_screen();
 void apply_surface(int src_x, int src_y, int src_w, int src_h, int dst_x, int dst_y, SDL_Surface* source, SDL_Surface* destination);
+void free_element(gui_chess element);
 
 #endif
