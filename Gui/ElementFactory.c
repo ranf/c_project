@@ -7,7 +7,7 @@ gui_chess window_factory(SDL_Surface* win_img)
 	result = (gui_chess)malloc(sizeof(game_frame));
 	if (result == NULL){
 		printf("ERROR: problem with window");
-		exit(0);
+		exit(EXIT_FAILURE);
 		//break;
 	}
 	result->type = WINDOW;
@@ -24,7 +24,7 @@ gui_chess panel_factory(SDL_Surface* pnl_img, int sheet_x_offset, int sheet_y_of
 	result = (gui_chess)malloc(sizeof(game_frame));
 	if (result == NULL){
 		perror("ERROR");
-		exit(0);
+		exit(EXIT_FAILURE);
 		//break;
 	}
 	result->img = pnl_img;
@@ -47,7 +47,7 @@ gui_chess label_factory(SDL_Surface* lbl_img, int sheet_x_offset, int sheet_y_of
 	result = (gui_chess)malloc(sizeof(game_frame));
 	if (result == NULL){
 		perror("ERROR");
-		exit(0);
+		exit(EXIT_FAILURE);
 		//break;
 	}
 	result->img = lbl_img;
@@ -70,7 +70,7 @@ gui_chess button_factory(SDL_Surface* btn_img, int sheet_x_offset, int sheet_y_o
 	result = (gui_chess)malloc(sizeof(game_frame));
 	if (result == NULL){
 		perror("ERROR");
-		exit(0);
+		exit(EXIT_FAILURE);
 		//break
 	}
 	result->img = btn_img;

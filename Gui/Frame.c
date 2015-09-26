@@ -43,10 +43,6 @@ void free_element(gui_chess element) {
 	if (element == NULL)
 		return;
 	free_element(element->child);
-	gui_chess head = element;
-	while (head != NULL) {
-		gui_chess tmp  = head->next;
-		free_element(head);
-		head = tmp;
-	}
+	free_element(element->next);
+	free(element);
 }
