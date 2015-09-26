@@ -74,6 +74,15 @@ if (SDL_Init(SDL_INIT_VIDEO) < 0)
 
 	if (settings.board != NULL)
 		freeBoard(settings.board);
+
+	freeElement(main_menu);
+	freeElement(mode_menu);
+	freeElement(settings_menu);
+	freeElement(save_menu);
+	freeElement(load_menu);
+	freeElement(game_menu);
+	freeElement(set_color);
+	freeElement(set_menu);
 	freeImages();
 	free_screen();
 }

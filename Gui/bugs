@@ -32,6 +32,7 @@
 6.10. BUG - set button should disappear on game start since it's disabled
 6.11. BUG -  must click on set every time, otherwise game starts
 6.14. BUG - tie is prefered over indecisive board (need to change its score from 0)
+6.15. BUG - EMPTY button is misslocated/ugly
 6.97. resolve/remove all TODOs in the code
 6.98. fix all compilation warnings
 6.99. remove debug prints
