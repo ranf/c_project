@@ -33,6 +33,8 @@
 6.11. BUG -  must click on set every time, otherwise game starts
 6.14. BUG - tie is prefered over indecisive board (need to change its score from 0)
 6.15. BUG - EMPTY button is misslocated/ugly
+6.16. BUG - load/save menu is broken
+6.17. create default xml for all save slots
 6.97. resolve/remove all TODOs in the code
 6.98. fix all compilation warnings
 6.99. remove debug prints

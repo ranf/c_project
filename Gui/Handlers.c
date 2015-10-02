@@ -554,18 +554,18 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 			}
 			else if (player_clicked_start(x,y,offsets))
 			{ /* start button was selected */
-				// todo
-			//	if (!board_init)
-			//	{
-			//		apply_surface(CHECKMATE_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
-			//		SDL_Delay(2500);
-			//	}
-			//	else
-			//	{
+				
+				if (countPiecesOfType(settings.board, WHITE_K) != 1 ||
+					countPiecesOfType(settings.board, BLACK_K) != 1)
+				{
+					apply_surface(CHECKMATE_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
+					SDL_Delay(2500);
+				}
+				else
+				{
 					settings.can_set = 0;
 					set = 0;
-					continue;
-			//	}
+				}
 				
 			}
 			else if ((player_clicked_save(x, y, offsets)) || (player_clicked_restart(x, y, offsets)) ||
@@ -574,10 +574,6 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 				int situation = gui_player_turn(settings, offsets, game_menu, save_menu);
 				settings = end_of_turn(settings, situation, game_menu);
 				break;
-			}
-			else
-			{
-				continue;
 			}
 		}
 	}
@@ -762,7 +758,7 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 				{
 					x = event.button.x;
 					y = event.button.y;
-					if ((x >= x_bound - 3 * BOARD_SQUARE) && (x <= (x_bound - 3 * 66 + 7 * PROMOTE_OFFSET)))
+					if (x >= x_bound - 3 * BOARD_SQUARE && x <= x_bound - 3 * 66 + 7 * PROMOTE_OFFSET)
 					{
 						settings.board = set_piece(x, y, x_bound, y_bound, i, j, settings.board);
 						display_board(game_menu, -1, -1,settings.board);
@@ -782,9 +778,9 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 
 char** set_piece(int x, int y, int x_bound, int y_bound, int i, int j, char** board)
 {
-	if ( (x < (x_bound - 66)) &&  (x > (x_bound - 3 * 66) ) )
+	if (x < x_bound - 66 &&  x > x_bound - 3 * 66)
 	{
-		if ((y > y_bound -2* 66) && (y<(y_bound)))
+		if (y > y_bound - 2* 66 && y < y_bound)
 		{
 			board[i][j] = 'Q';
 		}
@@ -1048,7 +1044,7 @@ void blit_tree(gui_chess start_point, int x, int y)
 void update_num_selction(gui_chess number_button, int number)
 {
 	gui_chess tmp;
-	int i = 0;
+	int i = 1;
 	tmp = number_button;
 
 	//max save slots = 5
