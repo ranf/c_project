@@ -24,8 +24,7 @@
 5.5.4. game over logic
 5.6. save/load window
 6. go over project instructions - verify everything is implemented
-6.3. BUG - no valid board verfication when starting new game
-6.4. LEAK - malloc'd Elements (created in element factory) are not freed
+6.3. BUG - no valid board verfication when starting new game -> added kings verification. need to add verification for set
 6.5. NOT IMPLEMENTED - 5.5.3. "Also, you must provide an option for the user to see the best move for him. For "computer vs. AI" mode, the depth of the minimax will be the depth of the AI. For "2 players" the player should choose the depth of the minimax (don't forget the "best" option)."
 
 6.9. STILL! NOT IMPEMENTED - next player selection menu.
