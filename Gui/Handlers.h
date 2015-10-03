@@ -14,14 +14,14 @@
 #define COLOR_HORIZONTSL_OFFSET 120
 #define GAME_MENU_VERTICAL_OFFSET 70
 /*files for saving*/
-#define MEM_SLOT_FILE_NAME_LENGTH 15
-#define MEM_SLOT_1 "mem_slot_1.xml"
-#define MEM_SLOT_2 "mem_slot_2.xml"
-#define MEM_SLOT_3 "mem_slot_3.xml"
-#define MEM_SLOT_4 "mem_slot_4.xml"
-#define MEM_SLOT_5 "mem_slot_5.xml"
-#define MEM_SLOT_6 "mem_slot_6.xml"
-#define MEM_SLOT_7 "mem_slot_7.xml"
+#define MEM_SLOT_FILE_NAME_LENGTH 21
+#define MEM_SLOT_1 "Saves/mem_slot_1.xml"
+#define MEM_SLOT_2 "Saves/mem_slot_2.xml"
+#define MEM_SLOT_3 "Saves/mem_slot_3.xml"
+#define MEM_SLOT_4 "Saves/mem_slot_4.xml"
+#define MEM_SLOT_5 "Saves/mem_slot_5.xml"
+#define MEM_SLOT_6 "Saves/mem_slot_6.xml"
+#define MEM_SLOT_7 "Saves/mem_slot_7.xml"
 
 #define BOARD_TOP_CORNER 35
 #define BOARD_BOTTOM_CORNER 562

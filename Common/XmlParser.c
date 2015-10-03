@@ -48,7 +48,6 @@ Settings loadSettings(Settings previousSettings, char* filePath) {
 	return settings;
 }
 
-// TODO return sucess value
 void saveSettings(Settings settings, char* filename) {
 	xmlTextWriterPtr writer = xmlNewTextWriterFilename(filename, 0);
 	if (writer == NULL) {
