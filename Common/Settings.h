@@ -27,6 +27,7 @@ typedef struct {
 	int userColor;
 	int playingColor;
 	int can_set;
+	int show_hint;
 	char** board;
 } Settings;
 
@@ -34,6 +35,8 @@ typedef struct {
 	.state = SETTINGS_STATE,\
 	.gameMode = MULTIPLAYER_MODE,\
 	.minimaxDepth = 1,\
+	.show_hint = 0,\
+	.can_set = 1,\
 	.userColor = WHITE_COLOR,\
 	.playingColor = WHITE_COLOR,\
 	.board = initBoard()\

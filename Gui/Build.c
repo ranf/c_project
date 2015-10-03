@@ -18,7 +18,7 @@ gui_chess build_main_menu()
 	tmp->next = button_factory(getImage(SETTINGS_SHEET), LOAD_BUTTON_PMT, tmp_parent);
 	tmp = tmp->next;
 	tmp->next = button_factory(getImage(SETTINGS_SHEET), QUIT_BUTTON_PMT, tmp_parent);
-
+    
 	return result;
 }
 
@@ -53,7 +53,7 @@ gui_chess build_color_set_menu()
 	tmp = result;
 	tmp->child = panel_factory(getImage(PANELS_SHEET), FISH_PANEL_PMT, tmp);
 	tmp = tmp->child;
-	tmp->child = label_factory(getImage(SETTINGS_SHEET), COLOR_LABEL_PMT, tmp);
+	tmp->child = label_factory(getImage(LOAD_SAVE), COLOR_LABEL_PMT, tmp);
 	tmp_parent = tmp;
 	tmp = tmp->child;
 	tmp->next = button_factory(getImage(SETTINGS_SHEET), WHITE_S_BUTTON_PMT, tmp_parent);
@@ -70,30 +70,30 @@ gui_chess build_color_set_menu()
 
 gui_chess build_minmax_menu()
 {
-		gui_chess result, tmp, tmp_parent;
-
-	result = window_factory(getImage(BACKGROUND_IMAGE));
-	tmp = result;
-	tmp->child = panel_factory(getImage(PANELS_SHEET), FISH_PANEL_PMT, tmp);
-	tmp = tmp->child;
-	tmp->child = label_factory(getImage(SETTINGS_SHEET), DIFFICULTY_LABEL_PMT, tmp);
-	tmp_parent = tmp;
-	tmp = tmp->child;
-	tmp->next = button_factory(getImage(SETTINGS_SHEET), ONE_S_BUTTON_PMT, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS_SHEET), TWO_BUTTON_PMT, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS_SHEET), THREE_BUTTON_PMT, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS_SHEET), FOUR_BUTTON_PMT, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS_SHEET), BEST_BUTTON_PMT, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS_SHEET), CANCEL_BUTTON_PMT, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS_SHEET), START_BUTTON_PMT, tmp_parent);
-	
-	return (result);
+    gui_chess result, tmp, tmp_parent;
+    
+    result = window_factory(getImage(BACKGROUND_IMAGE));
+    tmp = result;
+    tmp->child = panel_factory(getImage(PANELS_SHEET), FISH_PANEL_PMT, tmp);
+    tmp = tmp->child;
+    tmp->child = label_factory(getImage(SETTINGS_SHEET), DIFFICULTY_LABEL_PMT, tmp_parent);
+    tmp_parent = tmp;
+    tmp = tmp->child;
+    tmp->next = button_factory(getImage(SETTINGS_SHEET), ONE_BUTTON_PMT, tmp_parent);
+    tmp = tmp->next;
+    tmp->next = button_factory(getImage(SETTINGS_SHEET), TWO_BUTTON_PMT, tmp_parent);
+    tmp = tmp->next;
+    tmp->next = button_factory(getImage(SETTINGS_SHEET), THREE_BUTTON_PMT, tmp_parent);
+    tmp = tmp->next;
+    tmp->next = button_factory(getImage(SETTINGS_SHEET), FOUR_BUTTON_PMT, tmp_parent);
+    tmp = tmp->next;
+    tmp->next = button_factory(getImage(SETTINGS_SHEET), BEST_BUTTON_PMT, tmp_parent);
+    tmp = tmp->next;
+    tmp->next = button_factory(getImage(LOAD_SAVE), CANCEL_BUTTON_PMT, tmp_parent);
+    tmp = tmp->next;
+    tmp->next = button_factory(getImage(LOAD_SAVE), NEXT_BUTTON_PMT, tmp_parent);
+    
+    return (result);
 }
 gui_chess build_settings_menu()
 {
@@ -153,9 +153,9 @@ gui_chess build_save_menu()
 	tmp = tmp->next;
 	tmp->next = button_factory(getImage(ADD_IMAGE), SEVEN_BUTTON_PMT, tmp_parent);
 	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS_SHEET), CANCEL_BUTTON_PMT, tmp_parent);
+	tmp->next = button_factory(getImage(LOAD_SAVE), CANCEL_BUTTON_PMT, tmp_parent);
 	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS_SHEET), SAVE_ARROW_PMT, tmp_parent);
+	tmp->next = button_factory(getImage(LOAD_SAVE), SAVE_ARROW_PMT, tmp_parent);
 	return (result);
 }
 
@@ -184,10 +184,10 @@ gui_chess build_load_menu()
 	tmp = tmp->next;
 	tmp->next = button_factory(getImage(ADD_IMAGE), SEVEN_BUTTON_PMT, tmp_parent);
 	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS_SHEET), CANCEL_BUTTON_PMT, tmp_parent);
+	tmp->next = button_factory(getImage(LOAD_SAVE), CANCEL_BUTTON_PMT, tmp_parent);
 	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS_SHEET), LOAD_ARROW_PMT, tmp_parent);
-
+	tmp->next = button_factory(getImage(LOAD_SAVE), LOAD_ARROW_PMT, tmp_parent);
+	
 	return (result);
 }
 

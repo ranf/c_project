@@ -34,15 +34,16 @@ if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	Settings settings = DEFAULT_SETTINGS;
 	settings.state = MAIN_MENU_STATE;
 	
-
 	while (settings.state != TERMINATE_STATE){
 		switch (settings.state){
 		case MAIN_MENU_STATE:
 			settings = main_menu_handler(main_menu, settings); 
 			break;		
 		case LOAD_STATE:
+            settings = load_save_menu_handler(load_menu, settings);
+            break;
 		case SAVE_STATE:
-			settings = load_save_menu_handler(load_menu, settings);
+			settings = load_save_menu_handler(save_menu, settings);
 			break;
 		case MODE_SETTINGS_STATE:
 			settings = mode_menu_handler(mode_menu, settings);

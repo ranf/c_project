@@ -127,14 +127,15 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 				pvc->clip.x = PV_BUTTON_X;
 				button->clip.x = START_ARROW_X;
 			}
-			else if ((x>c_x) && (x<c_x + s_c_width) && (y>c_y) && (y<c_y + s_c_heigth))
+			// 3.10
+			else if ( ( x >= 183 ) && ( x <= 266 ) && ( y >= 413 ) && ( y <= 465 ) )
 			{
 				//freeBoard(settings.board);
 				//settings = (Settings) DEFAULT_SETTINGS;
 				settings.state = MAIN_MENU_STATE;
 				return settings;
 			}
-			else if ((x>start_x) && (x<start_x + s_c_width) && (y>start_y) && (y<start_y + s_c_heigth))
+			else if ( ( x >= 523 ) && ( x <= 606 ) && ( y >= 413 ) && ( y <= 465 ) )
 			{
 				//freeBoard(settings.board);
 				//settings = (Settings) DEFAULT_SETTINGS;
@@ -208,16 +209,21 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 			y = event.button.y;
 			if ((x > (cb_x + COLOR_HORIZONTSL_OFFSET)) && (x<(cb_x + cb_w + COLOR_HORIZONTSL_OFFSET)) && (y>cb_y) && (y < cb_y + cb_h))
 			{
-				settings.userColor = BLACK_COLOR;
+				// 3.10
+				//settings.userColor = BLACK_COLOR;
+				settings.playingColor = BLACK_COLOR;
 				white->clip.y = COLOR_BUTTON_Y;
 				black->clip.y = COLOR_S_BUTTON_Y;
 			}
-			else if ((x > cb_x) && (x<cb_x + cb_w) && (y>cb_y) && (y < cb_y + cb_h)){
-				settings.userColor = WHITE_COLOR;
+			else if ((x > cb_x) && (x<cb_x + cb_w) && (y>cb_y) && (y < cb_y + cb_h))
+			{
+				// 3.10
+				//settings.userColor = WHITE_COLOR;
+				settings.playingColor = WHITE_COLOR;
 				white->clip.y = COLOR_S_BUTTON_Y;
 				black->clip.y = COLOR_BUTTON_Y;
 			}
-			else if ((x > c_x) && (x<c_x + s_c_w) && (y>c_y) && (y < c_y + s_c_h))
+			else if ( ( x >= 523 ) && ( x <= 606 ) && ( y >= 413 ) && ( y <= 465 ) )
 			{
 				if (settings.gameMode == MULTIPLAYER_MODE)
 				{
@@ -231,7 +237,8 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 					return settings;
 				}
 			}
-			else if ((x < s_x) && (x<s_x + s_c_w) && (y>s_y) && (y < s_y + s_c_h))
+			// cancel
+			else if ( ( x >= 183 ) && ( x <= 266 ) && ( y >= 413 ) && ( y <= 465 ) )
 			{
 				settings.state = MODE_SETTINGS_STATE;
 				return settings;
@@ -352,13 +359,13 @@ Settings settings_menu_handler(gui_chess root, Settings settings){
 			{
 				settings.minimaxDepth = BEST_DEPTH;
 				update_num_selction(button_1, 5);
-			}
-			else if ((x > c_x) && (x<c_x + s_c_w) && (y>c_y) && (y < c_y + s_c_h))
+            }
+			else if ( ( x >= 183 ) && ( x <= 266 ) && ( y >= 413 ) && ( y <= 465 ) )
 			{
 				settings.state = CHOOSE_COLOR_STATE;
 				return settings;
 			}
-			else if ((x > s_x) && (x<s_x + s_c_w) && (y>s_y) && (y < s_y + s_c_h))
+			else if ( ( x >= 523 ) && ( x <= 606 ) && ( y >= 413 ) && ( y <= 465 ) )
 			{
 				settings.state = GAME_STATE;
 				return settings;
@@ -371,6 +378,7 @@ Settings settings_menu_handler(gui_chess root, Settings settings){
 			display_screen();
 		}
 	}
+    
 	return settings;
 }
 
@@ -446,7 +454,7 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 				current_slot = 7;
 			}
 			//cancel
-			else if ((x<ch_x -6*s_l_x) && (x>c_x - 9 * s_l_x) && (y>ch_y + s_l_y + 20) && (y<ch_y + 3 * s_l_y))
+			else if ( ( x >= 183 ) && ( x <= 266 ) && ( y >= 413 ) && ( y <= 465 ) )
 			{
 				if (settings.state == SAVE_STATE)
 				{
@@ -461,7 +469,7 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 			}
 			
 			/*choose button selected*/
-			else if ((x<ch_x + s_l_x) && (x<c_x + s_l_x) && (y>ch_y + s_l_y + 20) && (y<ch_y + 3 * s_l_y))
+			else if ( ( x >= 523 ) && ( x <= 606 ) && ( y >= 413 ) && ( y <= 465 ) )
 			{
 				switch (current_slot)
 					{
@@ -496,11 +504,13 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 				{
 					saveSettings(settings, mem_slot);
 					settings.state = GAME_STATE;
+					settings.can_set = 0; // can NOT set any more
 					return settings;
 				}
 				else 
 				{
 					settings = loadSettings(settings, mem_slot);
+					settings.can_set = 1; // can set after load
 					settings.state = MODE_SETTINGS_STATE;
 					return settings;
 				}
@@ -531,9 +541,6 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 	offsets[3] = tmp->clip.h;
 	
 	display_board(game_menu, -1, -1,settings.board);
-	
-	
-	int set = 1;
 
 	while (settings.can_set)
 	{
@@ -543,37 +550,56 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 			return settings;
 		}
 		else if (event.type == SDL_MOUSEBUTTONUP)
-		{
+		{			
 			x = event.button.x;
 			y = event.button.y;
 			if (player_clicked_set(x,y,offsets))
 			{ /* set button was selected */
-				//set = 0;
 				settings.state = SET_MENU;
 				return settings;
 			}
 			else if (player_clicked_start(x,y,offsets))
 			{ /* start button was selected */
-				
-				if (countPiecesOfType(settings.board, WHITE_K) != 1 ||
-					countPiecesOfType(settings.board, BLACK_K) != 1)
-				{
-					apply_surface(CHECKMATE_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
-					SDL_Delay(2500);
-				}
-				else
-				{
 					settings.can_set = 0;
-					set = 0;
-				}
-				
+					settings.show_hint = 1;
+					continue;
 			}
-			else if ((player_clicked_save(x, y, offsets)) || (player_clicked_restart(x, y, offsets)) ||
-				(player_clicked_quit(x, y, offsets)) || (player_clicked_main_menu(x, y, offsets)) )
-			{ /* main_menu, reset, quit, save buttons was selected*/
-				int situation = gui_player_turn(settings, offsets, game_menu, save_menu);
-				settings = end_of_turn(settings, situation, game_menu);
-				break;
+			else if (player_clicked_restart(x, y, offsets))
+				{
+					if (settings.show_hint == 1)
+					{
+						int situation = gui_player_turn(settings, offsets, game_menu, save_menu);
+						settings = end_of_turn(settings, situation, game_menu);
+						break;
+					}
+					else
+					{
+						apply_surface(MODE_LABEL_PMT, getImage(LOAD_SAVE), get_screen());
+						display_screen();
+						SDL_Delay(2500);
+						display_board(game_menu, -1,-1, settings.board);
+						display_screen();
+						continue;
+					}
+			}
+			else if (player_clicked_quit(x, y, offsets))
+			{
+				settings.state = TERMINATE_STATE;
+				return settings;
+			}
+			else if (player_clicked_save(x, y, offsets))
+			{
+				settings.state = SAVE_STATE;
+				return settings;
+			}
+			else if (player_clicked_main_menu(x, y, offsets))
+			{
+				settings.state = MAIN_MENU_STATE;
+				return settings;
+			}
+			else
+			{
+				continue;
 			}
 		}
 	}
@@ -621,21 +647,17 @@ Settings minimax_menu_handler(gui_chess root, Settings settings)
 	cb_y = tmp->box.y + bound_y;
 	cb_w = tmp->clip.w;
 	cb_h = tmp->clip.h;
-	tmp = tmp->next;
-	black = tmp;
-	tmp = tmp->next->next;
+	//tmp = tmp->next;
+	//black = tmp;
+  //  tmp = tmp->next;
+	//tmp = tmp->next->next;
 	button_1 = tmp;
 	numb_x = tmp->box.x + bound_x;
 	numb_y = tmp->box.y + bound_y;
 	numb_w = tmp->clip.w;
 	numb_h = tmp->clip.h;
-	//tmp = tmp->next;
-	//tmp = tmp->next;
-	//tmp = tmp->next;
-	//tmp = tmp->next;
 	best_w = tmp->clip.w;
 	best_h = tmp->clip.h;
-	//tmp = tmp->next;
 	c_x = tmp->box.x + bound_x;
 	c_y = tmp->box.y + bound_y;
 	s_c_w = tmp->clip.w;
@@ -644,16 +666,17 @@ Settings minimax_menu_handler(gui_chess root, Settings settings)
 	s_x = tmp->box.x + bound_x;
 	s_y = tmp->box.y + bound_y;
 
-	if (settings.minimaxDepth == BEST_DEPTH){
+	if (settings.minimaxDepth == BEST_DEPTH)
+    {
 		update_num_selction(button_1, 5);
 	}
-	else{
+	else
+    {
 		update_num_selction(button_1, settings.minimaxDepth);
 	}
 	
 	blit_tree(root, 0, 0);
 	display_screen();
-
 
 	while (true){
 		//check error
@@ -663,56 +686,50 @@ Settings minimax_menu_handler(gui_chess root, Settings settings)
 			break;
 		}
 		else if (event.type == SDL_MOUSEBUTTONUP){
-			x = event.button.x;
-			y = event.button.y;
-
-			fflush(stdout);
-			if ((x > (numb_x- 4*NUM_HORIZONTAL_OFFSET)) && (x<(numb_x - 3* numb_w)) && (y>numb_y) && (y < numb_y + numb_h))
-			{
-				settings.minimaxDepth = 1;
-				update_num_selction(button_1, settings.minimaxDepth);
-			}
-			else if ((x >(numb_x - 3* NUM_HORIZONTAL_OFFSET)) && (x<(numb_x - numb_w)) && (y>numb_y) && (y < numb_y + numb_h))
-			{
-				settings.minimaxDepth = 2;
-				update_num_selction(button_1, settings.minimaxDepth);
-			}
-			else if ((x >(numb_x - 2 * NUM_HORIZONTAL_OFFSET)) && (x<(numb_x)) && (y>numb_y) && (y < numb_y + numb_h))
-			{
-				settings.minimaxDepth = 3;
-				update_num_selction(button_1, settings.minimaxDepth);
-			}
-			else if ((x >(numb_x)) && (x<(numb_x + numb_w)) && (y>numb_y) && (y < numb_y + numb_h))
-			{
-				settings.minimaxDepth = 4;
-				update_num_selction(button_1, settings.minimaxDepth);
-			}
-			else if ((x >(numb_x + numb_w)) && (x<(numb_x + best_w + 4 * NUM_HORIZONTAL_OFFSET)) && (y>numb_y) && (y < numb_y + best_h))
-			{
-				settings.minimaxDepth = BEST_DEPTH;
-				update_num_selction(button_1, 5);
-			}
-	
-				
-			else if ((x >(s_x +s_c_w) ) && (x<s_x + 3*s_c_w + 5) && (y>c_y + s_c_h + 20) && (y<c_y + 3 * s_c_h))
-			{
-				settings.state = BEST_MOVE;
-				return settings;
-			}
-				
-			else if ((x >(c_x - 6* s_c_w) ) && (x<(c_x - 3 * s_c_w + 10)) && (y>c_y + s_c_h + 20) && (y<c_y + 3 * s_c_h))
-			{
-
-				settings.state = CANCEL_BEST_MOVE;
-				return settings;
-			}
-			else
-			{
-				continue;
-			}
-			blit_tree(root, 0, 0);
-			display_screen();
-		}
+            x = event.button.x;
+            y = event.button.y;
+            if ((x > 242) && (x<283) && (y>342) && (y < 394))
+            {
+                settings.minimaxDepth = 1;
+                update_num_selction(button_1, settings.minimaxDepth);
+            }
+            else if ((x > 300) && (x<344) && (y>342) && (y < 394))
+            {
+                settings.minimaxDepth = 2;
+                update_num_selction(button_1, settings.minimaxDepth);
+            }
+            else if ((x > 361) && (x<403) && (y>342) && (y < 394))
+            {
+                settings.minimaxDepth = 3;
+                update_num_selction(button_1, settings.minimaxDepth);
+            }
+            else if ((x > 421) && (x<463) && (y>342) && (y < 394))
+            {
+                settings.minimaxDepth = 4;
+                update_num_selction(button_1, settings.minimaxDepth);
+            }
+            else if ((x > 483) && (x<553) && (y>342) && (y < 394))
+            {
+                settings.minimaxDepth = BEST_DEPTH;
+                update_num_selction(button_1, 5);
+            }
+            else if ( ( x >= 183 ) && ( x <= 266 ) && ( y >= 413 ) && ( y <= 465 ) )
+            {
+                settings.state = CANCEL_BEST_MOVE;
+                return settings;
+            }
+            else if ( ( x >= 523 ) && ( x <= 606 ) && ( y >= 413 ) && ( y <= 465 ) )
+            {
+                settings.state = BEST_MOVE;
+                return settings;
+            }
+            else
+            {
+                continue;
+            }
+            
+            blit_tree(root, 0, 0);
+            display_screen();		}
 	}
 	return settings;
 
@@ -740,15 +757,18 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 			settings.state = TERMINATE_STATE;
 			return settings;
 		}
-		else if (event.type == SDL_MOUSEBUTTONUP){
+		else if (event.type == SDL_MOUSEBUTTONUP)
+		{			
 			x2 = event.button.x;
 			y2 = event.button.y;
-			i = (x2 - BOARD_TOP_CORNER) / BOARD_SQUARE;
-			j = 7 - ((y2 - BOARD_TOP_CORNER) / BOARD_SQUARE);
+			if (( x2 > 34) && ( x2 < 561) && (y2 < 561) && ( y2 > 35) ) 
+			{
+				i = (x2 - BOARD_TOP_CORNER) / BOARD_SQUARE;
+				j = 7 - ((y2 - BOARD_TOP_CORNER) / BOARD_SQUARE);
 			blit_tree(root, 0, 0);
 			display_screen();
 			while (i >= 0 && j >= 0 && i < BOARD_SIZE && j < BOARD_SIZE)
-			{
+				{
 				SDL_WaitEvent(&event);
 				if (event.type == SDL_QUIT){
 					settings.state = TERMINATE_STATE;
@@ -756,20 +776,73 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 				}
 				else if (event.type == SDL_MOUSEBUTTONUP)
 				{
-					x = event.button.x;
-					y = event.button.y;
-					if (x >= x_bound - 3 * BOARD_SQUARE && x <= x_bound - 3 * 66 + 7 * PROMOTE_OFFSET)
+                    x = event.button.x;
+                    y = event.button.y;
+                    if (x >= x_bound - 3 * BOARD_SQUARE && x <= x_bound - 3 * 66 + 7 * PROMOTE_OFFSET)
+                    {
+                        settings.board = set_piece(x, y, x_bound, y_bound, i, j, settings.board);
+                        display_board(game_menu, -1, -1,settings.board);
+                        settings.state = GAME_STATE;
+                        return settings;
+                    }
+                }
+					else
 					{
-						settings.board = set_piece(x, y, x_bound, y_bound, i, j, settings.board);
-						display_board(game_menu, -1, -1,settings.board);
+						continue;
+					}
+				}
+			}
+			else if (player_clicked_start(x2,y2,offsets))
+			{ /* start button was selected */
+					settings.can_set = 0;
+					settings.show_hint = 1;
+					settings.state = GAME_STATE;
+					return settings;
+			}
+			else if (player_clicked_restart(x2, y2, offsets))
+				{
+					if (settings.show_hint == 1)
+					{
+						settings.state = BEST_MOVE;
+						return settings;
+					}
+					else
+					{
+						apply_surface(MODE_LABEL_PMT, getImage(LOAD_SAVE), get_screen());
+						display_screen();
+						SDL_Delay(2500);
+						display_board(game_menu, -1,-1, settings.board);
+						display_screen();
+						if (settings.playingColor == WHITE_COLOR)
+						{
+							settings.playingColor = BLACK_COLOR;
+						}
+						else
+						{
+							settings.playingColor = WHITE_COLOR;
+						}
 						settings.state = GAME_STATE;
 						return settings;
 					}
-				}
-				else
-				{
-					continue;
-				}
+			}
+			else if (player_clicked_quit(x2, y2, offsets))
+			{
+				settings.state = TERMINATE_STATE;
+				return settings;
+			}
+			else if (player_clicked_save(x2, y2, offsets))
+			{
+				settings.state = SAVE_STATE;
+				return settings;
+			}
+			else if (player_clicked_main_menu(x2, y2, offsets))
+			{
+				settings.state = MAIN_MENU_STATE;
+				return settings;
+			}
+			else
+			{
+				continue;
 			}
 		}
 	}
@@ -852,6 +925,7 @@ char** set_piece(int x, int y, int x_bound, int y_bound, int i, int j, char** bo
 
 Settings end_of_turn(Settings settings, int situation, gui_chess game_menu) 
 {
+	// 3.10
 	settings.playingColor = otherPlayer(settings.playingColor);
 	bool check = isInCheck(settings.board, settings.playingColor);
 	bool stuck = !canMove(settings.board, settings.playingColor);
@@ -881,46 +955,81 @@ Settings end_of_turn(Settings settings, int situation, gui_chess game_menu)
 		apply_surface(CHECK_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
 		display_screen();
 		SDL_Delay(1500);
+        display_board(game_menu, -1,-1, settings.board);
+        display_screen();
 		return settings;
 	}
-	if (situation == GS_MAIN_MENU /*todo fix restart logic*/) {
+	if (situation == GS_MAIN_MENU /*todo fix restart logic*/) 
+	{
 		settings = reset_settings(settings);
 		settings.state = MAIN_MENU_STATE;
 		return settings;
 	}
 	if (situation == GS_RESTART)
 	{
-		if (settings.gameMode == SINGLEPLAYER_MODE)
+		if (settings.show_hint == 1)
 		{
-			settings.state = BEST_MOVE;
+			if (settings.gameMode == SINGLEPLAYER_MODE)
+			{
+				settings.state = BEST_MOVE;
+				return settings;
+			}
+			else
+			{
+				gui_chess minimax_depth = build_minmax_menu();
+				settings = minimax_menu_handler(minimax_depth, settings);
+				return settings;
+			}
+		}
+		// rotem_to_change massage tipe
+		else // can show settings after start!
+		{
+			apply_surface(MODE_LABEL_PMT, getImage(LOAD_SAVE), get_screen());
+			display_screen();
+			SDL_Delay(2500);
+			display_board(game_menu, -1,-1, settings.board);
+			display_screen();
+
+			settings.state = GAME_STATE;
 			return settings;
 		}
-		else
-		{
-			gui_chess minimax_depth = build_minmax_menu();
-			settings = minimax_menu_handler(minimax_depth, settings);
-			return settings;
-		}
+		
 	}
 	if (situation == GS_CAN_NOT_SET)
 	{
-		if (settings.playingColor == WHITE_COLOR)
+		if (settings.can_set == 1)
 		{
-			settings.playingColor = BLACK_COLOR;
+			
+			apply_surface(BLACK_MATE_IMG, getImage(SELECTED_PIECES_SHEET), get_screen());
+			display_screen();
+			SDL_Delay(1500);
+			display_board(game_menu, -1,-1, settings.board);
+			display_screen();
 		}
 		else
 		{
-			settings.playingColor = WHITE_COLOR;
+			// 3.10
+			// rotem_to_change massage tipe
+			apply_surface(LOAD_LABEL_PMT, getImage(LOAD_SAVE), get_screen());
+			display_screen();
+			SDL_Delay(2000);
+			display_board(game_menu, -1,-1, settings.board);
+			display_screen();
+			
 		}
-		apply_surface(BLACK_MATE_IMG, getImage(SELECTED_PIECES_SHEET), get_screen());
-		display_screen();
-		SDL_Delay(2500);
-		display_board(game_menu, -1,-1, settings.board);
-		display_screen();
+		if (settings.playingColor == WHITE_COLOR)
+			{
+				settings.playingColor = BLACK_COLOR;
+			}
+			else
+			{
+				settings.playingColor = WHITE_COLOR;
+			}	
 		settings.state = GAME_STATE;
 		return settings;
 	}
-	if (situation == GS_QUIT) {
+	if (situation == GS_QUIT) 
+	{
 		settings.state = TERMINATE_STATE;
 		return settings;
 	}
@@ -1046,13 +1155,11 @@ void update_num_selction(gui_chess number_button, int number)
 	gui_chess tmp;
 	int i = 1;
 	tmp = number_button;
-
-	//max save slots = 5
 	while (tmp != NULL)
 	{
 		if (i != number)
 		{
-			tmp->clip.y = NUM_BUTTON_Y;
+            fflush(stdout);
 		}
 		else
 		{
@@ -1061,18 +1168,6 @@ void update_num_selction(gui_chess number_button, int number)
 		i++;
 		tmp = tmp->next;
 	}
-	//for (i = 1; i < 6; i++)
-	//{
-	//	if (i != number)
-	//	{
-	//		tmp->clip.y = NUM_BUTTON_Y;
-	//	}
-	//	else
-	//	{
-	//		tmp->clip.y = NUM_S_BUTTON_Y;
-	//	}
-	//	tmp = tmp->next;
-	//}
 }
 
 void display_board(gui_chess game_menu, int selected_x, int selected_y, char** current_board)
@@ -1142,10 +1237,6 @@ void display_board(gui_chess game_menu, int selected_x, int selected_y, char** c
 				apply_surface(B_KING_PMT, x, y, current_surface, get_screen());
 				break;
 			case BLUE:
-				fprintf(stdout,"%s\n","BLUE");
-				fflush(stdout);
-				fprintf(stdout,"%s\n",debug);
-				fflush(stdout);
 				apply_surface(BLUE_B, x, y, current_surface, get_screen());
 				break;
 			default:

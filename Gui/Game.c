@@ -23,6 +23,7 @@ int gui_player_turn(Settings settings, int offsets[4], gui_chess game_menu, gui_
 			game_menu, save_menu, &moving_piece_selected, move);
 	}
 	freeMove(move);
+
 	return game_state;
 }
 
