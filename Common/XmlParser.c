@@ -58,6 +58,7 @@ void saveSettings(Settings settings, char* filename) {
 
 	xmlFreeTextWriter(writer);
 	xmlCleanupCharEncodingHandlers();
+	xmlCleanupParser();
 }
 
 void writeSettingsToXml(Settings settings, xmlTextWriterPtr writer) {
