@@ -14,7 +14,7 @@ Move* getMinimaxMove(char** board, int player, int minimaxDepth) {
 MoveList* getAllMinimaxMoves(char** board, int player, int minimaxDepth) {
 	ScoredMoves bestMoves = (minimaxDepth == BEST_DEPTH)
 		? bestMinimax(board, player)
-		: alphaBetaMinimax(minimaxDepth, -MAX_SCORE, MAX_SCORE, board, player, player == WHITE_COLOR);
+		: alphaBetaMinimax(minimaxDepth, -MAX_SCORE, MAX_SCORE, board, player, player == WHITE_COLOR, &scoreBoard);
 	return bestMoves.moves;
 }
 
@@ -23,7 +23,8 @@ int scoreMove(char** board, Move* move, int player, int minimaxDepth) {
 	boardCopy = applyMove(boardCopy, move);
 	ScoredMoves minimaxResult = (minimaxDepth == BEST_DEPTH)
 		? bestMinimax(boardCopy, otherPlayer(player))
-		: alphaBetaMinimax(minimaxDepth - 1, -MAX_SCORE, MAX_SCORE, boardCopy, otherPlayer(player), player == BLACK_COLOR);
+		: alphaBetaMinimax(minimaxDepth - 1, -MAX_SCORE, MAX_SCORE, boardCopy, otherPlayer(player),
+			player == BLACK_COLOR, &scoreBoard);
 	int score = minimaxResult.score;
 	freeBoard(boardCopy);
 	if(minimaxResult.moves != NULL)
@@ -46,7 +47,8 @@ ScoredMoves alphaBetaMinimax(int depth, int alpha, int beta, char** board, int p
 	while (head != NULL && !prune) {
 		char** boardCopy = copyBoard(board);
 		boardCopy = applyMove(boardCopy, head->data);
-		ScoredMoves otherPlayerMoves = alphaBetaMinimax(depth - 1, alpha, beta, boardCopy, otherPlayer(player), !maximize);
+		ScoredMoves otherPlayerMoves = alphaBetaMinimax(depth - 1, alpha, beta, boardCopy, otherPlayer(player),
+			!maximize, scoreFunction);
 		freeBoard(boardCopy);
 		if (maximize) {
 			if (otherPlayerMoves.score > result.score) {
