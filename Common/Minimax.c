@@ -3,7 +3,7 @@
 Move* getMinimaxMove(char** board, int player, int minimaxDepth) {
 	ScoredMoves bestMoves = (minimaxDepth == BEST_DEPTH)
 		? bestMinimax(board, player)
-		: alphaBetaMinimax(minimaxDepth, -MAX_SCORE, MAX_SCORE, board, player, player == WHITE_COLOR);
+		: alphaBetaMinimax(minimaxDepth, -MAX_SCORE, MAX_SCORE, board, player, player == WHITE_COLOR, &scoreBoard);
 	if(bestMoves.moves == NULL)
 		return NULL;
 	Move* result = copyMove(bestMoves.moves->data);
@@ -31,11 +31,13 @@ int scoreMove(char** board, Move* move, int player, int minimaxDepth) {
 	return score;
 }
 
-ScoredMoves alphaBetaMinimax(int depth, int alpha, int beta, char** board, int player, bool maximize) {
+ScoredMoves alphaBetaMinimax(int depth, int alpha, int beta, char** board, int player,
+	bool maximize, int (*scoreFunction)(char**,int)) {
+
 	ScoredMoves result = {.moves = NULL, .score = 0};
 	MoveList* children;
 	if (depth == 0 || (children = getMoves(board, player, true)) == NULL) {
-		result.score = scoreBoard(board, player);
+		result.score = scoreFunction(board, player);
 		return result;
 	}
 	result.score = maximize ? -MAX_SCORE : MAX_SCORE;
@@ -91,7 +93,7 @@ int scoreBoard(char** board, int player) {
 		if(isInCheck(board, player)) {
 			return player == WHITE_COLOR ? BLACK_WIN_SCORE : WHITE_WIN_SCORE;
 		} else {
-			return TIE_SCORE;
+			return player == WHITE_COLOR ? WHITE_TIE_SCORE : BLACK_TIE_SCORE;
 		}
 	}
 	int score = 0;
@@ -149,7 +151,7 @@ ScoredMoves bestMinimax(char** board, int player) {
 		// |_depth/2_| is number previous moves by this player
 		maxMoves = getMaxMoves(board, currentPlayer, depth / 2);
 	}
-	return alphaBetaMinimax(depth, -MAX_SCORE, MAX_SCORE, board, player, player == WHITE_COLOR);
+	return alphaBetaMinimax(depth, -MAX_SCORE, MAX_SCORE, board, player, player == WHITE_COLOR, &bestScoreBoard);
 }
 
 int getMaxMoves(char** board, int player, int possibleMovesAlready) {
@@ -206,3 +208,53 @@ int getMaxMoves(char** board, int player, int possibleMovesAlready) {
 	}
 	return max;
 }
+
+int bestScoreBoard(char** board, int player) {
+	if (!canMove(board, player)) {
+		if(isInCheck(board, player)) { 
+			//scores for best difficulty are ~100x than regular scores
+			return 100 * (player == WHITE_COLOR ? BLACK_WIN_SCORE : WHITE_WIN_SCORE);
+		} else {
+			return 100 * (player == WHITE_COLOR ? WHITE_TIE_SCORE : BLACK_TIE_SCORE);
+		}
+	}
+	int score = 0;
+	for (int i = 0; i < BOARD_SIZE; i++)
+	for (int j = 0; j < BOARD_SIZE; j++){
+		score += bestScoreChar(board[i][j]) + pieceSquareTable(board, i, j);
+	}
+	return score;
+}
+
+int bestScoreChar(char piece) {
+	switch (piece) {
+		case WHITE_P:
+			return 100;
+		case BLACK_P:
+			return -100;
+		case WHITE_B:
+			return 330;
+		case BLACK_B:
+			return -330;
+		case WHITE_N:
+			return 320;
+		case BLACK_N:
+			return -320;
+		case WHITE_R:
+			return 500;
+		case BLACK_R:
+			return -500;
+		case WHITE_Q:
+			return 900;
+		case BLACK_Q:
+			return -900;
+		case WHITE_K:
+			return 20000;
+		case BLACK_K:
+			return -20000;
+		default:
+			return 0;
+	}
+}
+
+
