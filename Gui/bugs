@@ -1,37 +1,10 @@
-1. new empty project compiles
-2. console implementation
-2.1. settings implementation - without save/load
-2.2. user implementation - stubs for get moves and actual game logic
-2.3. get moves
-2.4. win logic
-3. computer turn
-3.1. convert existing minimax to chess
-3.2. pruning
-3.3. best difficulty
-4. save/load game
-5. gui
-5.1. main window - 3 buttons with only quit functionality
-5.2. new game options dialog - game mode + next player + cancel
-5.3. new game options dialog - set board
-5.3.1 display the board
-5.3.2 allow changing the board
-5.3.3 verify legal board before moving on
-5.4. AI settings window
-5.5. game window
-5.5.1. display window with the board, buttons
-5.5.2. move - allow valid moves by selecting the source tile and then the target
-5.5.3. suggest best move button - possible showing AI settings dialog
-5.5.4. game over logic
-5.6. save/load window
+
 6. go over project instructions - verify everything is implemented
 6.3. BUG - no valid board verfication when starting new game -> added kings verification. need to add verification for set
 6.10. IMPROVEMENT - set button should disappear on game start since it's disabled
 6.15. BUG - EMPTY button is misslocated/ugly
 6.18. MINOR BUG - Load a game (can use default), choose PvP, by default the highlighted starting player is Black, even though when starting the first player is the white one (as it should).
+6.19. LEAK - libxml2 leak when loading, could not find reason. only single object is leaking. consider ignoring it. there are leaks on SDL that can probably be ginored as well.
 6.97. resolve/remove all TODOs in the code
 6.98. fix all compilation warnings
 6.99. remove debug prints
-7. bonuses
-7.1. castling
-7.2. best scoring function - simple piece boards for pawns, knights and bishop should be enough http://chessprogramming.wikispaces.com/Simplified+evaluation+function
-8. tests
