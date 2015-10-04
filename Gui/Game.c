@@ -95,8 +95,8 @@ int apply_board_click(gui_chess game_menu, Position clicked, Settings settings, 
 	}
     else if (*moving_piece_selected)
 	{
-		
-		if (isPawn(settings.board[clicked.x][clicked.y] && endOfBoard(clicked, settings.playingColor))) {
+        if  (isPawn(settings.board[move->from.x][move->from.y]) && (endOfBoard(clicked, settings.playingColor)) )//prmote
+        {
 			gui_chess promote_menu = build_promotion_menu(settings.playingColor);
 			move->promotion = promotion_handler(promote_menu, settings.playingColor);
 			if (move->promotion == NO_PROMOTION) //must promote pawn

@@ -65,7 +65,7 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 {
 	SDL_Event event;
 	gui_chess tmp, pvp, pvc, button;
-    int x, y, x_bound, y_bound, p_vs_p_x, p_vs_p_y, p_vs_c_x, p_vs_c_y, width, heigth, s_c_width, s_c_heigth, c_x, c_y, start_x, start_y, sdl_event_suc;
+    int x, y, x_bound, y_bound, p_vs_p_x, p_vs_p_y, p_vs_c_x, p_vs_c_y, width, heigth,  sdl_event_suc;
 
 	/*define & find bounderies of the buttons*/
 	tmp = root->child;
@@ -82,14 +82,9 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 	p_vs_c_x = tmp->rect1.x + x_bound;
 	p_vs_c_y = tmp->rect1.y + y_bound;
 	tmp = tmp->next;
-	s_c_width = tmp->rect2.w;
-	s_c_heigth = tmp->rect2.h;
-	c_x = tmp->rect1.x + x_bound;
-	c_y = tmp->rect1.y + y_bound;
 	tmp = tmp->next;
 	button = tmp;
-	start_x = tmp->rect1.x + x_bound;
-	start_y = tmp->rect1.y + y_bound;
+
 
     // mark relevant mode
 	if (settings.gameMode == SINGLEPLAYER_MODE)
@@ -159,9 +154,9 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 Settings color_menu_handler(gui_chess root, Settings settings)
 {
 	SDL_Event event;
-	gui_chess tmp, white, black, button_1;
-	int x, y, c_x, c_y, s_x, s_y, bound_x, bound_y, cb_x, cb_y, cb_w, cb_h;
-    int numb_x, numb_y, numb_w, numb_h, s_c_w, s_c_h, sdl_event_suc;
+	gui_chess tmp, white, black;
+	int x, y, bound_x, bound_y, cb_x, cb_y, cb_w, cb_h;
+    int sdl_event_suc;
 
 	/*define & find bounderies of the buttons*/
 	tmp = root->child;
@@ -176,17 +171,6 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 	tmp = tmp->next;
 	black = tmp;
 	tmp = tmp->next->next;
-	button_1 = tmp;
-	numb_x = tmp->rect1.x + bound_x;
-	numb_y = tmp->rect1.y + bound_y;
-	numb_w = tmp->rect2.w;
-	numb_h = tmp->rect2.h;
-	c_x = tmp->rect1.x + bound_x;
-	c_y = tmp->rect1.y + bound_y;
-	s_c_w = tmp->rect2.w;
-	s_c_h = tmp->rect2.h;
-	s_x = tmp->rect1.x + bound_x;
-	s_y = tmp->rect1.y + bound_y;
 
     // always mark white at the begigning
     white->rect2.y = SELECT_COLOR_BUTTON_Y_SRC;
@@ -255,8 +239,8 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 Settings settings_menu_handler(gui_chess root, Settings settings){
 	SDL_Event event;
 	gui_chess tmp, white, black, button_1;
-	int x, y, c_x, c_y, s_x, s_y, bound_x, bound_y, cb_x, cb_y, cb_w, cb_h;
-    int numb_x, numb_y, numb_w, numb_h, best_w, best_h ,s_c_w, s_c_h, sdl_event_suc;
+	int x, y, bound_x, bound_y, cb_x, cb_y, cb_w, cb_h;
+    int numb_x, numb_y, numb_w, numb_h, best_w, best_h, sdl_event_suc;
 
 	/*define & find bounderies of the buttons*/
 	tmp = root->child;
@@ -283,13 +267,7 @@ Settings settings_menu_handler(gui_chess root, Settings settings){
 	best_w = tmp->rect2.w;
 	best_h = tmp->rect2.h;
 	tmp = tmp->next;
-	c_x = tmp->rect1.x + bound_x;
-	c_y = tmp->rect1.y + bound_y;
-	s_c_w = tmp->rect2.w;
-	s_c_h = tmp->rect2.h;
 	tmp = tmp->next;
-	s_x = tmp->rect1.x + bound_x;
-	s_y = tmp->rect1.y + bound_y;
     
     // mark color and minimax depth
 	if (settings.userColor == WHITE_COLOR)
@@ -388,7 +366,7 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 	SDL_Event event;
 	gui_chess tmp, button_1;
 	char mem_slot[MEM_SLOT_FILE_NAME_LENGTH];
-    int x, y, bound_x, bound_y, number_x, number_y, width, heigth, s_l_x, s_l_y, c_x, c_y, ch_x, ch_y, sdl_event_suc;
+    int x, y, bound_x, bound_y, number_x, number_y, width, heigth, sdl_event_suc;
 	int current_slot = 0;
 
 	/*define & find bounderies of the buttons*/
@@ -406,13 +384,7 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 	tmp = tmp->next;
 	tmp = tmp->next;
 	tmp = tmp->next;
-	s_l_x = tmp->rect2.w;
-	s_l_y = tmp->rect2.h;
-	c_x = tmp->rect1.x + bound_x;
-	c_y = tmp->rect1.y + bound_y;
 	tmp = tmp->next;
-	ch_x = tmp->rect1.x + bound_x;
-	ch_y = tmp->rect1.y + bound_y;
 	
 	select_number_button(button_1, current_slot);
 
@@ -659,34 +631,16 @@ Settings minimax_menu_handler(gui_chess root, Settings settings)
 {
 	SDL_Event event;
 	//gui_chess tmp, white, black, button_1;
-    gui_chess tmp, white, button_1;
-	int x, y, c_x, c_y, s_x, s_y, bound_x, bound_y, cb_x, cb_y, cb_w, cb_h;
-    int numb_x, numb_y, numb_w, numb_h, best_w, best_h ,s_c_w, s_c_h, sdl_event_suc;
+    gui_chess tmp, button_1;
+	int x, y, bound_x, bound_y, sdl_event_suc;
 	
 	/*define & find bounderies of the buttons*/
 	tmp = root->child;
 	bound_x = tmp->rect1.x;
 	bound_y = tmp->rect1.y;
 	tmp = tmp->child->next;
-	white = tmp;
-	cb_x = tmp->rect1.x + bound_x;
-	cb_y = tmp->rect1.y + bound_y;
-	cb_w = tmp->rect2.w;
-	cb_h = tmp->rect2.h;
 	button_1 = tmp;
-	numb_x = tmp->rect1.x + bound_x;
-	numb_y = tmp->rect1.y + bound_y;
-	numb_w = tmp->rect2.w;
-	numb_h = tmp->rect2.h;
-    best_w = tmp->rect2.w;
-	best_h = tmp->rect2.h;
-	c_x = tmp->rect1.x + bound_x;
-	c_y = tmp->rect1.y + bound_y;
-	s_c_w = tmp->rect2.w;
-	s_c_h = tmp->rect2.h;
 	tmp = tmp->next;
-	s_x = tmp->rect1.x + bound_x;
-	s_y = tmp->rect1.y + bound_y;
 
     // mark relevant minimax depth
 	if (settings.minimaxDepth == BEST_DEPTH)
@@ -1255,7 +1209,7 @@ char promotion_handler(gui_chess root, int player) {
 		}
 	}
   //to check
-    return NO_PROMOTION;
+ //   return NO_PROMOTION;
 }
 
 void show_on_screen(gui_chess start_point, int x, int y)
