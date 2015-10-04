@@ -19,6 +19,7 @@ typedef struct game_frame{
 	struct game_frame *parent;
 
 } game_frame;
+
 typedef game_frame* gui_chess;
 
 void create_screen();

@@ -1,20 +1,20 @@
 #include "Image.h"
 
 SDL_Surface *main_img = NULL;
-SDL_Surface *panels_sheet = NULL;
-SDL_Surface *settings_sheet = NULL;
-SDL_Surface *pieces_sheet = NULL;
-SDL_Surface *selected_pieces_sheet = NULL;
+SDL_Surface *panel = NULL;
+SDL_Surface *set = NULL;
+SDL_Surface *pieces = NULL;
+SDL_Surface *game_pices_select = NULL;
 SDL_Surface *backround = NULL;
 SDL_Surface *add = NULL;
 SDL_Surface *load_save = NULL;
 SDL_Surface *save_slot = NULL;
 void loadImages() {
 	main_img = load_link_image(MAIN_IMG);
-	panels_sheet = load_link_image(PANELS_SHEET);
-	settings_sheet = load_link_image(SETTINGS_SHEET);
-	pieces_sheet = load_link_image(PIECES_SHEET);
-	selected_pieces_sheet = load_link_image(SELECTED_PIECES_SHEET);
+	panel = load_link_image(PANEL_BLACK_WHITE);
+	set = load_link_image(SETTINGS);
+	pieces = load_link_image(GAME_PIECES);
+	game_pices_select = load_link_image(GAME_PIECES_SELECT);
 	backround = load_link_image(BACKGROUND_IMAGE);
 	add = load_link_image(ADD_IMAGE);
 	load_save = load_link_image(LOAD_SAVE);
@@ -23,10 +23,10 @@ void loadImages() {
 
 void freeImages() {
 	SDL_FreeSurface(main_img);
-	SDL_FreeSurface(panels_sheet);
-	SDL_FreeSurface(settings_sheet);
-	SDL_FreeSurface(pieces_sheet);
-	SDL_FreeSurface(selected_pieces_sheet);
+	SDL_FreeSurface(panel);
+	SDL_FreeSurface(set);
+	SDL_FreeSurface(pieces);
+	SDL_FreeSurface(game_pices_select);
 	SDL_FreeSurface(backround);
 	SDL_FreeSurface(add);
 	SDL_FreeSurface(load_save);
@@ -36,14 +36,14 @@ void freeImages() {
 SDL_Surface *getImage(char *path) {
 	if (strcmp(path, MAIN_IMG) == 0) {
 		return main_img;
-	} else if (strcmp(path, PANELS_SHEET) == 0) {
-		return panels_sheet;
-	} else if (strcmp(path, SETTINGS_SHEET) == 0) {
-		return settings_sheet;
-	} else if (strcmp(path, PIECES_SHEET) == 0) {
-		return pieces_sheet;
-	} else if (strcmp(path, SELECTED_PIECES_SHEET) == 0) {
-		return selected_pieces_sheet;
+	} else if (strcmp(path, PANEL_BLACK_WHITE) == 0) {
+		return panel;
+	} else if (strcmp(path, SETTINGS) == 0) {
+		return set;
+	} else if (strcmp(path, GAME_PIECES) == 0) {
+		return pieces;
+	} else if (strcmp(path, GAME_PIECES_SELECT) == 0) {
+		return game_pices_select;
 	} else if (strcmp(path, BACKGROUND_IMAGE) == 0) {
 		return backround;
 	} else if (strcmp(path, ADD_IMAGE) == 0) {

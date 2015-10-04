@@ -6,7 +6,7 @@ Settings main_menu_handler(gui_chess gui_window, Settings settings)
 	SDL_Event event;
 	int mouse_x, mouse_y, x_bound, y_bound, width, heigth;
 
-	blit_tree(gui_window, 0, 0);
+	show_on_screen(gui_window, 0, 0);
 	display_screen();
 	
 	//todo etract to function
@@ -36,13 +36,14 @@ Settings main_menu_handler(gui_chess gui_window, Settings settings)
 				quitting = true;
 				return settings;
 			}
-			if ((mouse_x > x_bound) && (mouse_x<(x_bound + width)) && (mouse_y>(y_bound + MAIN_VERTICAL_OFFSET)) && (mouse_y < (y_bound + MAIN_VERTICAL_OFFSET + heigth)))
+			if ((mouse_x > x_bound) && (mouse_x<(x_bound + width)) && (mouse_y>(y_bound + MAIN_MENU_BUTTONS_HEIGH)) && (mouse_y < (y_bound + MAIN_MENU_BUTTONS_HEIGH + heigth)))
 			{ /* load game*/
 				settings.state = LOAD_STATE;
 				quitting = true;
+                settings.can_set = 1;
 				return settings;
 			}
-			if ((mouse_x > x_bound) && (mouse_x<(x_bound + width)) && (mouse_y>(y_bound + 2 * MAIN_VERTICAL_OFFSET)) && (mouse_y < (y_bound + 2 * MAIN_VERTICAL_OFFSET + heigth)))
+			if ((mouse_x > x_bound) && (mouse_x<(x_bound + width)) && (mouse_y>(y_bound + 2 * MAIN_MENU_BUTTONS_HEIGH)) && (mouse_y < (y_bound + 2 * MAIN_MENU_BUTTONS_HEIGH + heigth)))
 			{ /* quit game*/
 				settings.state = TERMINATE_STATE;
 				quitting = true;
@@ -91,18 +92,18 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 
 	if (settings.gameMode == SINGLEPLAYER_MODE)
 	{
-		pvp->clip.x = PV_BUTTON_X;
-		pvc->clip.x = PV_S_BUTTON_X;
-		button->clip.x = NEXT_ARROW_X;
+		pvp->clip.x = MODE_BUTTON_X_SRC;
+		pvc->clip.x = MODE_BUTTON_SELECT_X_SRC;
+		button->clip.x = NEXT_BUTTON_X_SRC;
 		
 	}
 	else
 	{
-		pvp->clip.x = PV_S_BUTTON_X;
-		pvc->clip.x = PV_BUTTON_X;
-		button->clip.x = START_ARROW_X;
+		pvp->clip.x = MODE_BUTTON_SELECT_X_SRC;
+		pvc->clip.x = MODE_BUTTON_X_SRC;
+		button->clip.x = STRAT_BUTTON_X_SRC;
 	}
-	blit_tree(root, 0, 0);
+	show_on_screen(root, 0, 0);
 	display_screen();
 	while (true){
 		//todo check SDL_Wait return value for error
@@ -116,16 +117,16 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 			if ((x>p_vs_c_x) && (x<p_vs_c_x + width) && (y>p_vs_c_y) && (y<p_vs_c_y + heigth))
 			{
 				settings.gameMode = SINGLEPLAYER_MODE;
-				pvp->clip.x = PV_BUTTON_X;
-				pvc->clip.x = PV_S_BUTTON_X;
-				button->clip.x = NEXT_ARROW_X;
+				pvp->clip.x = MODE_BUTTON_X_SRC;
+				pvc->clip.x = MODE_BUTTON_SELECT_X_SRC;
+				button->clip.x = NEXT_BUTTON_X_SRC;
 			}
 			else if ((x>p_vs_p_x) && (x<p_vs_p_x + width) && (y>p_vs_p_y) && (y<p_vs_p_y + heigth))
 			{
 				settings.gameMode = MULTIPLAYER_MODE;
-				pvp->clip.x = PV_S_BUTTON_X;
-				pvc->clip.x = PV_BUTTON_X;
-				button->clip.x = START_ARROW_X;
+				pvp->clip.x = MODE_BUTTON_SELECT_X_SRC;
+				pvc->clip.x = MODE_BUTTON_X_SRC;
+				button->clip.x = STRAT_BUTTON_X_SRC;
 			}
 			// 3.10
 			else if ( ( x >= 183 ) && ( x <= 266 ) && ( y >= 413 ) && ( y <= 465 ) )
@@ -146,7 +147,7 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 			{
 				continue;
 			}
-			blit_tree(root, 0, 0);
+			show_on_screen(root, 0, 0);
 			display_screen();
 		}
 	}
@@ -187,15 +188,15 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 
 	if (settings.userColor == WHITE_COLOR)
 	{
-		white->clip.y = COLOR_S_BUTTON_Y;
-		black->clip.y = COLOR_BUTTON_Y;
+		white->clip.y = SELECT_COLOR_BUTTON_Y_SRC;
+		black->clip.y = COLOR_BUTTON_Y_SRC;
 	}
 	else
 	{
-		white->clip.y = COLOR_BUTTON_Y;
-		black->clip.y = COLOR_S_BUTTON_Y;
+		white->clip.y = COLOR_BUTTON_Y_SRC;
+		black->clip.y = SELECT_COLOR_BUTTON_Y_SRC;
 	}
-	blit_tree(root, 0, 0);
+	show_on_screen(root, 0, 0);
 	display_screen();
 	while (true)
 	{
@@ -207,21 +208,21 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 		else if (event.type == SDL_MOUSEBUTTONUP){
 			x = event.button.x;
 			y = event.button.y;
-			if ((x > (cb_x + COLOR_HORIZONTSL_OFFSET)) && (x<(cb_x + cb_w + COLOR_HORIZONTSL_OFFSET)) && (y>cb_y) && (y < cb_y + cb_h))
+			if ((x > (cb_x + COLOR_BUTTON_OFFSET_HORIZ)) && (x<(cb_x + cb_w + COLOR_BUTTON_OFFSET_HORIZ)) && (y>cb_y) && (y < cb_y + cb_h))
 			{
 				// 3.10
 				//settings.userColor = BLACK_COLOR;
 				settings.playingColor = BLACK_COLOR;
-				white->clip.y = COLOR_BUTTON_Y;
-				black->clip.y = COLOR_S_BUTTON_Y;
+				white->clip.y = COLOR_BUTTON_Y_SRC;
+				black->clip.y = SELECT_COLOR_BUTTON_Y_SRC;
 			}
 			else if ((x > cb_x) && (x<cb_x + cb_w) && (y>cb_y) && (y < cb_y + cb_h))
 			{
 				// 3.10
 				//settings.userColor = WHITE_COLOR;
 				settings.playingColor = WHITE_COLOR;
-				white->clip.y = COLOR_S_BUTTON_Y;
-				black->clip.y = COLOR_BUTTON_Y;
+				white->clip.y = SELECT_COLOR_BUTTON_Y_SRC;
+				black->clip.y = COLOR_BUTTON_Y_SRC;
 			}
 			else if ( ( x >= 523 ) && ( x <= 606 ) && ( y >= 413 ) && ( y <= 465 ) )
 			{
@@ -248,7 +249,7 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 			{
 				continue;
 			}
-			blit_tree(root, 0, 0);
+			show_on_screen(root, 0, 0);
 			display_screen();
 		}
 	}
@@ -297,21 +298,21 @@ Settings settings_menu_handler(gui_chess root, Settings settings){
 
 	if (settings.userColor == WHITE_COLOR)
 	{
-		white->clip.y = COLOR_S_BUTTON_Y;
-		black->clip.y = COLOR_BUTTON_Y;
+		white->clip.y = SELECT_COLOR_BUTTON_Y_SRC;
+		black->clip.y = COLOR_BUTTON_Y_SRC;
 	}
 	else
 	{
-		white->clip.y = COLOR_BUTTON_Y;
-		black->clip.y = COLOR_S_BUTTON_Y;
+		white->clip.y = COLOR_BUTTON_Y_SRC;
+		black->clip.y = SELECT_COLOR_BUTTON_Y_SRC;
 	}
 	if (settings.minimaxDepth == BEST_DEPTH){
-		update_num_selction(button_1, 5);
+		select_number_button(button_1, 5);
 	}
 	else{
-		update_num_selction(button_1, settings.minimaxDepth);
+		select_number_button(button_1, settings.minimaxDepth);
 	}
-	blit_tree(root, 0, 0);
+	show_on_screen(root, 0, 0);
 	display_screen();
 
 	while (true){
@@ -324,42 +325,42 @@ Settings settings_menu_handler(gui_chess root, Settings settings){
 		else if (event.type == SDL_MOUSEBUTTONUP){
 			x = event.button.x;
 			y = event.button.y;
-			if ((x > (cb_x + COLOR_HORIZONTSL_OFFSET)) && (x<(cb_x + cb_w + COLOR_HORIZONTSL_OFFSET)) && (y>cb_y) && (y < cb_y + cb_h))
+			if ((x > (cb_x + COLOR_BUTTON_OFFSET_HORIZ)) && (x<(cb_x + cb_w + COLOR_BUTTON_OFFSET_HORIZ)) && (y>cb_y) && (y < cb_y + cb_h))
 			{
 				settings.userColor = BLACK_COLOR;
-				white->clip.y = COLOR_BUTTON_Y;
-				black->clip.y = COLOR_S_BUTTON_Y;
+				white->clip.y = COLOR_BUTTON_Y_SRC;
+				black->clip.y = SELECT_COLOR_BUTTON_Y_SRC;
 			}
 			else if ((x > cb_x) && (x<cb_x + cb_w) && (y>cb_y) && (y < cb_y + cb_h)){
 				settings.userColor = WHITE_COLOR;
-				white->clip.y = COLOR_S_BUTTON_Y;
-				black->clip.y = COLOR_BUTTON_Y;
+				white->clip.y = SELECT_COLOR_BUTTON_Y_SRC;
+				black->clip.y = COLOR_BUTTON_Y_SRC;
 			}
 			else if ((x > numb_x) && (x<numb_x + numb_w) && (y>numb_y) && (y < numb_y + numb_h))
 			{
 				settings.minimaxDepth = 1;
-				update_num_selction(button_1, settings.minimaxDepth);
+				select_number_button(button_1, settings.minimaxDepth);
 			}
-			else if ((x >(numb_x + NUM_HORIZONTAL_OFFSET)) && (x<(numb_x + numb_w+NUM_HORIZONTAL_OFFSET)) && (y>numb_y) && (y < numb_y + numb_h))
+			else if ((x >(numb_x + BUTTON_NUMBER_OFFSET_HORIZ)) && (x<(numb_x + numb_w+BUTTON_NUMBER_OFFSET_HORIZ)) && (y>numb_y) && (y < numb_y + numb_h))
 			{
 				settings.minimaxDepth = 2;
-				update_num_selction(button_1, settings.minimaxDepth);
+				select_number_button(button_1, settings.minimaxDepth);
 			}
-			else if ((x >(numb_x + 2 * NUM_HORIZONTAL_OFFSET)) && (x<(numb_x + numb_w + 2 * NUM_HORIZONTAL_OFFSET)) && (y>numb_y) && (y < numb_y + numb_h))
+			else if ((x >(numb_x + 2 * BUTTON_NUMBER_OFFSET_HORIZ)) && (x<(numb_x + numb_w + 2 * BUTTON_NUMBER_OFFSET_HORIZ)) && (y>numb_y) && (y < numb_y + numb_h))
 			{
 				settings.minimaxDepth = 3;
-				update_num_selction(button_1, settings.minimaxDepth);
+				select_number_button(button_1, settings.minimaxDepth);
 			}
-			else if ((x >(numb_x + 3 * NUM_HORIZONTAL_OFFSET)) && (x<(numb_x + numb_w + 3 * NUM_HORIZONTAL_OFFSET)) && (y>numb_y) && (y < numb_y + numb_h))
+			else if ((x >(numb_x + 3 * BUTTON_NUMBER_OFFSET_HORIZ)) && (x<(numb_x + numb_w + 3 * BUTTON_NUMBER_OFFSET_HORIZ)) && (y>numb_y) && (y < numb_y + numb_h))
 			{
 				settings.minimaxDepth = 4;
-				update_num_selction(button_1, settings.minimaxDepth);
+				select_number_button(button_1, settings.minimaxDepth);
 			}
-			else if ((x >(numb_x + 4 * NUM_HORIZONTAL_OFFSET)) && (x<(numb_x + best_w + 4 * NUM_HORIZONTAL_OFFSET)) && (y>numb_y) && (y < numb_y + best_h))
+			else if ((x >(numb_x + 4 * BUTTON_NUMBER_OFFSET_HORIZ)) && (x<(numb_x + best_w + 4 * BUTTON_NUMBER_OFFSET_HORIZ)) && (y>numb_y) && (y < numb_y + best_h))
 			{
 				settings.minimaxDepth = BEST_DEPTH;
-				update_num_selction(button_1, 5);
-            }
+				select_number_button(button_1, 5);
+			}
 			else if ( ( x >= 183 ) && ( x <= 266 ) && ( y >= 413 ) && ( y <= 465 ) )
 			{
 				settings.state = CHOOSE_COLOR_STATE;
@@ -374,11 +375,10 @@ Settings settings_menu_handler(gui_chess root, Settings settings){
 			{
 				continue;
 			}
-			blit_tree(root, 0, 0);
+			show_on_screen(root, 0, 0);
 			display_screen();
 		}
 	}
-    
 	return settings;
 }
 
@@ -412,9 +412,9 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 	ch_x = tmp->box.x + bound_x;
 	ch_y = tmp->box.y + bound_y;
 	
-	update_num_selction(button_1, current_slot);
+	select_number_button(button_1, current_slot);
 
-	blit_tree(root, 0, 0);
+	show_on_screen(root, 0, 0);
 	display_screen();
 	while (true){
 
@@ -429,27 +429,27 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 			if ((x > number_x) && (x<(number_x + width)) && (y>number_y) && (y<(number_y + heigth))){
 				current_slot = 1;
 			}
-			else if ((x>(number_x + NUM_HORIZONTAL_OFFSET)) && (x<(number_x + NUM_HORIZONTAL_OFFSET + width)) && (y>number_y) && (y<(number_y + heigth)))
+			else if ((x>(number_x + BUTTON_NUMBER_OFFSET_HORIZ)) && (x<(number_x + BUTTON_NUMBER_OFFSET_HORIZ + width)) && (y>number_y) && (y<(number_y + heigth)))
 			{
 				current_slot = 2;
 			}
-			else if ((x>(number_x + 2 * NUM_HORIZONTAL_OFFSET)) && (x<(number_x + 2 * NUM_HORIZONTAL_OFFSET + width)) && (y>number_y) && (y<number_y + heigth))
+			else if ((x>(number_x + 2 * BUTTON_NUMBER_OFFSET_HORIZ)) && (x<(number_x + 2 * BUTTON_NUMBER_OFFSET_HORIZ + width)) && (y>number_y) && (y<number_y + heigth))
 			{
 				current_slot = 3;
 			}
-			else if ((x>(number_x + 3 * NUM_HORIZONTAL_OFFSET)) && (x<(number_x + 3 * NUM_HORIZONTAL_OFFSET + width)) && (y>number_y) && (y<number_y + heigth))
+			else if ((x>(number_x + 3 * BUTTON_NUMBER_OFFSET_HORIZ)) && (x<(number_x + 3 * BUTTON_NUMBER_OFFSET_HORIZ + width)) && (y>number_y) && (y<number_y + heigth))
 			{
 				current_slot = 4;
 			}
-			else if ((x>(number_x + 4 * NUM_HORIZONTAL_OFFSET)) && (x<(number_x + 4 * NUM_HORIZONTAL_OFFSET + width)) && (y>number_y) && (y<number_y + heigth))
+			else if ((x>(number_x + 4 * BUTTON_NUMBER_OFFSET_HORIZ)) && (x<(number_x + 4 * BUTTON_NUMBER_OFFSET_HORIZ + width)) && (y>number_y) && (y<number_y + heigth))
 			{
 				current_slot = 5;
 			}
-			else if ((x>(number_x + 5 * NUM_HORIZONTAL_OFFSET)) && (x<(number_x + 5 * NUM_HORIZONTAL_OFFSET + width)) && (y>number_y) && (y<number_y + heigth))
+			else if ((x>(number_x + 5 * BUTTON_NUMBER_OFFSET_HORIZ)) && (x<(number_x + 5 * BUTTON_NUMBER_OFFSET_HORIZ + width)) && (y>number_y) && (y<number_y + heigth))
 			{
 				current_slot = 6;
 			}
-			else if ((x>(number_x + 6 * NUM_HORIZONTAL_OFFSET)) && (x<(number_x + 6 * NUM_HORIZONTAL_OFFSET + width)) && (y>number_y) && (y<number_y + heigth))
+			else if ((x>(number_x + 6 * BUTTON_NUMBER_OFFSET_HORIZ)) && (x<(number_x + 6 * BUTTON_NUMBER_OFFSET_HORIZ + width)) && (y>number_y) && (y<number_y + heigth))
 			{
 				current_slot = 7;
 			}
@@ -497,19 +497,25 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 				default:
 					continue;
 					break;
-				}
+                    };
 
 				/*op=1 "save"*/
 				if (settings.state == SAVE_STATE)
 				{
 					saveSettings(settings, mem_slot);
 					settings.state = GAME_STATE;
-					settings.can_set = 0; // can NOT set any more
+                    if (settings.can_set == 1)
+                        settings.can_set = 1;
+                    else
+                        settings.can_set = 0;
+					// 3.10
+					//settings.can_set = 0; // can NOT set any more
 					return settings;
 				}
 				else 
 				{
 					settings = loadSettings(settings, mem_slot);
+					// 3.10
 					settings.can_set = 1; // can set after load
 					settings.state = MODE_SETTINGS_STATE;
 					return settings;
@@ -519,8 +525,8 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 			{
 				continue;
 			}
-			update_num_selction(button_1, current_slot);
-			blit_tree(root, 0, 0);
+			select_number_button(button_1, current_slot);
+			show_on_screen(root, 0, 0);
 			display_screen();
 		}
 	}
@@ -553,19 +559,29 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 		{			
 			x = event.button.x;
 			y = event.button.y;
+			fprintf(stdout,"x = %d\n",x);
+			fprintf(stdout,"y = %d\n",y);
+			fflush(stdout);
 			if (player_clicked_set(x,y,offsets))
 			{ /* set button was selected */
+				//set = 0;
+				fprintf(stdout,"%s\n","game_handler -- set");
+				fflush(stdout);
 				settings.state = SET_MENU;
 				return settings;
 			}
 			else if (player_clicked_start(x,y,offsets))
 			{ /* start button was selected */
+					fprintf(stdout,"%s\n","game_handler -- start");
+					fflush(stdout);
 					settings.can_set = 0;
 					settings.show_hint = 1;
 					continue;
 			}
 			else if (player_clicked_restart(x, y, offsets))
 				{
+					fprintf(stdout,"%s\n","game_handler -- hint");
+					fflush(stdout);
 					if (settings.show_hint == 1)
 					{
 						int situation = gui_player_turn(settings, offsets, game_menu, save_menu);
@@ -574,7 +590,7 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 					}
 					else
 					{
-						apply_surface(MODE_LABEL_PMT, getImage(LOAD_SAVE), get_screen());
+						apply_surface(CAN_NOT_GIVE_HINT_MES, getImage(LOAD_SAVE), get_screen());
 						display_screen();
 						SDL_Delay(2500);
 						display_board(game_menu, -1,-1, settings.board);
@@ -584,21 +600,30 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 			}
 			else if (player_clicked_quit(x, y, offsets))
 			{
+				fprintf(stdout,"%s\n","game_handler -- quit");
+				fflush(stdout);
 				settings.state = TERMINATE_STATE;
 				return settings;
 			}
 			else if (player_clicked_save(x, y, offsets))
 			{
+				fprintf(stdout,"%s\n","game_handler -- save");
+				fflush(stdout);
 				settings.state = SAVE_STATE;
+                fprintf(stdout,"can_set = %d\n",settings.can_set);
 				return settings;
 			}
 			else if (player_clicked_main_menu(x, y, offsets))
 			{
+				fprintf(stdout,"%s\n","game_handler -- main_menu");
+				fflush(stdout);
 				settings.state = MAIN_MENU_STATE;
 				return settings;
 			}
 			else
 			{
+				fprintf(stdout,"%s\n","game_handler -- contionu");
+				fflush(stdout);
 				continue;
 			}
 		}
@@ -610,7 +635,7 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 		settings = end_of_turn(settings, situation, game_menu);
 
 	}
-	//blit_tree(game_menu, 0, 0);
+	//show_on_screen(game_menu, 0, 0);
 	//display_screen();
 	
 	return settings;
@@ -649,15 +674,19 @@ Settings minimax_menu_handler(gui_chess root, Settings settings)
 	cb_h = tmp->clip.h;
 	//tmp = tmp->next;
 	//black = tmp;
-  //  tmp = tmp->next;
 	//tmp = tmp->next->next;
 	button_1 = tmp;
 	numb_x = tmp->box.x + bound_x;
 	numb_y = tmp->box.y + bound_y;
 	numb_w = tmp->clip.w;
 	numb_h = tmp->clip.h;
+	//tmp = tmp->next;
+	//tmp = tmp->next;
+	//tmp = tmp->next;
+	//tmp = tmp->next;
 	best_w = tmp->clip.w;
 	best_h = tmp->clip.h;
+	//tmp = tmp->next;
 	c_x = tmp->box.x + bound_x;
 	c_y = tmp->box.y + bound_y;
 	s_c_w = tmp->clip.w;
@@ -666,18 +695,17 @@ Settings minimax_menu_handler(gui_chess root, Settings settings)
 	s_x = tmp->box.x + bound_x;
 	s_y = tmp->box.y + bound_y;
 
-	if (settings.minimaxDepth == BEST_DEPTH)
-    {
-		update_num_selction(button_1, 5);
+	if (settings.minimaxDepth == BEST_DEPTH){
+		select_number_button(button_1, 5);
 	}
-	else
-    {
-		update_num_selction(button_1, settings.minimaxDepth);
+	else{
+		select_number_button(button_1, settings.minimaxDepth);
 	}
 	
-	blit_tree(root, 0, 0);
+    
+	show_on_screen(root, 0, 0);
 	display_screen();
-
+    fprintf(stdout,"%s\n","soso");
 	while (true){
 		//check error
 		SDL_WaitEvent(&event);
@@ -686,50 +714,58 @@ Settings minimax_menu_handler(gui_chess root, Settings settings)
 			break;
 		}
 		else if (event.type == SDL_MOUSEBUTTONUP){
-            x = event.button.x;
-            y = event.button.y;
-            if ((x > 242) && (x<283) && (y>342) && (y < 394))
-            {
-                settings.minimaxDepth = 1;
-                update_num_selction(button_1, settings.minimaxDepth);
-            }
+			x = event.button.x;
+			y = event.button.y;
+            if ( ( x > 241) && ( x < 284) && (y > 343) && (y < 394)  )
+			{
+                
+				settings.minimaxDepth = 1;
+				select_number_button(button_1, settings.minimaxDepth);
+                fprintf(stdout,"minimax_defth = %d\n",settings.minimaxDepth);
+			}
             else if ((x > 300) && (x<344) && (y>342) && (y < 394))
-            {
-                settings.minimaxDepth = 2;
-                update_num_selction(button_1, settings.minimaxDepth);
-            }
+			{
+				settings.minimaxDepth = 2;
+				select_number_button(button_1, settings.minimaxDepth);
+                fprintf(stdout,"minimax_defth = %d\n",settings.minimaxDepth);
+			}
             else if ((x > 361) && (x<403) && (y>342) && (y < 394))
-            {
-                settings.minimaxDepth = 3;
-                update_num_selction(button_1, settings.minimaxDepth);
-            }
+			{
+				settings.minimaxDepth = 3;
+				select_number_button(button_1, settings.minimaxDepth);
+                fprintf(stdout,"minimax_defth = %d\n",settings.minimaxDepth);
+			}
             else if ((x > 421) && (x<463) && (y>342) && (y < 394))
-            {
-                settings.minimaxDepth = 4;
-                update_num_selction(button_1, settings.minimaxDepth);
-            }
+			{
+				settings.minimaxDepth = 4;
+				select_number_button(button_1, settings.minimaxDepth);
+                fprintf(stdout,"minimax_defth = %d\n",settings.minimaxDepth);
+			}
             else if ((x > 483) && (x<553) && (y>342) && (y < 394))
-            {
-                settings.minimaxDepth = BEST_DEPTH;
-                update_num_selction(button_1, 5);
-            }
-            else if ( ( x >= 183 ) && ( x <= 266 ) && ( y >= 413 ) && ( y <= 465 ) )
-            {
+			{
+				settings.minimaxDepth = BEST_DEPTH;
+				select_number_button(button_1, 5);
+                fprintf(stdout,"minimax_defth = %d\n",settings.minimaxDepth);
+			}
+	
+			else if ((x > 181) && (x<267) && (y>411) && (y < 467))
+			{
                 settings.state = CANCEL_BEST_MOVE;
                 return settings;
-            }
-            else if ( ( x >= 523 ) && ( x <= 606 ) && ( y >= 413 ) && ( y <= 465 ) )
-            {
+			}
+			else if ((x > 521) && (x<608) && (y>411) && (y < 467))
+			{
                 settings.state = BEST_MOVE;
                 return settings;
-            }
-            else
-            {
-                continue;
-            }
-            
-            blit_tree(root, 0, 0);
-            display_screen();		}
+				
+			}
+			else
+			{
+				continue;
+			}
+			show_on_screen(root, 0, 0);
+			display_screen();
+		}
 	}
 	return settings;
 
@@ -741,8 +777,8 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 	gui_chess tmp, tmp2;
 	
 	tmp2 = root->child;
-	x_bound = tmp2->box.x + PROMOTE_FIRST_POS_X;
-	y_bound = tmp2->box.y + PROMOTE_FIRST_POS_Y;
+	x_bound = tmp2->box.x + PROMOTE_X;
+	y_bound = tmp2->box.y + PROMOTE_Y;
 	tmp = game_menu;
 	tmp = tmp->child;
 	offsets[0] = tmp->box.x;
@@ -763,9 +799,15 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 			y2 = event.button.y;
 			if (( x2 > 34) && ( x2 < 561) && (y2 < 561) && ( y2 > 35) ) 
 			{
-				i = (x2 - BOARD_TOP_CORNER) / BOARD_SQUARE;
-				j = 7 - ((y2 - BOARD_TOP_CORNER) / BOARD_SQUARE);
-			blit_tree(root, 0, 0);
+				i = (x2 - BOARD_TOP_CORNER) / BOARD_SQUARE_LEN;
+				j = 7 - ((y2 - BOARD_TOP_CORNER) / BOARD_SQUARE_LEN);
+			fprintf(stdout,"%s\n","check");
+			fprintf(stdout,"x2 = %d\n",x2);
+			fprintf(stdout,"y2 = %d\n",y2);
+			fprintf(stdout,"i = %d\n",i);
+			fprintf(stdout,"j = %d\n",j);
+			fflush(stdout);
+			show_on_screen(root, 0, 0);
 			display_screen();
 			while (i >= 0 && j >= 0 && i < BOARD_SIZE && j < BOARD_SIZE)
 				{
@@ -776,16 +818,18 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 				}
 				else if (event.type == SDL_MOUSEBUTTONUP)
 				{
-                    x = event.button.x;
-                    y = event.button.y;
-                    if (x >= x_bound - 3 * BOARD_SQUARE && x <= x_bound - 3 * 66 + 7 * PROMOTE_OFFSET)
-                    {
-                        settings.board = set_piece(x, y, x_bound, y_bound, i, j, settings.board);
-                        display_board(game_menu, -1, -1,settings.board);
-                        settings.state = GAME_STATE;
-                        return settings;
-                    }
-                }
+					fprintf(stdout,"%s\n","check 1");
+					fflush(stdout);
+						x = event.button.x;
+						y = event.button.y;
+						if (x >= x_bound - 3 * BOARD_SQUARE_LEN && x <= x_bound - 3 * 66 + 7 * PROMOTE_OFFSET)
+						{
+							settings.board = set_piece(x, y, x_bound, y_bound, i, j, settings.board);
+							display_board(game_menu, -1, -1,settings.board);
+							settings.state = GAME_STATE;
+							return settings;
+						}
+					}
 					else
 					{
 						continue;
@@ -794,6 +838,8 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 			}
 			else if (player_clicked_start(x2,y2,offsets))
 			{ /* start button was selected */
+					fprintf(stdout,"%s\n","game_handler -- start");
+					fflush(stdout);
 					settings.can_set = 0;
 					settings.show_hint = 1;
 					settings.state = GAME_STATE;
@@ -801,6 +847,8 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 			}
 			else if (player_clicked_restart(x2, y2, offsets))
 				{
+					fprintf(stdout,"%s\n","set_handler -- hint");
+					fflush(stdout);
 					if (settings.show_hint == 1)
 					{
 						settings.state = BEST_MOVE;
@@ -808,7 +856,7 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 					}
 					else
 					{
-						apply_surface(MODE_LABEL_PMT, getImage(LOAD_SAVE), get_screen());
+						apply_surface(CAN_NOT_GIVE_HINT_MES, getImage(LOAD_SAVE), get_screen());
 						display_screen();
 						SDL_Delay(2500);
 						display_board(game_menu, -1,-1, settings.board);
@@ -827,16 +875,22 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 			}
 			else if (player_clicked_quit(x2, y2, offsets))
 			{
+				fprintf(stdout,"%s\n","set_handler -- quit");
+				fflush(stdout);
 				settings.state = TERMINATE_STATE;
 				return settings;
 			}
 			else if (player_clicked_save(x2, y2, offsets))
 			{
+				fprintf(stdout,"%s\n","set_handler -- save");
+				fflush(stdout);
 				settings.state = SAVE_STATE;
 				return settings;
 			}
 			else if (player_clicked_main_menu(x2, y2, offsets))
 			{
+				fprintf(stdout,"%s\n","set handler -- main_menu");
+				fflush(stdout);
 				settings.state = MAIN_MENU_STATE;
 				return settings;
 			}
@@ -931,12 +985,12 @@ Settings end_of_turn(Settings settings, int situation, gui_chess game_menu)
 	bool stuck = !canMove(settings.board, settings.playingColor);
 	if (check && stuck /*mate*/)
  	{
-		apply_surface(CHECKMATE_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
+		apply_surface(LABLE_CHAECKMAIT, getImage(GAME_PIECES_SELECT), get_screen());
 		if (settings.playingColor == WHITE_COLOR) {
-			apply_surface(BLACK_MATE_IMG, getImage(SELECTED_PIECES_SHEET), get_screen());
+			apply_surface(BLACK_MATE, getImage(GAME_PIECES_SELECT), get_screen());
 		}
 		else {
-			apply_surface(WHITE_MATE_IMG, getImage(SELECTED_PIECES_SHEET), get_screen());
+			apply_surface(WHITE_MATE, getImage(GAME_PIECES_SELECT), get_screen());
 		}
 		display_screen();
 		SDL_Delay(1500);
@@ -945,18 +999,16 @@ Settings end_of_turn(Settings settings, int situation, gui_chess game_menu)
 		return settings;
 	} else if (stuck) 
 	{
-		apply_surface(TEI_MES, getImage(ADD_IMAGE), get_screen());
+		apply_surface(LABLE_TIE, getImage(ADD_IMAGE), get_screen());
 		display_screen();
 		SDL_Delay(1500);
 		settings.state = MAIN_MENU_STATE;
 		return settings;
 	} else if (check) 
 	{
-		apply_surface(CHECK_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
+		apply_surface(LABLE_CHECK, getImage(GAME_PIECES_SELECT), get_screen());
 		display_screen();
 		SDL_Delay(1500);
-        display_board(game_menu, -1,-1, settings.board);
-        display_screen();
 		return settings;
 	}
 	if (situation == GS_MAIN_MENU /*todo fix restart logic*/) 
@@ -984,7 +1036,7 @@ Settings end_of_turn(Settings settings, int situation, gui_chess game_menu)
 		// rotem_to_change massage tipe
 		else // can show settings after start!
 		{
-			apply_surface(MODE_LABEL_PMT, getImage(LOAD_SAVE), get_screen());
+			apply_surface(LABLE_MODE_MENU, getImage(LOAD_SAVE), get_screen());
 			display_screen();
 			SDL_Delay(2500);
 			display_board(game_menu, -1,-1, settings.board);
@@ -997,10 +1049,12 @@ Settings end_of_turn(Settings settings, int situation, gui_chess game_menu)
 	}
 	if (situation == GS_CAN_NOT_SET)
 	{
+		fprintf(stdout,"%s\n","end of turn6");
+		fflush(stdout);
 		if (settings.can_set == 1)
 		{
 			
-			apply_surface(BLACK_MATE_IMG, getImage(SELECTED_PIECES_SHEET), get_screen());
+			apply_surface(BLACK_MATE, getImage(GAME_PIECES_SELECT), get_screen());
 			display_screen();
 			SDL_Delay(1500);
 			display_board(game_menu, -1,-1, settings.board);
@@ -1010,9 +1064,9 @@ Settings end_of_turn(Settings settings, int situation, gui_chess game_menu)
 		{
 			// 3.10
 			// rotem_to_change massage tipe
-			apply_surface(LOAD_LABEL_PMT, getImage(LOAD_SAVE), get_screen());
+			apply_surface(CAN_NOT_SET_MESSAGE, getImage(LOAD_SAVE), get_screen());
 			display_screen();
-			SDL_Delay(2000);
+			SDL_Delay(1500);
 			display_board(game_menu, -1,-1, settings.board);
 			display_screen();
 			
@@ -1039,7 +1093,7 @@ Settings end_of_turn(Settings settings, int situation, gui_chess game_menu)
 
 Settings best_move_handler ( Settings settings, gui_chess game_menu)
 {
-	blit_tree(game_menu, 0, 0);
+	show_on_screen(game_menu, 0, 0);
 	//display_screen();
 	
 	if (settings.playingColor == WHITE_COLOR)
@@ -1053,7 +1107,7 @@ Settings best_move_handler ( Settings settings, gui_chess game_menu)
 	char ** prev_board = copyBoard(settings.board);
 	Move* com_move = getMinimaxMove(settings.board, settings.playingColor, settings.minimaxDepth);
 	char** temp_board = copyBoard(settings.board);
-	settings.board = applyMove1(settings.board, com_move);
+	settings.board = apply_best_move(settings.board, com_move);
 	display_board(game_menu, com_move->from.x, com_move->from.y, temp_board);
 	SDL_Delay(1500);
 	display_board(game_menu, com_move->to.x, com_move->to.y, settings.board);
@@ -1066,7 +1120,7 @@ Settings best_move_handler ( Settings settings, gui_chess game_menu)
 	return settings;
 }
 
-char** applyMove1(char** board, Move* move) 
+char** apply_best_move(char** board, Move* move)
 {
 	char originalPiece = BLUE;
 	board[move->to.x][move->to.y] = (endOfBoard(move->to, pieceOwner(originalPiece)) && move->promotion != NO_PROMOTION)
@@ -1086,12 +1140,12 @@ char promotion_handler(gui_chess root, int player) {
 	SDL_Event event;
 	int x, y, x_bound, y_bound;
 
-	blit_tree(root, 0, 0);
+	show_on_screen(root, 0, 0);
 	display_screen();
 
 	tmp = root->child;
-	x_bound = tmp->box.x + PROMOTE_FIRST_POS_X;
-	y_bound = tmp->box.y + PROMOTE_FIRST_POS_Y;
+	x_bound = tmp->box.x + PROMOTE_X;
+	y_bound = tmp->box.y + PROMOTE_Y;
 	
 	while (true){
 		SDL_WaitEvent(&event); // todo - check return value
@@ -1099,17 +1153,17 @@ char promotion_handler(gui_chess root, int player) {
 			return NO_PROMOTION;
 		}
 		else if (SDL_GetMouseState(&x, &y) & SDL_BUTTON_LMASK) {
-			if ((y > y_bound) && (y < (y_bound + BOARD_SQUARE))){
-				if ((x > x_bound) && (x<(x_bound + BOARD_SQUARE))) {
+			if ((y > y_bound) && (y < (y_bound + BOARD_SQUARE_LEN))){
+				if ((x > x_bound) && (x<(x_bound + BOARD_SQUARE_LEN))) {
 					return player == WHITE_COLOR ? WHITE_Q : BLACK_Q;
 				}
-				if ((x >(x_bound + PROMOTE_OFFSET)) && (x<(x_bound + BOARD_SQUARE + PROMOTE_OFFSET))) {
+				if ((x >(x_bound + PROMOTE_OFFSET)) && (x<(x_bound + BOARD_SQUARE_LEN + PROMOTE_OFFSET))) {
 					return player == WHITE_COLOR ? WHITE_R : BLACK_R;
 				}
-				if ((x >(x_bound + 2 * PROMOTE_OFFSET)) && (x<(x_bound + BOARD_SQUARE + 2 * PROMOTE_OFFSET))){
+				if ((x >(x_bound + 2 * PROMOTE_OFFSET)) && (x<(x_bound + BOARD_SQUARE_LEN + 2 * PROMOTE_OFFSET))){
 					return player == WHITE_COLOR ? WHITE_B : BLACK_B;
 				}
-				if ((x >(x_bound + 3 * PROMOTE_OFFSET)) && (x < (x_bound + BOARD_SQUARE + 3 * PROMOTE_OFFSET))){
+				if ((x >(x_bound + 3 * PROMOTE_OFFSET)) && (x < (x_bound + BOARD_SQUARE_LEN + 3 * PROMOTE_OFFSET))){
 					return player == WHITE_COLOR ? WHITE_N : BLACK_N;
 				}
 			}
@@ -1117,7 +1171,7 @@ char promotion_handler(gui_chess root, int player) {
 	}
 }
 
-void blit_tree(gui_chess start_point, int x, int y)
+void show_on_screen(gui_chess start_point, int x, int y)
 {
 	gui_chess tmp;
 	SDL_Rect place_in_frame;
@@ -1145,25 +1199,26 @@ void blit_tree(gui_chess start_point, int x, int y)
 	tmp = start_point->child;
 
 	while (tmp != NULL){
-		blit_tree(tmp, place_in_frame.x, place_in_frame.y);
+		show_on_screen(tmp, place_in_frame.x, place_in_frame.y);
 		tmp = tmp->next;
 	}
 }
 
-void update_num_selction(gui_chess number_button, int number)
+void select_number_button(gui_chess number_button, int number)
 {
 	gui_chess tmp;
 	int i = 1;
 	tmp = number_button;
+
 	while (tmp != NULL)
 	{
 		if (i != number)
 		{
-            fflush(stdout);
+			tmp->clip.y = HIGH_BUTTON_NUMBER;
 		}
 		else
 		{
-			tmp->clip.y = NUM_S_BUTTON_Y;
+			tmp->clip.y = HIGH_BUTTON_NUMBER_SELECT;
 		}
 		i++;
 		tmp = tmp->next;
@@ -1175,69 +1230,73 @@ void display_board(gui_chess game_menu, int selected_x, int selected_y, char** c
 	int i, j, x, y;
 	SDL_Surface *current_surface;
 
-	current_surface = getImage(PIECES_SHEET);
+	current_surface = getImage(GAME_PIECES);
 	i = 0;
 	j = 0;
 	char * debug;
 
-	blit_tree(game_menu, i, j);
+	show_on_screen(game_menu, i, j);
 
 	for (i = 0 ; i < BOARD_SIZE; i++)
 	{
 		for (j = 0 ; j < BOARD_SIZE; j++)
 		{
-			x = i*BOARD_SQUARE + BOARD_TOP_CORNER;
-			y = (7 - j)*BOARD_SQUARE + BOARD_TOP_CORNER;
+			x = i*BOARD_SQUARE_LEN + BOARD_TOP_CORNER;
+			y = (7 - j)*BOARD_SQUARE_LEN + BOARD_TOP_CORNER;
 			if (selected_x != i || selected_y != j)
 			{
 				debug = "noo";
-				current_surface = getImage(PIECES_SHEET); // just solider on the board
+				current_surface = getImage(GAME_PIECES); // just solider on the board
 			}
 			else
 			{
 				debug = "rotem";
-				current_surface = getImage(SELECTED_PIECES_SHEET); // selsected solider on the board
+				current_surface = getImage(GAME_PIECES_SELECT); // selsected solider on the board
 			}
 			switch (current_board[i][j])
 			{
 			case WHITE_P:
-				apply_surface(W_PAWN_PMT, x, y, current_surface, get_screen());
+				apply_surface(WHITE_PAWN, x, y, current_surface, get_screen());
 				break;
 			case WHITE_B:
-				apply_surface(W_BISHOP_PMT, x, y, current_surface, get_screen());
+				apply_surface(WHITE_BISHOP, x, y, current_surface, get_screen());
 				break;
 			case WHITE_R:
-				apply_surface(W_ROOK_PMT, x, y, current_surface, get_screen());
+				apply_surface(WHITE_ROOK, x, y, current_surface, get_screen());
 				break;
 			case WHITE_N:
-				apply_surface(W_KNIGHT_PMT, x, y, current_surface, get_screen());
+				apply_surface(WHITE_KNIGHT, x, y, current_surface, get_screen());
 				break;
 			case WHITE_Q:
-				apply_surface(W_QUEEN_PMT, x, y, current_surface, get_screen());
+				apply_surface(WHITE_QUEEN, x, y, current_surface, get_screen());
 				break;
 			case WHITE_K:
-				apply_surface(W_KING_PMT, x, y, current_surface, get_screen());
+				apply_surface(WHITE_KING, x, y, current_surface, get_screen());
 				break;
 			case BLACK_P:
-				apply_surface(B_PAWN_PMT, x, y, current_surface, get_screen());
+				apply_surface(BLACK_PAWN, x, y, current_surface, get_screen());
 				break;
 			case BLACK_B:
-				apply_surface(B_BISHOP_PMT, x, y, current_surface, get_screen());
+				apply_surface(BLACK_BISHOP, x, y, current_surface, get_screen());
 				break;
 			case BLACK_R:
-				apply_surface(B_ROOK_PMT, x, y, current_surface, get_screen());
+				apply_surface(BLACK_ROOK, x, y, current_surface, get_screen());
 				break;
 			case BLACK_N:
-				apply_surface(B_KNIGHT_PMT, x, y, current_surface, get_screen());
+				apply_surface(BLACK_KNIGHT, x, y, current_surface, get_screen());
 				break;
 			case BLACK_Q:
-				apply_surface(B_QUEEN_PMT, x, y, current_surface, get_screen());
+				apply_surface(BLACK_QUEEN, x, y, current_surface, get_screen());
 				break;
 			case BLACK_K:
-				apply_surface(B_KING_PMT, x, y, current_surface, get_screen());
+				apply_surface(BLACK_KING, x, y, current_surface, get_screen());
 				break;
 			case BLUE:
-				apply_surface(BLUE_B, x, y, current_surface, get_screen());
+				fprintf(stdout,"%s\n","BLUE");
+				fflush(stdout);
+				fprintf(stdout,"%s\n",debug);
+				fflush(stdout);
+				apply_surface(RED_FRAME, x, y, current_surface, get_screen());
 				break;
 			default:
 				break;

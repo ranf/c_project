@@ -119,9 +119,9 @@ void show_possible_moves(MoveList* moves)
 	MoveList* head = moves;
 	while (head != NULL)
 	{
-		apply_surface(GET_MOVES_SELECT_SQURE, BOARD_SQUARE, BOARD_SQUARE, 
-			head->data->to.x * BOARD_SQUARE + BOARD_TOP_CORNER, 
-			(7 - head->data->to.y)*BOARD_SQUARE + BOARD_TOP_CORNER, getImage(SELECTED_PIECES_SHEET), get_screen());
+		apply_surface(SELECT_SQUER, BOARD_SQUARE_LEN, BOARD_SQUARE_LEN,
+			head->data->to.x * BOARD_SQUARE_LEN + BOARD_TOP_CORNER,
+			(7 - head->data->to.y)*BOARD_SQUARE_LEN + BOARD_TOP_CORNER, getImage(GAME_PIECES_SELECT), get_screen());
 		//todo replace 7 with meaningful const
 		head = head->next;
 	}
@@ -143,21 +143,21 @@ bool player_clicked_main_menu(int x, int y, int offsets[4])
 bool player_clicked_save(int x, int y, int offsets[4])
 {
 	return player_clicked_buttons_zone(x,offsets) &&
-		y > offsets[1] + GAME_MENU_VERTICAL_OFFSET &&
-		y < offsets[1] + offsets[3] + GAME_MENU_VERTICAL_OFFSET;
+		y > offsets[1] + GAME_MENU_BUTTON_HEIGHT &&
+		y < offsets[1] + offsets[3] + GAME_MENU_BUTTON_HEIGHT;
 }
 
 bool player_clicked_restart(int x, int y, int offsets[4])
 {
 	return player_clicked_buttons_zone(x,offsets) &&
-		y > offsets[1] + 2 * GAME_MENU_VERTICAL_OFFSET &&
-		y < offsets[1] + offsets[3] + 2 * GAME_MENU_VERTICAL_OFFSET;
+		y > offsets[1] + 2 * GAME_MENU_BUTTON_HEIGHT &&
+		y < offsets[1] + offsets[3] + 2 * GAME_MENU_BUTTON_HEIGHT;
 }
 
 bool player_clicked_quit(int x, int y, int offsets[4])
 {
 	return player_clicked_buttons_zone(x,offsets) &&
-		y > QUIT_SIDE_Y && y < QUIT_SIDE_Y + offsets[3];
+		y > GAME_MENU_QUIT_BUTTON_HIGHT && y < GAME_MENU_QUIT_BUTTON_HIGHT + offsets[3];
 }
 
 bool player_clicked_board(int x, int y, int offsets[4])
@@ -169,19 +169,19 @@ bool player_clicked_board(int x, int y, int offsets[4])
 bool player_clicked_set(int x, int y, int offsets[4])
 {
 	return player_clicked_buttons_zone(x,offsets) &&
-		y > offsets[1] + 3 * GAME_MENU_VERTICAL_OFFSET &&
-		y < offsets[1] + offsets[3] + 3 * GAME_MENU_VERTICAL_OFFSET;
+		y > offsets[1] + 3 * GAME_MENU_BUTTON_HEIGHT &&
+		y < offsets[1] + offsets[3] + 3 * GAME_MENU_BUTTON_HEIGHT;
 }
 
 bool player_clicked_start(int x, int y, int offsets[4])
 {
 	return player_clicked_buttons_zone(x,offsets) &&
-		y > offsets[1] + 4 * GAME_MENU_VERTICAL_OFFSET && y < offsets[1] + offsets[3] + 4 * GAME_MENU_VERTICAL_OFFSET;
+		y > offsets[1] + 4 * GAME_MENU_BUTTON_HEIGHT && y < offsets[1] + offsets[3] + 4 * GAME_MENU_BUTTON_HEIGHT + BOARD_SQUARE_LEN;
 }
 Position board_clicked_position(int x, int y)
 {
 	Position p;
-	p.x = (x - BOARD_TOP_CORNER) / BOARD_SQUARE;
-	p.y = 7 - ((y - BOARD_TOP_CORNER) / BOARD_SQUARE);
+	p.x = (x - BOARD_TOP_CORNER) / BOARD_SQUARE_LEN;
+	p.y = 7 - ((y - BOARD_TOP_CORNER) / BOARD_SQUARE_LEN);
 	return p;
 }
