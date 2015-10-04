@@ -163,12 +163,6 @@ int getCmdType(char* cmdString) {
 	return UNKNOWN_CMD;
 }
 
-bool validAddition(char** board, Position position, char piece) {
-	//does not verify resulting board is valid, only that it can add
-	return (board[position.x][position.y] == piece) || 
-		(countPiecesOfType(board, piece) + 1 <= maxAllowedPiecesOfType(piece));
-}
-
 char parsePieceName(char* name, int color) {
 	if (strcmp(name, "king") == 0)
 		return color == WHITE_COLOR ? WHITE_K : BLACK_K;

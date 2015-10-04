@@ -36,5 +36,6 @@ int pieceOwner(char pieceType);
 bool endOfBoard(Position position, int player);
 Position getKingPosition(char** board, int player);
 bool isPawn(char piece);
+bool validAddition(char** board, Position position, char piece);
 
 #endif

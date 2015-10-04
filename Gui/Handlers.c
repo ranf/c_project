@@ -574,8 +574,17 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 			{ /* start button was selected */
 					fprintf(stdout,"%s\n","game_handler -- start");
 					fflush(stdout);
-					settings.can_set = 0;
-					settings.show_hint = 1;
+					if (countPiecesOfType(settings.board, WHITE_K) != 1 ||
+						countPiecesOfType(settings.board, BLACK_K) != 1)
+					{	//todo - add correct illegal board message
+						apply_surface(CHECKMATE_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
+						SDL_Delay(2500);
+					}
+					else 
+					{
+						settings.can_set = 0;
+						settings.show_hint = 1;
+					}
 					continue;
 			}
 			else if (player_clicked_restart(x, y, offsets))
@@ -788,7 +797,7 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 	
 	while (true)
 	{
-		SDL_WaitEvent(&event);
+		SDL_WaitEvent(&event);//todo - check return value
 		if (event.type == SDL_QUIT){
 			settings.state = TERMINATE_STATE;
 			return settings;
@@ -845,7 +854,7 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 					settings.state = GAME_STATE;
 					return settings;
 			}
-			else if (player_clicked_restart(x2, y2, offsets))
+			else if (player_clicked_restart(x2, y2, offsets))//todo - change any var/func name with restart to hint
 				{
 					fprintf(stdout,"%s\n","set_handler -- hint");
 					fflush(stdout);
@@ -905,6 +914,8 @@ Settings set_menu_handler(gui_chess root, gui_chess game_menu, gui_chess save_me
 
 char** set_piece(int x, int y, int x_bound, int y_bound, int i, int j, char** board)
 {
+	//todo - use validAddition(char** board, Position position, char piece) to verify we can set
+	//			if not, present appropriate message
 	if (x < x_bound - 66 &&  x > x_bound - 3 * 66)
 	{
 		if (y > y_bound - 2* 66 && y < y_bound)

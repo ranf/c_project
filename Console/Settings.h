@@ -39,7 +39,6 @@ Settings setGameMode(Settings settings, char* cmd);
 void removePiece(char** board, char* cmd);
 void setPiece(char** board, char* cmd);
 int getCmdType(char* cmdString);
-bool validAddition(char** board, Position position, char piece);
 char parsePieceName(char* name, int color);
 Settings setPlayingColor(Settings settings, char* color);
 

@@ -129,3 +129,9 @@ Position getKingPosition(char** board, int player) {
 bool isPawn(char piece) {
 	return piece == WHITE_P || piece == BLACK_P;
 }
+
+bool validAddition(char** board, Position position, char piece) {
+	//does not verify resulting board is valid, only that it can add
+	return board[position.x][position.y] == piece || 
+		countPiecesOfType(board, piece) + 1 <= maxAllowedPiecesOfType(piece);
+}
