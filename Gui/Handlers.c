@@ -577,7 +577,7 @@ Settings game_menu_handler(gui_chess game_menu, gui_chess save_menu, Settings se
 					if (countPiecesOfType(settings.board, WHITE_K) != 1 ||
 						countPiecesOfType(settings.board, BLACK_K) != 1)
 					{	//todo - add correct illegal board message
-						apply_surface(CHECKMATE_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
+						//apply_surface(CHECKMATE_LABEL, getImage(SELECTED_PIECES_SHEET), get_screen());
 						SDL_Delay(2500);
 					}
 					else 
