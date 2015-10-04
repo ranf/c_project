@@ -5,7 +5,7 @@
 gui_chess build_main_menu()
 {
 	gui_chess result, tmp, tmp_parent;
-
+    tmp_parent = NULL;
 	result = window_factory(getImage(BACKGROUND_IMAGE));
 	tmp = result;
 	tmp->child = panel_factory(getImage(PANEL_BLACK_WHITE), BLACK_WHITE_IMAGE, tmp);
@@ -25,7 +25,7 @@ gui_chess build_main_menu()
 gui_chess build_mode_menu()
 {
 	gui_chess result, tmp, tmp_parent;
-
+    tmp_parent = NULL;
 	result = window_factory(getImage(BACKGROUND_IMAGE));
 	tmp = result;
 	tmp->child = panel_factory(getImage(PANEL_BLACK_WHITE), BLACK_WHITE_IMAGE, tmp);
@@ -48,7 +48,7 @@ gui_chess build_mode_menu()
 gui_chess build_color_set_menu()
 {
 	gui_chess result, tmp, tmp_parent;
-
+    tmp_parent = NULL;
 	result = window_factory(getImage(BACKGROUND_IMAGE));
 	tmp = result;
 	tmp->child = panel_factory(getImage(PANEL_BLACK_WHITE), BLACK_WHITE_IMAGE, tmp);

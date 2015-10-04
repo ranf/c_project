@@ -3,8 +3,7 @@
 
 int gui_player_turn(Settings settings, int offsets[4], gui_chess game_menu, gui_chess save_menu)
 {
-	//todo - should probably convert to return settings as well (here and every internal function)
-	SDL_Event event;
+    SDL_Event event;
 	bool moving_piece_selected = false;
 	Position from, to;
 	from.x = 0;
@@ -63,13 +62,13 @@ int apply_player_click(Settings settings, SDL_Event event, int offsets[4],
 	if (player_clicked_save(x, y, offsets)) 
 	{
 		settings.state = SAVE_STATE;
-		load_save_menu_handler(save_menu, settings); //todo - use settings return value
+		load_save_menu_handler(save_menu, settings); 
 		moving_piece_selected = false;
 		display_board(game_menu, -1, -1, settings.board);
 		return GS_PLAYER_TURN;
 	}
-	if (player_clicked_restart(x, y, offsets)) {
-		return GS_RESTART;
+	if (player_clicked_hint(x, y, offsets)) {
+		return GS_HINT;
 	}
 	if (player_clicked_quit(x, y, offsets)) {
 		return GS_QUIT;
@@ -83,7 +82,8 @@ int apply_player_click(Settings settings, SDL_Event event, int offsets[4],
 
 int apply_board_click(gui_chess game_menu, Position clicked, Settings settings, Move* move, bool* moving_piece_selected)
 {
-	if (pieceOwner(settings.board[clicked.x][clicked.y]) == settings.playingColor) {
+	if (pieceOwner(settings.board[clicked.x][clicked.y]) == settings.playingColor)
+    {
 		move->from = clicked;
 		move->promotion = NO_PROMOTION;
 		*moving_piece_selected = true;
@@ -92,7 +92,8 @@ int apply_board_click(gui_chess game_menu, Position clicked, Settings settings, 
 		show_possible_moves(moves);
 		freeMoves(moves);
 		display_screen();
-	} else if (*moving_piece_selected) 
+	}
+    else if (*moving_piece_selected)
 	{
 		
 		if (isPawn(settings.board[clicked.x][clicked.y] && endOfBoard(clicked, settings.playingColor))) {
@@ -121,8 +122,7 @@ void show_possible_moves(MoveList* moves)
 	{
 		apply_surface(SELECT_SQUER, BOARD_SQUARE_LEN, BOARD_SQUARE_LEN,
 			head->data->to.x * BOARD_SQUARE_LEN + BOARD_TOP_CORNER,
-			(7 - head->data->to.y)*BOARD_SQUARE_LEN + BOARD_TOP_CORNER, getImage(GAME_PIECES_SELECT), get_screen());
-		//todo replace 7 with meaningful const
+			(DISTANCE_BLCK_WHITE - head->data->to.y)*BOARD_SQUARE_LEN + BOARD_TOP_CORNER, getImage(GAME_PIECES_SELECT), get_screen());
 		head = head->next;
 	}
 }
@@ -147,7 +147,7 @@ bool player_clicked_save(int x, int y, int offsets[4])
 		y < offsets[1] + offsets[3] + GAME_MENU_BUTTON_HEIGHT;
 }
 
-bool player_clicked_restart(int x, int y, int offsets[4])
+bool player_clicked_hint(int x, int y, int offsets[4])
 {
 	return player_clicked_buttons_zone(x,offsets) &&
 		y > offsets[1] + 2 * GAME_MENU_BUTTON_HEIGHT &&
@@ -182,6 +182,6 @@ Position board_clicked_position(int x, int y)
 {
 	Position p;
 	p.x = (x - BOARD_TOP_CORNER) / BOARD_SQUARE_LEN;
-	p.y = 7 - ((y - BOARD_TOP_CORNER) / BOARD_SQUARE_LEN);
+	p.y = DISTANCE_BLCK_WHITE - ((y - BOARD_TOP_CORNER) / BOARD_SQUARE_LEN);
 	return p;
 }

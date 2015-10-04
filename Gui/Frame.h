@@ -8,12 +8,13 @@
 #define WIN_W 800
 #define WIN_H 600
 
+// frame of the game
 typedef struct game_frame{
 	
 	SDL_Surface *img;
 	int type;
-	SDL_Rect box;
-	SDL_Rect clip;
+	SDL_Rect rect1;
+	SDL_Rect rect2;
 	struct game_frame *child;
 	struct game_frame *next;
 	struct game_frame *parent;

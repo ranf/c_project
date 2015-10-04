@@ -13,6 +13,9 @@
 #define ADD_IMAGE "Gui/Images/add.bmp"
 #define LOAD_SAVE "Gui/Images/load_save_buttons.bmp"
 #define SAVE "Gui/Images/save_slot.bmp"
+#define MES "Gui/Images/messages.bmp"
+#define BLACK_MATE "Gui/Images/black_mate.bmp"
+#define WHITE_MATE "Gui/Images/white_mate.bmp"
 
 void loadImages();
 void freeImages();

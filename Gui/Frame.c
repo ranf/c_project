@@ -27,6 +27,7 @@ void free_screen() {
 	SDL_FreeSurface(screen);
 }
 
+// put on screen
 void apply_surface(int src_x, int src_y, int src_w, int src_h, int dst_x, int dst_y, SDL_Surface* source, SDL_Surface* destination) {
 	SDL_Rect src_new;
 	SDL_Rect dst_new;

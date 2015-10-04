@@ -9,6 +9,9 @@ SDL_Surface *backround = NULL;
 SDL_Surface *add = NULL;
 SDL_Surface *load_save = NULL;
 SDL_Surface *save_slot = NULL;
+SDL_Surface *messages = NULL;
+SDL_Surface *black_mate = NULL;
+SDL_Surface *white_mate = NULL;
 void loadImages() {
 	main_img = load_link_image(MAIN_IMG);
 	panel = load_link_image(PANEL_BLACK_WHITE);
@@ -19,6 +22,9 @@ void loadImages() {
 	add = load_link_image(ADD_IMAGE);
 	load_save = load_link_image(LOAD_SAVE);
     save_slot = load_link_image(SAVE);
+    messages = load_link_image(MES);
+    black_mate = load_link_image(BLACK_MATE);
+    white_mate = load_link_image(WHITE_MATE);
 }
 
 void freeImages() {
@@ -31,6 +37,9 @@ void freeImages() {
 	SDL_FreeSurface(add);
 	SDL_FreeSurface(load_save);
     SDL_FreeSurface(save_slot);
+    SDL_FreeSurface(messages);
+    SDL_FreeSurface(black_mate);
+    SDL_FreeSurface(white_mate);
 }
 
 SDL_Surface *getImage(char *path) {
@@ -53,7 +62,16 @@ SDL_Surface *getImage(char *path) {
     } else if (strcmp(path, SAVE) == 0) {
         return save_slot;
     }
-    
+    else if (strcmp(path, MES) == 0) {
+        return messages;
+    }
+    else if (strcmp(path, BLACK_MATE) == 0) {
+        return black_mate;
+    }
+    else if (strcmp(path, WHITE_MATE) == 0) {
+        return white_mate;
+    }
+
 	return NULL; //should never happen
 }
 

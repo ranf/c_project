@@ -22,6 +22,7 @@ if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	create_screen();
 	loadImages();
 
+    // menu builders
 	main_menu = build_main_menu();
 	mode_menu = build_mode_menu();
 	settings_menu = build_settings_menu();
@@ -34,6 +35,7 @@ if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	Settings settings = DEFAULT_SETTINGS;
 	settings.state = MAIN_MENU_STATE;
 	
+    // situations in the game
 	while (settings.state != TERMINATE_STATE){
 		switch (settings.state){
 		case MAIN_MENU_STATE:
