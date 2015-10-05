@@ -137,6 +137,10 @@ int scoreChar(char piece) {
 	}
 }
 
+//Improvement over regular minimax:
+//1. Flexible depth based on number of pieces and their types.
+//2. Piece-Square-Tables.
+//3. From the moves with the best score, select the moves with best immediate score (depth 1).
 ScoredMoves bestMinimax(char** board, int player) {
 	// get max number of moves for round i -> n_i
 	// one board per move
@@ -263,10 +267,10 @@ int bestScoreChar(char piece) {
 }
 
 ScoredMoves bestFirstLevelScore(char** board, ScoredMoves scoredMoves, int player) {
-	// trying to force minimax to choose the most effective move ASAP
+	// trying to force minimax to choose the most effective move ASAP -> more aggresive AI
 	//
 	// this for example will return mate/promotion/eat in first move over waiting to next turn
-	// (recursively it might have waited forever).
+	// (recursively, in some scenarios, it could otherwise wait forever to make a winning move).
 
 	if (scoredMoves.moves == NULL)
 		return scoredMoves;

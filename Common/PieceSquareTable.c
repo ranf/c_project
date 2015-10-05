@@ -16,7 +16,7 @@ int pieceSquareTable(char** board, int x, int y) {
 		case BLACK_N:
 			return convertToBlackPieceTable(x, y, &knightPieceTable);
 		default:
-			return 0; //not implemented for all piece types
+			return 0; //not implemented for all piece types - it's less effective for them
 	}
 }
 
