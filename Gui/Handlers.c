@@ -85,12 +85,6 @@ Settings mode_menu_handler(gui_chess root, Settings settings)
 	tmp = tmp->next;
 	button = tmp;
     
-    // mark defolt choice
-//    pvp->rect2.x = MODE_BUTTON_SELECT_X_SRC;
-//    pvc->rect2.x = MODE_BUTTON_X_SRC;
-//    button->rect2.x = STRAT_BUTTON_X_SRC;
-    // mark relevant mode
-    //maybe need to change...
 	if (settings.gameMode == SINGLEPLAYER_MODE)
 	{
 		pvp->rect2.x = MODE_BUTTON_X_SRC;
@@ -508,7 +502,6 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 					settings = loadSettings(settings, mem_slot);
 					settings.can_set = 1; // can set after load
 					settings.state = MODE_SETTINGS_STATE;
-                    settings.userColor = WHITE_COLOR;
 					return settings;
 				}
 			}
