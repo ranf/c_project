@@ -176,9 +176,16 @@ Settings color_menu_handler(gui_chess root, Settings settings)
 	black = tmp;
 	tmp = tmp->next->next;
 
-    // always mark white at the begigning
-    white->rect2.y = SELECT_COLOR_BUTTON_Y_SRC;
-    black->rect2.y = COLOR_BUTTON_Y_SRC;
+    if (settings.playingColor == WHITE_COLOR)
+    {
+        white->rect2.y = SELECT_COLOR_BUTTON_Y_SRC;
+        black->rect2.y = COLOR_BUTTON_Y_SRC;
+    }
+    else
+    {
+        white->rect2.y = COLOR_BUTTON_Y_SRC;
+        black->rect2.y = SELECT_COLOR_BUTTON_Y_SRC;
+    }
 	
 	show_on_screen(root, 0, 0);
 	display_screen();
