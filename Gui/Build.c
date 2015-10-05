@@ -207,7 +207,6 @@ gui_chess build_game_menu()
 	tmp->next = button_factory(getImage(SETTINGS), QUIT_GAME_BUTTON, tmp_parent);
 	tmp = tmp->next;
 	tmp->next = button_factory(getImage(ADD_IMAGE), SET_GAME_BUTTON, tmp_parent);
-	/*sould be replace with start*/
 	tmp = tmp->next;
 	tmp->next = button_factory(getImage(ADD_IMAGE), START_GAME_BUTTON, tmp_parent);
 	return (result);

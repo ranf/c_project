@@ -274,10 +274,6 @@ Settings settings_menu_handler(gui_chess root, Settings settings){
 	tmp = tmp->next;
 	tmp = tmp->next;
     
-    // defolt values
-//    white->rect2.y = SELECT_COLOR_BUTTON_Y_SRC;
-//    black->rect2.y = COLOR_BUTTON_Y_SRC;
-//    select_number_button(button_1, 1);
     // mark color and minimax depth
 	if (settings.userColor == WHITE_COLOR)
 	{
