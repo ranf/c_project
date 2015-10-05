@@ -273,9 +273,12 @@ ScoredMoves bestFirstLevelScore(char** board, ScoredMoves scoredMoves, int playe
 	bool maximize = player == WHITE_COLOR;
 	MoveList* head = scoredMoves.moves;
 	int bestScore = maximize ? -MAX_SCORE : MAX_SCORE;
-	ScoredMoves result = {.score = scoredMoves.score, .moves = NULL}
+	ScoredMoves result = {.score = scoredMoves.score, .moves = NULL};
 	while (head != NULL) {
-		int score = scoreMove(board, head->data, player, 1);
+		char** boardCopy = copyBoard(board);
+		boardCopy = applyMove(boardCopy, move);
+		int score = bestScoreBoard(boardCopy, player);
+		freeBoard(boardCopy);
 		if (score == bestScore){
 			result.moves = concatMoveLists(result.moves, createMoveList(copyMove(head->data)));
 		} else if ((maximize && score > bestScore) ||
