@@ -28,12 +28,10 @@ Settings applySettingsCommand(Settings settings, char* cmd) {
 			break;
 		case LOAD_CMD:
 			settings = loadSettings(settings, skipSpaces(cmd + 4)); //|load| = 4
-			printBoard();
-			//printBoard(settings.board);
+			printBoard(settings.board);
 			break;
 		case PRINT_CMD:
-			printBoard();
-			//printBoard(settings.board);
+			printBoard(settings.board);
 			break;
 		case QUIT_CMD:
 			settings.state = TERMINATE_STATE;
