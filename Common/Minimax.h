@@ -8,8 +8,11 @@
 #define MAX_SCORE 999999
 #define WHITE_WIN_SCORE 1000
 #define BLACK_WIN_SCORE -1000
-#define WHITE_TIE_SCORE -999
-#define BLACK_TIE_SCORE 999
+//ties are only preferable over losing.
+//scoring the board for the white player turn is used to determine the effectiveness of black move
+//so it should be only a little bit better than a clear white win
+#define WHITE_TIE_SCORE 999
+#define BLACK_TIE_SCORE -999
 
 #define BEST_MINIMAX_UPPER_BOUND 1000000
 #define P_MAX_MOVES 3
