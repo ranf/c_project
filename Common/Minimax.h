@@ -37,5 +37,6 @@ ScoredMoves bestMinimax(char** board, int player);
 int getMaxMoves(char** board, int player, int possibleMovesAlready);
 int bestScoreBoard(char** board, int player);
 int bestScoreChar(char piece);
+ScoredMoves bestFirstLevelScore(char** board, ScoredMoves scoredMoves, int player);
 
 #endif

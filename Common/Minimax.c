@@ -153,7 +153,10 @@ ScoredMoves bestMinimax(char** board, int player) {
 		// |_depth/2_| is number previous moves by this player
 		maxMoves = getMaxMoves(board, currentPlayer, depth / 2);
 	}
-	return alphaBetaMinimax(depth, -MAX_SCORE, MAX_SCORE, board, player, player == WHITE_COLOR, &bestScoreBoard);
+	ScoredMoves trivialResult = alphaBetaMinimax(depth, -MAX_SCORE, MAX_SCORE, board, player, player == WHITE_COLOR, &bestScoreBoard);
+	ScoredMoves result = bestFirstLevelScore(board, trivialResult, player);
+	freeMoves(trivialResult.moves);
+	return result;
 }
 
 int getMaxMoves(char** board, int player, int possibleMovesAlready) {
@@ -259,4 +262,29 @@ int bestScoreChar(char piece) {
 	}
 }
 
+ScoredMoves bestFirstLevelScore(char** board, ScoredMoves scoredMoves, int player) {
+	// trying to force minimax to choose the most effective move ASAP
+	//
+	// this for example will return mate/promotion/eat in first move over waiting to next turn
+	// (recursively it might have waited forever).
 
+	if (scoredMoves.moves == NULL)
+		return scoredMoves;
+	bool maximize = player == WHITE_COLOR;
+	MoveList* head = scoredMoves.moves;
+	int bestScore = maximize ? -MAX_SCORE : MAX_SCORE;
+	ScoredMoves result = {.score = scoredMoves.score, .moves = NULL}
+	while (head != NULL) {
+		int score = scoreMove(board, head->data, player, 1);
+		if (score == bestScore){
+			result.moves = concatMoveLists(result.moves, createMoveList(copyMove(head->data)));
+		} else if ((maximize && score > bestScore) ||
+			(!maximize && score < bestScore)) {
+			bestScore = score;
+			freeMoves(result.moves);
+			result.moves = createMoveList(copyMove(head->data));
+		}
+		head = head->next;
+	}
+	return result;
+}
