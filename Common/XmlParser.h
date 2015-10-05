@@ -10,6 +10,7 @@
 
 #define WRONG_FILE_NAME "Wrong file name\n"
 
+void initXmlParser();
 Settings loadSettings(Settings previousSettings, char* filePath);
 void saveSettings(Settings settings, char* filename);
 

@@ -1,5 +1,10 @@
 #include "XmlParser.h"
 
+void initXmlParser() {
+	xmlInitParser();
+	atexit(xmlCleanupParser);
+}
+
 Settings loadSettings(Settings previousSettings, char* filePath) {
 	xmlDoc* doc = NULL;
 	xmlNode* rootElement = NULL;
@@ -7,7 +12,6 @@ Settings loadSettings(Settings previousSettings, char* filePath) {
 		(rootElement = xmlDocGetRootElement(doc)) == NULL) { //root element is <game>
 		printMessage(WRONG_FILE_NAME);
 		if(doc) xmlFreeDoc(doc);
-		xmlCleanupParser();
 		return previousSettings;
 	}
 
@@ -43,7 +47,6 @@ Settings loadSettings(Settings previousSettings, char* filePath) {
 	}
 
 	xmlFreeDoc(doc);
-	xmlCleanupParser();
 
 	return settings;
 }
@@ -58,7 +61,6 @@ void saveSettings(Settings settings, char* filename) {
 
 	xmlFreeTextWriter(writer);
 	xmlCleanupCharEncodingHandlers();
-	xmlCleanupParser();
 }
 
 void writeSettingsToXml(Settings settings, xmlTextWriterPtr writer) {
