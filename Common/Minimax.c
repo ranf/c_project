@@ -277,7 +277,7 @@ ScoredMoves bestFirstLevelScore(char** board, ScoredMoves scoredMoves, int playe
 	while (head != NULL) {
 		char** boardCopy = copyBoard(board);
 		boardCopy = applyMove(boardCopy, head->data);
-		int score = bestScoreBoard(boardCopy, player);
+		int score = bestScoreBoard(boardCopy, otherPlayer(player));
 		freeBoard(boardCopy);
 		if (score == bestScore){
 			result.moves = concatMoveLists(result.moves, createMoveList(copyMove(head->data)));

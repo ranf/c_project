@@ -5,7 +5,7 @@
 #include "Settings.h"
 #include "PieceSquareTable.h"
 
-#define MAX_SCORE 99999
+#define MAX_SCORE 999999
 #define WHITE_WIN_SCORE 1000
 #define BLACK_WIN_SCORE -1000
 #define WHITE_TIE_SCORE -999
