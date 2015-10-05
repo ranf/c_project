@@ -1053,7 +1053,7 @@ Settings end_of_turn(Settings settings, int situation, gui_chess game_menu)
 		SDL_Delay(1500);
 		return settings;
 	}
-	if (situation == GS_MAIN_MENU /*todo fix restart logic*/) 
+	if (situation == GS_MAIN_MENU) 
 	{
 		settings = reset_settings(settings);
 		settings.state = MAIN_MENU_STATE;
