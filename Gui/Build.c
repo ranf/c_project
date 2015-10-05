@@ -76,7 +76,7 @@ gui_chess build_minmax_menu()
     tmp = result;
     tmp->child = panel_factory(getImage(PANEL_BLACK_WHITE), BLACK_WHITE_IMAGE, tmp);
     tmp = tmp->child;
-    tmp->child = label_factory(getImage(SETTINGS), LABLE_DIFFCLTY, tmp_parent);
+    tmp->child = label_factory(getImage(SETTINGS), LABLE_DIFFCLTY, tmp);
     tmp_parent = tmp;
     tmp = tmp->child;
     tmp->next = button_factory(getImage(SETTINGS), BUTTON_ONE, tmp_parent);

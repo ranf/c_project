@@ -632,12 +632,10 @@ Settings minimax_menu_handler(gui_chess root, Settings settings)
 	SDL_Event event;
 	//gui_chess tmp, white, black, button_1;
     gui_chess tmp, button_1;
-	int x, y, bound_x, bound_y, sdl_event_suc;
+	int x, y, sdl_event_suc;
 	
 	/*define & find bounderies of the buttons*/
 	tmp = root->child;
-	bound_x = tmp->rect1.x;
-	bound_y = tmp->rect1.y;
 	tmp = tmp->child->next;
 	button_1 = tmp;
 	tmp = tmp->next;
@@ -1208,8 +1206,7 @@ char promotion_handler(gui_chess root, int player) {
 			}
 		}
 	}
-  //to check
- //   return NO_PROMOTION;
+    return NO_PROMOTION;
 }
 
 void show_on_screen(gui_chess start_point, int x, int y)
