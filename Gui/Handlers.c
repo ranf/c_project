@@ -371,8 +371,10 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 	SDL_Event event;
 	gui_chess tmp, button_1;
 	char mem_slot[MEM_SLOT_FILE_NAME_LENGTH];
-    int x, y, bound_x, bound_y, number_x, number_y, width, heigth, sdl_event_suc;
+    int x, y, bound_x, bound_y, number_x, number_y, width, heigth, sdl_event_suc, slots;
 	int current_slot = 0;
+    
+    slots = 0;
 
 	/*define & find bounderies of the buttons*/
 	tmp = root->child;
@@ -384,12 +386,12 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 	number_y = tmp->rect1.y + bound_y;
 	heigth = tmp->rect2.h;
 	width = tmp->rect2.w;
-	tmp = tmp->next;
-	tmp = tmp->next;
-	tmp = tmp->next;
-	tmp = tmp->next;
-	tmp = tmp->next;
-	tmp = tmp->next;
+    
+    while (slots < NUMBER_OF_SLOTS)
+    {
+        tmp = tmp->next;
+        slots++;
+    }
 	
 	select_number_button(button_1, current_slot);
 
@@ -435,6 +437,18 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 			{
 				current_slot = 7;
 			}
+            else if ((x>(651)) && (x<(693)) && (y>number_y) && (y<number_y + heigth))
+            {
+                current_slot = 8;
+            }
+            else if ((x>(702)) && (x<(744)) && (y>number_y) && (y<number_y + heigth))
+            {
+                current_slot = 9;
+            }
+            else if ((x>(751)) && (x<(793)) && (y>number_y) && (y<number_y + heigth))
+            {
+                current_slot = 10;
+            }
 			//cancel
 			else if ( ( x >= 183 ) && ( x <= 266 ) && ( y >= 413 ) && ( y <= 465 ) )
 			{
@@ -476,6 +490,15 @@ Settings load_save_menu_handler(gui_chess root, Settings settings){
 				case 7:
 					strcpy(mem_slot, MEM_SLOT_7);
 					break;
+                case 8:
+                    strcpy(mem_slot, MEM_SLOT_8);
+                    break;
+                case 9:
+                    strcpy(mem_slot, MEM_SLOT_9);
+                    break;
+                case 10:
+                    strcpy(mem_slot, MEM_SLOT_10);
+                    break;
 				default:
 					continue;
 					break;
@@ -1039,7 +1062,7 @@ Settings end_of_turn(Settings settings, int situation, gui_chess game_menu)
             apply_surface(WHITE_MATE_LABLE, getImage(WHITE_MATE), get_screen());
 		}
 		display_screen();
-		SDL_Delay(1500);
+		SDL_Delay(2500);
 		settings = reset_settings(settings);
 		settings.state = MAIN_MENU_STATE;
 		return settings;
@@ -1047,7 +1070,7 @@ Settings end_of_turn(Settings settings, int situation, gui_chess game_menu)
 	{
 		apply_surface(LABLE_TIE, getImage(ADD_IMAGE), get_screen());
 		display_screen();
-		SDL_Delay(1500);
+		SDL_Delay(2500);
 		settings.state = MAIN_MENU_STATE;
 		return settings;
 	} else if (check) 
@@ -1055,6 +1078,8 @@ Settings end_of_turn(Settings settings, int situation, gui_chess game_menu)
 		apply_surface(LABLE_CHECK, getImage(GAME_PIECES_SELECT), get_screen());
 		display_screen();
 		SDL_Delay(1500);
+        display_board(game_menu, -1,-1, settings.board);
+        display_screen();
 		return settings;
 	}
 	if (situation == GS_MAIN_MENU) 

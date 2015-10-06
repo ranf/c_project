@@ -16,10 +16,14 @@
 #define MEM_SLOT_5 "Saves/mem_slot_5.xml"
 #define MEM_SLOT_6 "Saves/mem_slot_6.xml"
 #define MEM_SLOT_7 "Saves/mem_slot_7.xml"
+#define MEM_SLOT_8 "Saves/mem_slot_8.xml"
+#define MEM_SLOT_9 "Saves/mem_slot_9.xml"
+#define MEM_SLOT_10 "Saves/mem_slot_10.xml"
 
 /* const*/
 #define BOARD_TOP_CORNER 35
 #define BOARD_BOTTOM_CORNER 562
+
 
 #define MODE_BUTTON_X_SRC 55
 #define MODE_BUTTON_SELECT_X_SRC 267

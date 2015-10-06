@@ -140,18 +140,120 @@ gui_chess build_save_menu()
 	tmp_parent = tmp;
 	tmp = tmp->child;
 	tmp->next = button_factory(getImage(SETTINGS), BUTTON_ONE, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS), BUTTON_FIVE, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SIX, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SEVEN, tmp_parent);
+    switch (NUMBER_OF_SLOTS) {
+        case 1:
+            break;
+        case 2:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            break;
+        case 3:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            break;
+        case 4:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
+            break;
+        case 5:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FIVE, tmp_parent);
+            break;
+        case 6:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FIVE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SIX, tmp_parent);
+            break;
+        case 7:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FIVE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SIX, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SEVEN, tmp_parent);
+            break;
+        case 8:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FIVE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SIX, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SEVEN, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_EIGHT, tmp_parent);
+            break;
+        case 9:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FIVE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SIX, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SEVEN, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_EIGHT, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_NINE, tmp_parent);
+            break;
+        case 10:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FIVE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SIX, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SEVEN, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_EIGHT, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_NINE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_TEN, tmp_parent);
+            break;
+        default:
+            break;
+    }
 	tmp = tmp->next;
 	tmp->next = button_factory(getImage(LOAD_SAVE), CANCEL_BUTTON, tmp_parent);
 	tmp = tmp->next;
@@ -171,18 +273,132 @@ gui_chess build_load_menu()
 	tmp_parent = tmp;
 	tmp = tmp->child;
 	tmp->next = button_factory(getImage(SETTINGS), BUTTON_ONE, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(SETTINGS), BUTTON_FIVE, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SIX, tmp_parent);
-	tmp = tmp->next;
-	tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SEVEN, tmp_parent);
+    switch (NUMBER_OF_SLOTS) {
+        case 2:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            break;
+        case 3:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            break;
+        case 4:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
+            break;
+        case 5:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FIVE, tmp_parent);
+            break;
+        case 6:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FIVE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SIX, tmp_parent);
+            break;
+        case 7:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FIVE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SIX, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SEVEN, tmp_parent);
+            break;
+        case 8:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FIVE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SIX, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SEVEN, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_EIGHT, tmp_parent);
+            break;
+        case 9:
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FIVE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SIX, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SEVEN, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_EIGHT, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_NINE, tmp_parent);
+            break;
+        case 10:
+            fprintf(stdout,"%s\n","start");
+            fflush(stdout);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(SETTINGS), BUTTON_FIVE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SIX, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SEVEN, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_EIGHT, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_NINE, tmp_parent);
+            tmp = tmp->next;
+            tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_TEN, tmp_parent);
+            break;
+        default:
+            break;
+    }
+//	tmp = tmp->next;
+//	tmp->next = button_factory(getImage(SETTINGS), BUTTON_TWO, tmp_parent);
+//	tmp = tmp->next;
+//	tmp->next = button_factory(getImage(SETTINGS), BUTTON_THREE, tmp_parent);
+//	tmp = tmp->next;
+//	tmp->next = button_factory(getImage(SETTINGS), BUTTON_FOUR, tmp_parent);
+//	tmp = tmp->next;
+//	tmp->next = button_factory(getImage(SETTINGS), BUTTON_FIVE, tmp_parent);
+//	tmp = tmp->next;
+//	tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SIX, tmp_parent);
+//	tmp = tmp->next;
+//	tmp->next = button_factory(getImage(ADD_IMAGE), BUTTON_SEVEN, tmp_parent);
 	tmp = tmp->next;
 	tmp->next = button_factory(getImage(LOAD_SAVE), CANCEL_BUTTON, tmp_parent);
 	tmp = tmp->next;
